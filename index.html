@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <button id="sidebar-toggle" aria-label="Toggle Sidebar">&#9776;</button>
+  <div class="sidebar" id="sidebar" role="complementary">
+    <h2>Lecture<span style="color:#ff5722;">.</span></h2>
+    <div class="section-title">Institute of Sam</div>
+    <div style="font-size: 0.85rem; color: #999; margin-bottom: 1rem;">First year</div>
+    <nav>
+      <a href="#" class="active">
+        <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zm0-10v2h14V7H7z"/></svg>
+        Dashboard
+      </a>
+      <a href="#">
+        <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zm0-10v2h14V7H7z"/></svg>
+        Classes
+      </a>
+      <a href="#">
+        <svg viewBox="0 0 24 24"><path d="M21 6h-2v12h2V6zm-4 0h-2v12h2V6zm-4 0H9v12h2V6zm-4 0H5v12h2V6z"/></svg>
+        Discussions
+      </a>
+      <button id="calendar-toggle" aria-label="Toggle Calendar" title="Toggle Calendar" style="background:none; border:none; cursor:pointer; margin-top:1rem;">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="#ff5722" aria-hidden="true">
+          <path d="M7 11h10v2H7zM5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2zm0 2v2h14V6H5z"/>
+        </svg>
+      </button>
+    </nav>
+    <div class="section-title">Insight<span style="color:#ff5722;">.</span></div>
+    <nav>
+      <a href="#">
+        <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zm0-10v2h14V7H7z"/></svg>
+        Resources
+      </a>
+      <a href="#">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
+        My Schedule
+      </a>
+    </nav>
+  </div>
+  <div class="main-content">
+    <div class="todo-header">
+      <h1>To-Do List</h1>
+      <button id="calendar-toggle" aria-label="Toggle Calendar" title="Toggle Calendar" class="calendar-toggle-btn">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="#ff5722" aria-hidden="true">
+          <path d="M7 11h10v2H7zM5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2zm0 2v2h14V6H5z"/>
+        </svg>
+      </button>
+    </div>
+    <button id="show-form-btn" aria-label="Add Task" title="Add Task">+</button>
+    <form id="todo-form" class="todo-form" style="display:none;">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="task-title">Task Title *</label>
+          <input type="text" id="task-title" name="task-title" placeholder="Enter task title" required />
+        </div>
+        <div class="form-group">
+          <label for="task-desc">Description</label>
+          <textarea id="task-desc" name="task-desc" placeholder="Enter task description (optional)"></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="task-subject">Category/Subject</label>
+          <select id="task-subject" name="task-subject" required>
+            <option value="" disabled selected>Select subject</option>
+            <option value="Math">Math</option>
+            <option value="Biology">Biology</option>
+            <option value="Psychology">Psychology</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Task Type</label>
+          <div class="radio-group">
+            <input type="radio" id="type-task" name="task-type" value="Task" checked />
+            <label for="type-task">Task</label>
+            <input type="radio" id="type-theory" name="task-type" value="Theory" />
+            <label for="type-theory">Theory</label>
+            <input type="radio" id="type-assignment" name="task-type" value="Assignment" />
+            <label for="type-assignment">Assignment</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-row" style="align-items: flex-end; gap: 1rem;">
+        <div class="form-group" style="flex: 1;">
+          <label for="task-deadline">Deadline</label>
+          <input type="date" id="task-deadline" name="task-deadline" />
+        </div>
+        <button type="submit" class="add-button">Add Task</button>
+      </div>
+    </form>
+    <ul id="todo-list"></ul>
+
+
+    <!-- Today Tasks Section -->
+    <section class="today-tasks">
+      <h2>Today Tasks<span class="highlight-dot">.</span></h2>
+      <div class="tabs" role="tablist">
+        <button class="tab active" role="tab" aria-selected="true" aria-controls="forum-tab" id="tab-forum">Forum</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="todo-tab" id="tab-todo">To-do</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="members-tab" id="tab-members">Members</button>
+      </div>
+      <div class="tab-panels">
+        <div id="forum-tab" class="tab-panel active" role="tabpanel" aria-labelledby="tab-forum" tabindex="0">
+          <ul class="task-list" id="forum-tasks">
+            <!-- Forum tasks will be rendered here -->
+          </ul>
+        </div>
+        <div id="todo-tab" class="tab-panel" role="tabpanel" aria-labelledby="tab-todo" tabindex="0">
+          <ul class="task-list" id="todo-tasks">
+            <!-- To-do tasks will be rendered here -->
+          </ul>
+        </div>
+        <div id="members-tab" class="tab-panel" role="tabpanel" aria-labelledby="tab-members" tabindex="0">
+          <p style="color:#666; font-style: italic;">No members to display.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="right-panel">
+    <div class="upcoming-events-panel" role="region" aria-label="Upcoming Events Calendar">
+      <div class="month-header">
+        <button aria-label="Previous Month" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <div id="month-year">January 2021</div>
+        <button aria-label="Next Month" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+        </button>
+      </div>
+      <div class="weekdays" role="row">
+        <div role="columnheader">Mon</div>
+        <div role="columnheader">Tue</div>
+        <div role="columnheader">Wed</div>
+        <div role="columnheader">Thu</div>
+        <div role="columnheader">Fri</div>
+        <div role="columnheader">Sat</div>
+        <div role="columnheader">Sun</div>
+      </div>
+      <div class="dates" role="grid" aria-label="January 2021 Dates">
+        <div class="date empty" aria-hidden="true"></div>
+        <div class="date empty" aria-hidden="true"></div>
+        <div class="date" role="gridcell" tabindex="0">1</div>
+        <div class="date" role="gridcell" tabindex="0">2</div>
+        <div class="date" role="gridcell" tabindex="0">3</div>
+        <div class="date" role="gridcell" tabindex="0">4</div>
+        <div class="date" role="gridcell" tabindex="0">5</div>
+        <div class="date" role="gridcell" tabindex="0">6</div>
+        <div class="date" role="gridcell" tabindex="0">7</div>
+        <div class="date" role="gridcell" tabindex="0">8</div>
+        <div class="date" role="gridcell" tabindex="0">9</div>
+        <div class="date highlighted" role="gridcell" tabindex="0">10</div>
+        <div class="date" role="gridcell" tabindex="0">11</div>
+        <div class="date" role="gridcell" tabindex="0">12</div>
+        <div class="date" role="gridcell" tabindex="0">13</div>
+        <div class="date" role="gridcell" tabindex="0">14</div>
+        <div class="date" role="gridcell" tabindex="0">15</div>
+        <div class="date" role="gridcell" tabindex="0">16</div>
+        <div class="date" role="gridcell" tabindex="0">17</div>
+        <div class="date" role="gridcell" tabindex="0">18</div>
+        <div class="date highlighted" role="gridcell" tabindex="0">20</div>
+        <div class="date" role="gridcell" tabindex="0">21</div>
+        <div class="date highlighted" role="gridcell" tabindex="0">22</div>
+        <div class="date" role="gridcell" tabindex="0">23</div>
+        <div class="date" role="gridcell" tabindex="0">24</div>
+        <div class="date" role="gridcell" tabindex="0">25</div>
+        <div class="date" role="gridcell" tabindex="0">26</div>
+        <div class="date" role="gridcell" tabindex="0">27</div>
+        <div class="date" role="gridcell" tabindex="0">28</div>
+        <div class="date" role="gridcell" tabindex="0">29</div>
+        <div class="date" role="gridcell" tabindex="0">30</div>
+        <div class="date" role="gridcell" tabindex="0">31</div>
+      </div>
+      <div class="upcoming-events">
+        <h3>Upcoming Events</h3>
+        <div class="event-card">
+          <div class="event-icon psychology" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+          </div>
+          <div class="event-details">
+            <div class="event-title">Psychology Exam</div>
+            <div class="event-desc">Chapter 5: Cognitive Psychology</div>
+            <div class="event-meta">Jan 10, 2021 · 45 Minutes</div>
+          </div>
+        </div>
+        <div class="event-card">
+          <div class="event-icon meeting" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+          </div>
+          <div class="event-details">
+            <div class="event-title">Team Meeting</div>
+            <div class="event-desc">Project Kickoff</div>
+            <div class="event-meta">Jan 20, 2021 · 30 Minutes</div>
+          </div>
+        </div>
+        <div class="event-card">
+          <div class="event-icon exam" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><polygon points="12,2 22,22 2,22"/></svg>
+          </div>
+          <div class="event-details">
+            <div class="event-title">Math Exam</div>
+            <div class="event-desc">Algebra and Geometry</div>
+            <div class="event-meta">Jan 22, 2021 · 60 Minutes</div>
+          </div>
+        </div>
+        <div class="view-all">
+          <a href="#" aria-label="View all upcoming events">View all upcoming →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

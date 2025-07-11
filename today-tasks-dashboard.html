@@ -1,0 +1,462 @@
+<style>
+  /* Base styles */
+  .today-tasks-dashboard {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    max-width: 400px;
+    margin: 1rem auto;
+    padding: 1.5rem;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 1rem;
+  }
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 0.75rem 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: #666;
+    border-bottom: 3px solid transparent;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+  .tab.active {
+    color: #ff7a00;
+    border-color: #ff7a00;
+  }
+
+  /* Task list */
+  .task-list {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .task-list.active {
+    display: flex;
+  }
+
+  /* Task card */
+  .task-card {
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  /* Subject icon */
+  .subject-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  .subject-biography {
+    background: #a3cef1;
+  }
+  .subject-math {
+    background: #f7b267;
+  }
+  .subject-psychology {
+    background: #cdb4db;
+  }
+
+  /* Task details */
+  .task-details {
+    flex: 1;
+  }
+  .task-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+  .task-subject,
+  .task-teacher,
+  .task-type {
+    font-size: 0.85rem;
+    color: #666;
+  }
+
+  /* Action button */
+  .task-action-btn {
+    background: #ff7a00;
+    border: none;
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  .task-action-btn:hover {
+    background: #e65c00;
+  }
+
+  /* Completed task style */
+  .task-completed .task-title,
+  .task-completed .task-subject,
+  .task-completed .task-teacher,
+  .task-completed .task-type {
+    text-decoration: line-through;
+    color: #999;
+  }
+
+  /* Add task button */
+  .add-task-btn {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: #ff7a00;
+    border: none;
+    color: white;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    font-size: 32px;
+    line-height: 0;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    z-index: 1000;
+  }
+  .add-task-btn:hover {
+    background: #e65c00;
+  }
+
+  /* Add task form modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+  }
+  .modal-overlay.active {
+    display: flex;
+  }
+  .modal {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 320px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .modal h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+  .modal label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+  }
+  .modal input[type="text"],
+  .modal select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  .modal input[type="text"]:focus,
+  .modal select:focus {
+    border-color: #ff7a00;
+  }
+  .modal button {
+    background: #ff7a00;
+    border: none;
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+  .modal button:hover {
+    background: #e65c00;
+  }
+  .modal .close-btn {
+    background: transparent;
+    color: #999;
+    font-weight: 700;
+    font-size: 1.25rem;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    cursor: pointer;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .today-tasks-dashboard {
+      max-width: 100%;
+      margin: 0.5rem;
+      padding: 1rem;
+    }
+    .add-task-btn {
+      width: 48px;
+      height: 48px;
+      font-size: 28px;
+      bottom: 1rem;
+      right: 1rem;
+    }
+    .modal {
+      width: 90%;
+    }
+  }
+</style>
+
+<div class="today-tasks-dashboard" role="region" aria-label="Today Tasks Dashboard">
+  <div class="tabs" role="tablist">
+    <div class="tab active" role="tab" tabindex="0" aria-selected="true" aria-controls="forum-tab" id="tab-forum">Forum</div>
+    <div class="tab" role="tab" tabindex="-1" aria-selected="false" aria-controls="todo-tab" id="tab-todo">To-do</div>
+    <div class="tab" role="tab" tabindex="-1" aria-selected="false" aria-controls="members-tab" id="tab-members">Members</div>
+  </div>
+
+  <div id="forum-tab" class="task-list active" role="tabpanel" aria-labelledby="tab-forum" tabindex="0">
+    <!-- Tasks will be rendered here -->
+  </div>
+  <div id="todo-tab" class="task-list" role="tabpanel" aria-labelledby="tab-todo" tabindex="0">
+    <!-- Tasks will be rendered here -->
+  </div>
+  <div id="members-tab" class="task-list" role="tabpanel" aria-labelledby="tab-members" tabindex="0">
+    <p style="color:#666; font-style: italic;">No members to display.</p>
+  </div>
+
+  <button class="add-task-btn" aria-label="Add Task" id="add-task-btn">+</button>
+
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <button class="close-btn" id="close-modal" aria-label="Close">&times;</button>
+      <h2 id="modal-title">Add New Task</h2>
+      <form id="task-form">
+        <label for="task-title">Task Title</label>
+        <input type="text" id="task-title" name="task-title" required />
+
+        <label for="task-subject">Subject</label>
+        <select id="task-subject" name="task-subject" required>
+          <option value="" disabled selected>Select subject</option>
+          <option value="Biography">Biography</option>
+          <option value="Math">Math</option>
+          <option value="Psychology">Psychology</option>
+        </select>
+
+        <label for="task-teacher">Teacher Name</label>
+        <input type="text" id="task-teacher" name="task-teacher" required />
+
+        <label for="task-type">Type</label>
+        <select id="task-type" name="task-type" required>
+          <option value="" disabled selected>Select type</option>
+          <option value="Task">Task</option>
+          <option value="Theory">Theory</option>
+        </select>
+
+        <button type="submit">Save Task</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // State
+  let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+  // Elements
+  const tabs = document.querySelectorAll('.tab');
+  const taskLists = document.querySelectorAll('.task-list');
+  const addTaskBtn = document.getElementById('add-task-btn');
+  const modalOverlay = document.getElementById('modal-overlay');
+  const closeModalBtn = document.getElementById('close-modal');
+  const taskForm = document.getElementById('task-form');
+
+  // Utility: Create subject icon element
+  function createSubjectIcon(subject) {
+    const icon = document.createElement('div');
+    icon.classList.add('subject-icon');
+    switch(subject) {
+      case 'Biography':
+        icon.classList.add('subject-biography');
+        icon.textContent = 'B';
+        break;
+      case 'Math':
+        icon.classList.add('subject-math');
+        icon.textContent = 'M';
+        break;
+      case 'Psychology':
+        icon.classList.add('subject-psychology');
+        icon.textContent = 'P';
+        break;
+      default:
+        icon.textContent = '?';
+    }
+    return icon;
+  }
+
+  // Render tasks in a container
+  function renderTasks(containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    const filteredTasks = tasks.filter(task => {
+      if (containerId === 'forum-tab') return true;
+      if (containerId === 'todo-tab') return true;
+      return false;
+    });
+
+    if (filteredTasks.length === 0) {
+      container.innerHTML = '<p style="color:#666; font-style: italic;">No tasks available.</p>';
+      return;
+    }
+
+    filteredTasks.forEach((task, index) => {
+      const card = document.createElement('div');
+      card.classList.add('task-card');
+      if (task.completed) card.classList.add('task-completed');
+
+      const icon = createSubjectIcon(task.subject);
+      card.appendChild(icon);
+
+      const details = document.createElement('div');
+      details.classList.add('task-details');
+
+      const title = document.createElement('div');
+      title.classList.add('task-title');
+      title.textContent = task.title;
+      details.appendChild(title);
+
+      const subject = document.createElement('div');
+      subject.classList.add('task-subject');
+      subject.textContent = `Subject: ${task.subject}`;
+      details.appendChild(subject);
+
+      const teacher = document.createElement('div');
+      teacher.classList.add('task-teacher');
+      teacher.textContent = `Teacher: ${task.teacher}`;
+      details.appendChild(teacher);
+
+      const type = document.createElement('div');
+      type.classList.add('task-type');
+      type.textContent = `Type: ${task.type}`;
+      details.appendChild(type);
+
+      card.appendChild(details);
+
+      const actionBtn = document.createElement('button');
+      actionBtn.classList.add('task-action-btn');
+      if (task.type === 'Task') {
+        actionBtn.textContent = 'Add or Create';
+        actionBtn.addEventListener('click', () => {
+          const detail = prompt('Enter task detail or content:');
+          if (detail) {
+            alert(`Task detail saved: ${detail}`);
+          }
+        });
+      } else if (task.type === 'Theory') {
+        actionBtn.textContent = 'Mark as Done';
+        actionBtn.addEventListener('click', () => {
+          tasks[index].completed = !tasks[index].completed;
+          saveTasks();
+          renderTasks(containerId);
+        });
+      }
+      card.appendChild(actionBtn);
+
+      container.appendChild(card);
+    });
+  }
+
+  // Save tasks to localStorage
+  function saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+
+  // Tab switching
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+        t.setAttribute('tabindex', '-1');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      tab.setAttribute('tabindex', '0');
+
+      taskLists.forEach(list => {
+        list.classList.remove('active');
+      });
+      const target = tab.getAttribute('aria-controls');
+      document.getElementById(target).classList.add('active');
+    });
+  });
+
+  // Open modal
+  addTaskBtn.addEventListener('click', () => {
+    modalOverlay.classList.add('active');
+  });
+
+  // Close modal
+  closeModalBtn.addEventListener('click', () => {
+    modalOverlay.classList.remove('active');
+  });
+
+  // Submit new task
+  taskForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = document.getElementById('task-title').value.trim();
+    const subject = document.getElementById('task-subject').value;
+    const teacher = document.getElementById('task-teacher').value.trim();
+    const type = document.getElementById('task-type').value;
+
+    if (!title || !subject || !teacher || !type) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    tasks.push({
+      title,
+      subject,
+      teacher,
+      type,
+      completed: false
+    });
+
+    saveTasks();
+    renderTasks('forum-tab');
+    renderTasks('todo-tab');
+    taskForm.reset();
+    modalOverlay.classList.remove('active');
+  });
+
+  // Initial render
+  renderTasks('forum-tab');
+  renderTasks('todo-tab');
+</script>

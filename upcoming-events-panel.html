@@ -1,0 +1,253 @@
+<style>
+  .upcoming-events-panel {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    padding: 1.5rem;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Month header */
+  .month-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .month-header button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    color: #ff7a00;
+    transition: color 0.3s ease;
+  }
+  .month-header button:hover {
+    color: #e65c00;
+  }
+  .month-header svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+
+  /* Weekdays grid */
+  .weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #999;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Dates grid */
+  .dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .date {
+    text-align: center;
+    padding: 0.5rem 0;
+    border-radius: 50%;
+    cursor: default;
+    user-select: none;
+    font-weight: 500;
+    color: #555;
+  }
+  .date.empty {
+    background: transparent;
+    cursor: default;
+  }
+  .date.highlighted {
+    background: #ffcc99;
+    color: #b35c00;
+    font-weight: 700;
+  }
+
+  /* Upcoming events section */
+  .upcoming-events {
+    display: flex;
+    flex-direction: column;
+  }
+  .upcoming-events h3 {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #222;
+  }
+  .event-card {
+    display: flex;
+    align-items: center;
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  }
+  .event-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
+  }
+  .event-icon.psychology {
+    background: #e6d7ff;
+    color: #6a4fff;
+  }
+  .event-icon.meeting {
+    background: #ffe6cc;
+    color: #ff7a00;
+  }
+  .event-icon.exam {
+    background: #fff0f0;
+    color: #ff4c4c;
+  }
+  .event-details {
+    flex: 1;
+  }
+  .event-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: #333;
+  }
+  .event-desc {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+  }
+  .event-meta {
+    font-size: 0.8rem;
+    color: #999;
+  }
+
+  /* View all link */
+  .view-all {
+    text-align: right;
+    margin-top: 0.5rem;
+  }
+  .view-all a {
+    color: #ff7a00;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .view-all a:hover {
+    color: #e65c00;
+  }
+
+  /* Responsive */
+  @media (max-width: 767px) {
+    .upcoming-events-panel {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+  }
+</style>
+
+<div class="upcoming-events-panel" role="region" aria-label="Upcoming Events Calendar">
+  <div class="month-header">
+    <button aria-label="Previous Month" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </button>
+    <div>January 2021</div>
+    <button aria-label="Next Month" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+    </button>
+  </div>
+  <div class="weekdays" role="row">
+    <div role="columnheader">Mon</div>
+    <div role="columnheader">Tue</div>
+    <div role="columnheader">Wed</div>
+    <div role="columnheader">Thu</div>
+    <div role="columnheader">Fri</div>
+    <div role="columnheader">Sat</div>
+    <div role="columnheader">Sun</div>
+  </div>
+  <div class="dates" role="grid" aria-label="January 2021 Dates">
+    <div class="date empty" aria-hidden="true"></div>
+    <div class="date empty" aria-hidden="true"></div>
+    <div class="date" role="gridcell" tabindex="0">1</div>
+    <div class="date" role="gridcell" tabindex="0">2</div>
+    <div class="date" role="gridcell" tabindex="0">3</div>
+    <div class="date" role="gridcell" tabindex="0">4</div>
+    <div class="date" role="gridcell" tabindex="0">5</div>
+    <div class="date" role="gridcell" tabindex="0">6</div>
+    <div class="date" role="gridcell" tabindex="0">7</div>
+    <div class="date" role="gridcell" tabindex="0">8</div>
+    <div class="date" role="gridcell" tabindex="0">9</div>
+    <div class="date highlighted" role="gridcell" tabindex="0">10</div>
+    <div class="date" role="gridcell" tabindex="0">11</div>
+    <div class="date" role="gridcell" tabindex="0">12</div>
+    <div class="date" role="gridcell" tabindex="0">13</div>
+    <div class="date" role="gridcell" tabindex="0">14</div>
+    <div class="date" role="gridcell" tabindex="0">15</div>
+    <div class="date" role="gridcell" tabindex="0">16</div>
+    <div class="date" role="gridcell" tabindex="0">17</div>
+    <div class="date" role="gridcell" tabindex="0">18</div>
+    <div class="date highlighted" role="gridcell" tabindex="0">20</div>
+    <div class="date" role="gridcell" tabindex="0">21</div>
+    <div class="date highlighted" role="gridcell" tabindex="0">22</div>
+    <div class="date" role="gridcell" tabindex="0">23</div>
+    <div class="date" role="gridcell" tabindex="0">24</div>
+    <div class="date" role="gridcell" tabindex="0">25</div>
+    <div class="date" role="gridcell" tabindex="0">26</div>
+    <div class="date" role="gridcell" tabindex="0">27</div>
+    <div class="date" role="gridcell" tabindex="0">28</div>
+    <div class="date" role="gridcell" tabindex="0">29</div>
+    <div class="date" role="gridcell" tabindex="0">30</div>
+    <div class="date" role="gridcell" tabindex="0">31</div>
+  </div>
+  <div class="upcoming-events">
+    <h3>Upcoming Events</h3>
+    <div class="event-card">
+      <div class="event-icon psychology" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+      </div>
+      <div class="event-details">
+        <div class="event-title">Psychology Exam</div>
+        <div class="event-desc">Chapter 5: Cognitive Psychology</div>
+        <div class="event-meta">Jan 10, 2021 · 45 Minutes</div>
+      </div>
+    </div>
+    <div class="event-card">
+      <div class="event-icon meeting" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+      </div>
+      <div class="event-details">
+        <div class="event-title">Team Meeting</div>
+        <div class="event-desc">Project Kickoff</div>
+        <div class="event-meta">Jan 20, 2021 · 30 Minutes</div>
+      </div>
+    </div>
+    <div class="event-card">
+      <div class="event-icon exam" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><polygon points="12,2 22,22 2,22"/></svg>
+      </div>
+      <div class="event-details">
+        <div class="event-title">Math Exam</div>
+        <div class="event-desc">Algebra and Geometry</div>
+        <div class="event-meta">Jan 22, 2021 · 60 Minutes</div>
+      </div>
+    </div>
+    <div class="view-all">
+      <a href="#" aria-label="View all upcoming events">View all upcoming →</a>
+    </div>
+  </div>
+</div>
