@@ -1,219 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>To-Do List</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOINITIAL - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-  <button id="sidebar-toggle" aria-label="Toggle Sidebar">&#9776;</button>
-  <div class="sidebar" id="sidebar" role="complementary">
-    <h2>Lecture<span style="color:#ff5722;">.</span></h2>
-    <div class="section-title">Institute of Sam</div>
-    <div style="font-size: 0.85rem; color: #999; margin-bottom: 1rem;">First year</div>
-    <nav>
-      <a href="#" class="active">
-        <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zm0-10v2h14V7H7z"/></svg>
-        Dashboard
-      </a>
-      <a href="#">
-        <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zm0-10v2h14V7H7z"/></svg>
-        Classes
-      </a>
-      <a href="#">
-        <svg viewBox="0 0 24 24"><path d="M21 6h-2v12h2V6zm-4 0h-2v12h2V6zm-4 0H9v12h2V6zm-4 0H5v12h2V6z"/></svg>
-        Discussions
-      </a>
-      <button id="calendar-toggle" aria-label="Toggle Calendar" title="Toggle Calendar" style="background:none; border:none; cursor:pointer; margin-top:1rem;">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="#ff5722" aria-hidden="true">
-          <path d="M7 11h10v2H7zM5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2zm0 2v2h14V6H5z"/>
-        </svg>
-      </button>
-    </nav>
-    <div class="section-title">Insight<span style="color:#ff5722;">.</span></div>
-    <nav>
-      <a href="#">
-        <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zm0-10v2h14V7H7z"/></svg>
-        Resources
-      </a>
-      <a href="#">
-        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
-        My Schedule
-      </a>
-    </nav>
-  </div>
-  <div class="main-content">
-    <div class="todo-header">
-      <h1>To-Do List</h1>
-      <button id="calendar-toggle" aria-label="Toggle Calendar" title="Toggle Calendar" class="calendar-toggle-btn">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="#ff5722" aria-hidden="true">
-          <path d="M7 11h10v2H7zM5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2zm0 2v2h14V6H5z"/>
-        </svg>
-      </button>
-    </div>
-    <button id="show-form-btn" aria-label="Add Task" title="Add Task">+</button>
-    <form id="todo-form" class="todo-form" style="display:none;">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="task-title">Task Title *</label>
-          <input type="text" id="task-title" name="task-title" placeholder="Enter task title" required />
-        </div>
-        <div class="form-group">
-          <label for="task-desc">Description</label>
-          <textarea id="task-desc" name="task-desc" placeholder="Enter task description (optional)"></textarea>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="task-subject">Category/Subject</label>
-          <select id="task-subject" name="task-subject" required>
-            <option value="" disabled selected>Select subject</option>
-            <option value="Math">Math</option>
-            <option value="Biology">Biology</option>
-            <option value="Psychology">Psychology</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Task Type</label>
-          <div class="radio-group">
-            <input type="radio" id="type-task" name="task-type" value="Task" checked />
-            <label for="type-task">Task</label>
-            <input type="radio" id="type-theory" name="task-type" value="Theory" />
-            <label for="type-theory">Theory</label>
-            <input type="radio" id="type-assignment" name="task-type" value="Assignment" />
-            <label for="type-assignment">Assignment</label>
-          </div>
-        </div>
-      </div>
-      <div class="form-row" style="align-items: flex-end; gap: 1rem;">
-        <div class="form-group" style="flex: 1;">
-          <label for="task-deadline">Deadline</label>
-          <input type="date" id="task-deadline" name="task-deadline" />
-        </div>
-        <button type="submit" class="add-button">Add Task</button>
-      </div>
-    </form>
-    <ul id="todo-list"></ul>
+    <div class="dashboard-container" id="dashboardContainer">
+        <aside class="sidebar-left" id="sidebarLeft">
+            <button class="sidebar-close-button" id="sidebarCloseButton" aria-label="Close Sidebar">&times;</button>
+            <div>
+                <div class="sidebar-logo">DOINITIAL</div>
+                <nav class="sidebar-nav">
+                    <ul>
+                        <li><a href="#" class="active" data-nav="overview">
+                            <i class='bx bx-grid-alt'></i>
+                            Overview
+                        </a></li>
+                        <li><a href="#" data-nav="notifications">
+                            <i class='bx bx-bell'></i>
+                            Notifications
+                        </a></li>
+                        <li><a href="#" data-nav="statistics">
+                            <i class='bx bx-bar-chart-alt-2'></i>
+                            Statistics
+                        </a></li>
+                        <li><a href="#" data-nav="chat">
+                            <i class='bx bx-message-dots'></i>
+                            Chat
+                        </a></li>
+                        <li><a href="#" data-nav="settings">
+                            <i class='bx bx-cog'></i>
+                            Settings
+                        </a></li>
+                        <li><a href="schedule.html" data-nav="my-schedule">
+                            <i class='bx bx-calendar'></i> My Schedule
+                        </a></li>
+                    </ul>
+                </nav>
+            </div>
+            <a href="#" class="sidebar-logout">
+                <i class='bx bx-log-out'></i>
+                Logout
+            </a>
+        </aside>
 
+        <main class="main-content">
+            <header class="header-top">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class='bx bx-menu'></i>
+                </button>
+                <div class="header-greeting">
+                    <h1>Hi, Welcome</h1>
+                    <p>Let's finish your task today!</p>
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search Task">
+                    <i class='bx bx-search'></i>
+                </div>
+                <div class="header-icons">
+                    <button class="icon-button">
+                        <i class='bx bx-bell'></i>
+                    </button>
+                    <div class="user-profile">
+                        <img src="https://randomuser.me/api/portraits/women/4.jpg" alt="User Avatar">
+                    </div>
+                </div>
+            </header>
 
-    <!-- Today Tasks Section -->
-    <section class="today-tasks">
-      <h2>Today Tasks<span class="highlight-dot">.</span></h2>
-      <div class="tabs" role="tablist">
-        <button class="tab active" role="tab" aria-selected="true" aria-controls="forum-tab" id="tab-forum">Forum</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="todo-tab" id="tab-todo">To-do</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="members-tab" id="tab-members">Members</button>
-      </div>
-      <div class="tab-panels">
-        <div id="forum-tab" class="tab-panel active" role="tabpanel" aria-labelledby="tab-forum" tabindex="0">
-          <ul class="task-list" id="forum-tasks">
-            <!-- Forum tasks will be rendered here -->
-          </ul>
-        </div>
-        <div id="todo-tab" class="tab-panel" role="tabpanel" aria-labelledby="tab-todo" tabindex="0">
-          <ul class="task-list" id="todo-tasks">
-            <!-- To-do tasks will be rendered here -->
-          </ul>
-        </div>
-        <div id="members-tab" class="tab-panel" role="tabpanel" aria-labelledby="tab-members" tabindex="0">
-          <p style="color:#666; font-style: italic;">No members to display.</p>
-        </div>
-      </div>
-    </section>
-  </div>
-  <div class="right-panel">
-    <div class="upcoming-events-panel" role="region" aria-label="Upcoming Events Calendar">
-      <div class="month-header">
-        <button aria-label="Previous Month" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-        </button>
-        <div id="month-year">January 2021</div>
-        <button aria-label="Next Month" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
-        </button>
-      </div>
-      <div class="weekdays" role="row">
-        <div role="columnheader">Mon</div>
-        <div role="columnheader">Tue</div>
-        <div role="columnheader">Wed</div>
-        <div role="columnheader">Thu</div>
-        <div role="columnheader">Fri</div>
-        <div role="columnheader">Sat</div>
-        <div role="columnheader">Sun</div>
-      </div>
-      <div class="dates" role="grid" aria-label="January 2021 Dates">
-        <div class="date empty" aria-hidden="true"></div>
-        <div class="date empty" aria-hidden="true"></div>
-        <div class="date" role="gridcell" tabindex="0">1</div>
-        <div class="date" role="gridcell" tabindex="0">2</div>
-        <div class="date" role="gridcell" tabindex="0">3</div>
-        <div class="date" role="gridcell" tabindex="0">4</div>
-        <div class="date" role="gridcell" tabindex="0">5</div>
-        <div class="date" role="gridcell" tabindex="0">6</div>
-        <div class="date" role="gridcell" tabindex="0">7</div>
-        <div class="date" role="gridcell" tabindex="0">8</div>
-        <div class="date" role="gridcell" tabindex="0">9</div>
-        <div class="date highlighted" role="gridcell" tabindex="0">10</div>
-        <div class="date" role="gridcell" tabindex="0">11</div>
-        <div class="date" role="gridcell" tabindex="0">12</div>
-        <div class="date" role="gridcell" tabindex="0">13</div>
-        <div class="date" role="gridcell" tabindex="0">14</div>
-        <div class="date" role="gridcell" tabindex="0">15</div>
-        <div class="date" role="gridcell" tabindex="0">16</div>
-        <div class="date" role="gridcell" tabindex="0">17</div>
-        <div class="date" role="gridcell" tabindex="0">18</div>
-        <div class="date highlighted" role="gridcell" tabindex="0">20</div>
-        <div class="date" role="gridcell" tabindex="0">21</div>
-        <div class="date highlighted" role="gridcell" tabindex="0">22</div>
-        <div class="date" role="gridcell" tabindex="0">23</div>
-        <div class="date" role="gridcell" tabindex="0">24</div>
-        <div class="date" role="gridcell" tabindex="0">25</div>
-        <div class="date" role="gridcell" tabindex="0">26</div>
-        <div class="date" role="gridcell" tabindex="0">27</div>
-        <div class="date" role="gridcell" tabindex="0">28</div>
-        <div class="date" role="gridcell" tabindex="0">29</div>
-        <div class="date" role="gridcell" tabindex="0">30</div>
-        <div class="date" role="gridcell" tabindex="0">31</div>
-      </div>
-      <div class="upcoming-events">
-        <h3>Upcoming Events</h3>
-        <div class="event-card">
-          <div class="event-icon psychology" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
-          </div>
-          <div class="event-details">
-            <div class="event-title">Psychology Exam</div>
-            <div class="event-desc">Chapter 5: Cognitive Psychology</div>
-            <div class="event-meta">Jan 10, 2021 · 45 Minutes</div>
-          </div>
-        </div>
-        <div class="event-card">
-          <div class="event-icon meeting" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
-          </div>
-          <div class="event-details">
-            <div class="event-title">Team Meeting</div>
-            <div class="event-desc">Project Kickoff</div>
-            <div class="event-meta">Jan 20, 2021 · 30 Minutes</div>
-          </div>
-        </div>
-        <div class="event-card">
-          <div class="event-icon exam" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><polygon points="12,2 22,22 2,22"/></svg>
-          </div>
-          <div class="event-details">
-            <div class="event-title">Math Exam</div>
-            <div class="event-desc">Algebra and Geometry</div>
-            <div class="event-meta">Jan 22, 2021 · 60 Minutes</div>
-          </div>
-        </div>
-        <div class="view-all">
-          <a href="#" aria-label="View all upcoming events">View all upcoming →</a>
-        </div>
-      </div>
+            <section class="project-summary-section">
+                <div class="section-header">
+                    <h2>Project Summary</h2>
+                </div>
+                <div class="project-cards-container" id="projectSummaryContainer">
+                </div>
+            </section>
+
+            <section class="tasks-section">
+                <div class="section-header">
+                    <h2>Tasks</h2>
+                    <div class="tasks-header-right">
+                        <button class="add-task-button" id="addTaskButton">
+                            <i class='bx bx-plus'></i>
+                            Add Task
+                        </button>
+                        <button class="icon-button"><i class='bx bx-chevron-left'></i></button>
+                        <button class="icon-button"><i class='bx bx-chevron-right'></i></button>
+                    </div>
+                </div>
+
+                <div class="tasks-controls">
+                    <div class="tasks-filters">
+                        <button class="active" data-filter="all">
+                            <i class='bx bx-category'></i>
+                            Category
+                        </button>
+                        <button data-filter="todo">
+                            <i class='bx bx-list-ul'></i>
+                            To-do
+                        </button>
+                        <select name="filter" id="taskStatusFilterSelect">
+                            <option value="">Filter</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                        <select>
+                            <option>Sort by priority</option>
+                            <option value="high">High</option>
+                            <option value="normal">Normal</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="tasks-list-container" id="tasksListContainer">
+                    <div class="task-column">
+                        <div class="task-column-header">
+                            <span class="status-dot in-progress"></span>
+                            <span>In Progress (<span id="inProgressCount">0</span>)</span>
+                            <i class='bx bx-chevron-down'></i>
+                        </div>
+                        <div id="inProgressTasks">
+                        </div>
+                    </div>
+                    <div class="task-column">
+                        <div class="task-column-header">
+                            <span class="status-dot completed"></span>
+                            <span>Completed (<span id="completedCount">0</span>)</span>
+                            <i class='bx bx-chevron-down'></i>
+                        </div>
+                        <div id="completedTasks">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <aside class="sidebar-right">
+            <section class="calendar-section">
+                <div class="calendar-header">
+                    <button class="nav-arrows" id="prevMonthBtn"><i class='bx bx-chevron-left'></i></button>
+                    <h3 id="currentMonthYear">October 2023</h3>
+                    <button class="nav-arrows" id="nextMonthBtn"><i class='bx bx-chevron-right'></i></button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <div class="calendar-weekday">Mon</div>
+                    <div class="calendar-weekday">Tue</div>
+                    <div class="calendar-weekday">Wed</div>
+                    <div class="calendar-weekday">Thu</div>
+                    <div class="calendar-weekday">Fri</div>
+                    <div class="calendar-weekday">Sat</div>
+                    <div class="calendar-weekday">Sun</div>
+                </div>
+            </section>
+
+            <section class="today-schedule-section">
+                <div class="section-header">
+                    <h2>Today Schedule</h2>
+                    <button class="icon-button"><i class='bx bx-dots-vertical-rounded'></i></button>
+                </div>
+                <div class="today-schedule-list" id="todayScheduleList">
+                </div>
+            </section>
+        </aside>
     </div>
-  </div>
-  <script src="script.js"></script>
+
+    <!-- START: MODAL ADD TASK -->
+    <div class="modal-overlay modal" id="addTaskModalOverlay" style="display: none;">
+        <div class="form-container">
+            <div class="form-header">
+                <h2 id="modalTitle">Add Task</h2>
+                <button class="close-button" id="addTaskModalClose" aria-label="Tutup">&times;</button>
+            </div>
+            <form class="form-body" id="addTaskForm">
+                <div class="form-group title-task-group">
+                    <label for="taskTitle" class="input-label">Title of Task</label>
+                    <div class="input-underline-wrapper">
+                        <input type="text" id="taskTitle" name="taskTitle" placeholder="" required />
+                        <span class="icon-edit-text"><i class="fas fa-pencil-alt"></i> Edit</span>
+                    </div>
+                </div>
+
+                <div class="form-group choose-team-group">
+                    <div class="icon-text-left" id="chooseTeamToggle">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Choose Team</span>
+                    </div>
+                    <div class="custom-dropdown-wrapper" id="teamDisplayDropdown">
+                        <select id="chooseTeamSelect" name="chooseTeam" required></select>
+                        <i class="fas fa-chevron-down select-arrow"></i>
+                    </div>
+
+                    <div class="team-input-area" style="display: none;">
+                        <input type="text" id="newTeamInput" placeholder="Enter new team name" />
+                        <button type="button" id="addTeamButtonModal">Add</button>
+                    </div>
+                </div>
+
+                <div class="form-group description-group">
+                    <div class="icon-text-left" id="addDescriptionToggle">
+                        <i class="fas fa-bars"></i>
+                        <span>Add Description</span>
+                    </div>
+                    <div class="description-input-area" style="display: none;">
+                        <textarea
+                            id="description"
+                            name="description"
+                            placeholder="Type your description here..."
+                        ></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group time-entry-full-group">
+                    <div class="time-entry-row">
+                        <div class="icon-text-left">
+                            <i class="fas fa-clock"></i>
+                            <span>Starts</span>
+                        </div>
+                        <div class="time-inputs">
+                            <input
+                                type="text"
+                                id="startDateDisplay"
+                                value="6 Oct 2023"
+                                readonly
+                                class="date-display"
+                            />
+                            <input type="time" id="startTime" name="startTime" value="21:00" required />
+                            <input
+                                type="date"
+                                id="startDate"
+                                name="startDate"
+                                value="2023-10-06"
+                                class="hidden-date-input"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="time-entry-row">
+                        <div class="icon-text-left">
+                            <i class="fas fa-clock"></i>
+                            <span>Ends</span>
+                        </div>
+                        <div class="time-inputs">
+                            <input
+                                type="text"
+                                id="endDateDisplay"
+                                value="6 Oct 2023"
+                                readonly
+                                class="date-display"
+                            />
+                            <input type="time" id="endTime" name="endTime" value="21:00" required />
+                            <input
+                                type="date"
+                                id="endDate"
+                                name="endDate"
+                                value="2023-10-06"
+                                class="hidden-date-input"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group assign-group">
+                    <div class="icon-text-left">
+                        <i class="fas fa-user-friends"></i>
+                        <span>Assign to</span>
+                    </div>
+                    <div class="styled-input-wrapper">
+                        <input type="text" id="assignTo" name="assignTo" placeholder="Enter name" required />
+                    </div>
+                </div>
+
+                <div class="form-group priority-group">
+                    <label for="prioritySelect" class="input-label">Priority</label>
+                    <select id="prioritySelect" name="prioritySelect" required>
+                        <option value="high">High</option>
+                        <option value="normal" selected>Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+
+                <div class="form-group attachment-group">
+                    <label for="attachmentInput" class="icon-text-left">
+                        <i class="fas fa-paperclip"></i>
+                        <span>Attachment</span>
+                    </label>
+                    <input type="file" id="attachmentInput" name="attachment" class="hidden-file-input" />
+                    <span id="attachmentFileName" class="attachment-file-display"></span>
+                </div>
+
+                <button type="submit" class="create-button" id="createTaskModalButton">Create</button>
+            </form>
+        </div>
+    </div>
+    <!-- END: MODAL ADD TASK -->
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!--<script src="script.js"></script>-->
+    <script src="script.js" defer></script>
 </body>
 </html>
