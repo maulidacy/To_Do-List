@@ -1,10 +1,10 @@
 :root {
     --primary-blue: #007bff;
     --secondary-blue: #00c6ff;
-    --primary-purple: #8A2BE2; /* Example purple */
-    --secondary-purple: #9370DB; /* Example lighter purple */
-    --primary-red: #FF6347; /* Example red */
-    --secondary-red: #FF4500; /* Example darker red */
+    --primary-purple: #8A2BE2;
+    --secondary-purple: #9370DB;
+    --primary-red: #FF6347;
+    --secondary-red: #FF4500;
     --background-light: #f4f7f6;
     --surface-white: #ffffff;
     --text-dark: #333;
@@ -12,14 +12,14 @@
     --border-light: #e0e0e0;
     --shadow-light: rgba(0, 0, 0, 0.08);
     --shadow-medium: rgba(0, 0, 0, 0.15);
-    --accent-orange: #FF8C00; /* For active/highlight */
+    --accent-orange: #FF8C00;
     --gradient-blue: linear-gradient(135deg, #00c6ff, #0072ff);
     --gradient-purple: linear-gradient(135deg, #a65ee0, #734af1);
     --gradient-red: linear-gradient(135deg, #ff8a65, #ff5722);
-    --primary-blue-light: #6A67F0; /* From previous modal CSS */
-    --primary-blue-dark: #5A57E0;   /* From previous modal CSS */
-    --input-bg: #FFFFFF; /* From previous modal CSS */
-    --primary-color: #6A67F0; /* Warna biru ungu */
+    --primary-blue-light: #6A67F0;
+    --primary-blue-dark: #5A57E0;
+    --input-bg: #FFFFFF;
+    --primary-color: #6A67F0;
     --text-dark: #333;
     --text-medium: #666;
     --text-light: #999;
@@ -27,89 +27,6 @@
     --bg-light: #F8F8F8;
     --bg-white: #FFFFFF;
 }
-
-/* New styles for add subtask input form */
-.new-subtask-input-container {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.new-subtask-input-field {
-    flex-grow: 1;
-    padding: 0.4rem 0.6rem;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    font-size: 0.85rem;
-    outline: none;
-    transition: border-color 0.2s ease;
-}
-
-.new-subtask-input-field:focus {
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 5px var(--primary-blue-light);
-}
-
-.new-subtask-add-button,
-.new-subtask-cancel-button {
-    padding: 0.3rem 0.8rem;
-    border-radius: 5px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    border: none;
-    transition: background-color 0.2s ease;
-    white-space: nowrap;
-}
-
-.new-subtask-add-button {
-    background-color: var(--primary-blue);
-    color: white;
-}
-
-.new-subtask-add-button:hover {
-    background-color: var(--primary-blue-dark);
-}
-
-.new-subtask-cancel-button {
-    background-color: var(--bg-light);
-    color: var(--text-dark);
-}
-
-.new-subtask-cancel-button:hover {
-    background-color: var(--border-light);
-}
-
-
-/* Team badge styles */
-.team-badge {
-    display: inline-block;
-    padding: 0.2em 0.6em;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: 12px;
-    color: white;
-    margin-right: 0.5rem;
-    text-transform: capitalize;
-    user-select: none;
-}
-
-/* Colors for known teams */
-.team-badge.design {
-    background-color: #6f42c1; /* purple */
-}
-
-.team-badge.development {
-    background-color: #28a745; /* green */
-}
-
-.team-badge.marketing {
-    background-color: #fd7e14; /* orange */
-}
-
-.team-badge.general {
-    background-color: #6c757d; /* gray */
-}
-
 
 * {
     box-sizing: border-box;
@@ -123,20 +40,27 @@ body {
     color: var(--text-dark);
     line-height: 1.6;
     font-size: 0.825rem;
-    display: flex; /* Main layout container will be flex */
+    display: flex;
     min-height: 100vh;
 }
 
-/* Main Dashboard Layout */
+/*=========================================
+        START: MAIN DASHBOARD LAYOUT      
+===========================================*/
 .dashboard-container {
     display: flex;
     width: 100%;
-    background-color: var(--background-light); /* Background for the whole dashboard area */
-    position: relative; /* Needed for sidebar overlay */
-    overflow-x: hidden; /* Prevent horizontal scroll when sidebar is off-screen */
+    background-color: var(--background-light);
+    position: relative;
+    overflow-x: hidden;
 }
+/*=========================================
+        END: MAIN DASHBOARD LAYOUT      
+===========================================*/
 
-/* Sidebar Left */
+/*=========================================
+            START: SIDEBAR LEFT      
+===========================================*/
 .sidebar-left {
     width: 230px;
     background-color: var(--surface-white);
@@ -144,32 +68,21 @@ body {
     box-shadow: 2px 0 10px var(--shadow-light);
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Pushes logout to bottom */
-    flex-shrink: 0; /* Prevent shrinking on larger screens */
+    justify-content: space-between;
+    flex-shrink: 0;
     transition: transform 0.3s ease-in-out;
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100vh; /* Full height */
-    z-index: 1000; /* Above other content */
+    position: relative;
+    z-index: auto;
+    color: var(--text-dark);
 }
 
-/* Responsive sidebar behavior */
-@media (max-width: 768px) {
-    .sidebar-left {
-        transform: translateX(-100%); /* Hide sidebar by default */
-    }
-
-    .dashboard-container.sidebar-open .sidebar-left {
-        transform: translateX(0); /* Show sidebar when open */
-    }
-
-    /* Overlay to cover content when sidebar is open */
-    .sidebar-overlay {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
+/* Overlay to cover content when sidebar is open */
+.sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
 
 /* Show sidebar close button on all screen sizes */
 .sidebar-close-button {
@@ -253,54 +166,45 @@ body {
 /* Boxicons styling in sidebar */
 .sidebar-nav ul li a .bx {
     margin-right: 0.8rem;
-    font-size: 18px; /* Adjust Boxicon size */
+    font-size: 18px;
     color: currentColor; /* Inherit color from parent link */
 }
+/*=========================================
+            END: SIDEBAR LEFT      
+===========================================*/
 
-.sidebar-logout {
-    margin-top: auto; /* Pushes logout to the bottom */
-    text-decoration: none;
-    color: var(--text-light);
-    font-weight: 500;
-    padding: 0.6rem 0.8rem;
-    font-size: 0.85rem;
+/*=========================================
+           START: MAIN CONTENT AREA      
+===========================================*/
+.main-content {
+    flex-grow: 1;
+    padding: 1.5rem;
     display: flex;
-    align-items: center;
-    border-radius: 6px;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.sidebar-logout:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 0;
+    background-color: var(--background-light);
     color: var(--text-dark);
-}
-
-.sidebar-logout .bx {
-    margin-right: 1rem;
-    font-size: 20px;
-    color: currentColor;
 }
 
 /* Header Top */
 .header-top {
-    
     padding: 0.20rem 0.20rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-   
-    z-index: 10; /* Ensure it stays on top */
+    z-index: 10;
     position: sticky;
     top: 0;
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0;
 }
 
 /* Mobile menu toggle button */
 .mobile-menu-toggle {
-    display: none; /* Hidden by default on desktop */
+    display: none;
     background: none;
     border: none;
-    font-size: 24px; /* Boxicon size */
+    font-size: 24px;
     color: var(--text-dark);
     cursor: pointer;
     padding: 0.4rem;
@@ -314,7 +218,7 @@ body {
 
 .search-bar {
     position: relative;
-    flex-grow: 1; /* Allows search bar to take available space */
+    flex-grow: 1;
     max-width: 350px;
     margin: 0 1.5rem;
 }
@@ -339,7 +243,7 @@ body {
     left: 0.8rem;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 16px; /* Boxicon size */
+    font-size: 16px;
     color: var(--text-light);
 }
 
@@ -348,7 +252,6 @@ body {
     align-items: center;
     gap: 1rem;
 }
-
 .header-icons .icon-button {
     background: none;
     border: none;
@@ -364,7 +267,7 @@ body {
 
 /* Boxicon for header icons */
 .header-icons .icon-button .bx {
-    font-size: 20px; /* Boxicon size */
+    font-size: 20px;
     color: var(--text-light);
 }
 
@@ -382,19 +285,9 @@ body {
     border: 2px solid var(--primary-blue);
 }
 
-/* Main Content Area */
-.main-content {
-    flex-grow: 1;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    min-width: 0; /* Allow content to shrink correctly */
-}
-
-/* Project Summary Cards */
-.project-summary-section {
-    padding-bottom: 0.8rem; /* Space for horizontal scrollbar */
+ /* Project Summary*/
+ .project-summary-section {
+    padding-bottom: 0.8rem;
 }
 
 .section-header {
@@ -415,7 +308,7 @@ body {
 }
 
 /* Hide the two icon buttons in Project Summary nav-arrows */
-.section-header .nav-arrows > button {
+.section-header .nav-arrows>button {
     display: none;
 }
 
@@ -438,16 +331,16 @@ body {
 
 /* Boxicon for project navigation arrows */
 .section-header .nav-arrows .bx {
-    font-size: 14px; /* Boxicon size */
+    font-size: 14px;
     color: var(--text-light);
 }
 
 .project-cards-container {
     display: flex;
     flex-wrap: nowrap;
-    overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-x: auto;
     gap: 1rem;
-    padding-bottom: 0.8rem; /* Space for potential scrollbar */
+    padding-bottom: 0.8rem;
 }
 
 /* Custom scrollbar for Webkit browsers */
@@ -466,10 +359,11 @@ body {
     border: 1.5px solid var(--background-light);
 }
 
+
 /* Project Summary Cards */
 .project-card {
-    flex: 0 0 300px; /* DIUBAH: Lebar default kartu proyek, sedikit lebih lebar */
-    min-width: 280px; /* DIUBAH: Minimum width */
+    flex: 0 0 300px;
+    min-width: 280px;
     border-radius: 10px;
     color: white;
     padding: 1.2rem;
@@ -485,10 +379,9 @@ body {
 }
 
 .project-card.blue {
-    background: var(--gradient-blue); /* Solid blue color for full opacity */
+    background: var(--gradient-blue);
     color: white;
 }
-
 .project-card.purple {
     background: var(--gradient-purple);
 }
@@ -527,14 +420,14 @@ body {
 /* Boxicon for project card header dots */
 .project-card-header .bx {
     font-size: 20px;
-    fill: white; /* Make sure it's visible on dark background */
+    fill: white;
 }
 
 .project-card p {
     font-size: 0.85rem;
     opacity: 0.9;
     margin-bottom: 0.8rem;
-    flex-grow: 1; /* Allow description to take space */
+    flex-grow: 1;
 }
 
 .project-card-footer {
@@ -554,9 +447,9 @@ body {
     width: 100%;
     height: 7px;
     border-radius: 3.5px;
-    appearance: none; /* Remove default browser styling */
+    appearance: none;
     -webkit-appearance: none;
-    background-color: rgba(255, 255, 255, 0.3); /* Track color */
+    background-color: rgba(255, 255, 255, 0.3);
 }
 
 /* Progress bar fill color (Webkit browsers) */
@@ -566,9 +459,9 @@ body {
 }
 
 .project-card-footer progress::-webkit-progress-value {
-    background-color: white; /* Fill color */
+    background-color: white;
     border-radius: 3.5px;
-    transition: width 0.5s ease-in-out; /* Animation for progress */
+    transition: width 0.5s ease-in-out;
 }
 
 /* Progress bar fill color (Firefox) */
@@ -587,7 +480,7 @@ body {
     height: 28px;
     border-radius: 50%;
     border: 2px solid white;
-    margin-left: -7px; /* Overlap effect */
+    margin-left: -7px;
     transition: transform 0.2s ease;
     cursor: pointer;
 }
@@ -598,7 +491,7 @@ body {
 
 .avatar-group img:hover {
     transform: translateY(-2px);
-    z-index: 1; /* Bring hovered avatar to front */
+    z-index: 1;
 }
 
 /* Tasks Section */
@@ -610,7 +503,7 @@ body {
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    justify-content: flex-end; /* Align children to right */
+    justify-content: flex-end;
 }
 
 .add-task-button {
@@ -639,7 +532,7 @@ body {
 }
 
 /* Hide the two icon buttons next to Add Task button */
-.tasks-header-right > button.icon-button {
+.tasks-header-right>button.icon-button {
     display: none;
 }
 
@@ -717,7 +610,8 @@ body {
     justify-content: flex-end;
 }
 
-.tasks-filters button, .tasks-filters select {
+.tasks-filters button,
+.tasks-filters select {
     background: var(--surface-white);
     border: 1px solid var(--border-light);
     border-radius: 6px;
@@ -731,7 +625,8 @@ body {
     gap: 0.4rem;
 }
 
-.tasks-filters button:hover, .tasks-filters select:hover {
+.tasks-filters button:hover,
+.tasks-filters select:hover {
     border-color: var(--primary-blue);
 }
 
@@ -827,15 +722,16 @@ body {
     background-color: #ffcccc; /* Light red */
     color: #cc0000;
 }
+
 .task-card-priority.normal {
     background-color: #ccedff; /* Light blue */
     color: #007bff;
 }
+
 .task-card-priority.low {
     background-color: #d4edda; /* Light green */
     color: #28a745;
 }
-
 
 .task-card h4 {
     font-size: 0.95rem;
@@ -864,6 +760,7 @@ body {
     color: var(--primary-blue);
     border-color: var(--primary-blue);
 }
+
 .task-status-button.in-process:hover {
     background-color: var(--primary-blue);
     color: white;
@@ -873,11 +770,11 @@ body {
     color: #28a745;
     border-color: #28a745;
 }
+
 .task-status-button.completed:hover {
     background-color: #28a745;
     color: white;
 }
-
 
 .task-card-subtasks {
     margin-top: 0.4rem;
@@ -915,6 +812,7 @@ body {
     background-color: var(--primary-blue);
     border-color: var(--primary-blue);
 }
+
 .task-card-subtasks input[type="checkbox"]:checked::after {
     content: '';
     position: absolute;
@@ -926,8 +824,6 @@ body {
     border-width: 0 1.5px 1.5px 0;
     transform: rotate(45deg);
 }
-
-
 
 .task-card-subtasks .add-subtask-button {
     background: none;
@@ -941,6 +837,7 @@ body {
     gap: 0.15rem;
     margin-top: 0.4rem;
 }
+
 /* Boxicon for add subtask button */
 .task-card-subtasks .add-subtask-button .bx {
     font-size: 13px;
@@ -983,6 +880,7 @@ body {
 .task-card-progress.completed progress::-webkit-progress-value {
     background-color: #28a745; /* Green for completed progress */
 }
+
 .task-card-progress.completed progress::-moz-progress-bar {
     background-color: #28a745;
 }
@@ -991,7 +889,6 @@ body {
     background-color: var(--primary-blue);
     border-radius: 3px;
 }
-
 
 .task-card-footer-meta {
     display: flex;
@@ -1014,21 +911,11 @@ body {
     font-size: 0.75rem;
     color: var(--text-light);
 }
+
 /* Boxicons for footer meta */
 .task-card-footer-meta .bx {
     font-size: 14px;
     color: var(--text-light);
-}
-
-
-/* Sidebar Right (Calendar & Today Schedule) */
-.sidebar-right {
-    width: 340px; /* Adjust width as per image */
-    padding: 1.5rem 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    flex-shrink: 0; /* Prevent it from shrinking too much */
 }
 
 /* Task card menu (three dots) */
@@ -1065,7 +952,7 @@ body {
     background-color: white; /* Warna latar belakang dropdown */
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     flex-direction: column; /* Atur item agar bertumpuk */
     z-index: 10; /* Pastikan di atas elemen lain */
     min-width: 120px;
@@ -1090,6 +977,23 @@ body {
 /* Pastikan task-card memiliki positioning agar absolute positioning dropdown bekerja relatif terhadapnya */
 .task-card {
     position: relative;
+}
+/*=========================================
+           END: MAIN CONTENT AREA      
+===========================================*/
+
+/*=========================================
+            START: SIDEBAR RIGHT     
+===========================================*/
+.sidebar-right {
+    width: 340px;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex-shrink: 0;
+    background-color: var(--surface-white);
+    color: var(--text-dark);
 }
 
 /* Calendar */
@@ -1124,15 +1028,16 @@ body {
     justify-content: center;
     transition: background-color 0.2s ease;
 }
+
 .calendar-header .nav-arrows button:hover {
     background-color: var(--background-light);
 }
+
 /* Boxicon for calendar navigation arrows */
 .calendar-header .nav-arrows .bx {
     font-size: 14px;
     color: var(--text-light);
 }
-
 
 .calendar-grid {
     display: grid;
@@ -1211,7 +1116,7 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 0.8rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
 }
 
 .schedule-item-indicator {
@@ -1225,9 +1130,11 @@ body {
 .schedule-item-indicator.green {
     background-color: #28a745;
 }
+
 .schedule-item-indicator.blue {
     background-color: var(--primary-blue);
 }
+
 .schedule-item-indicator.red {
     background-color: var(--primary-red);
 }
@@ -1294,6 +1201,7 @@ body {
     background-color: var(--primary-blue); /* Example color for checked */
     border-color: var(--primary-blue);
 }
+
 .schedule-item-actions .checkbox-container.checked .bx {
     display: block;
 }
@@ -1301,350 +1209,19 @@ body {
 .schedule-item-actions .avatar-group {
     margin-top: auto; /* Push avatars to bottom */
 }
+
 .schedule-item-actions .avatar-group img {
     width: 22px;
     height: 22px;
     border: 1px solid var(--background-light);
 }
+/*=========================================
+            END: SIDEBAR RIGHT     
+===========================================*/
 
-
-
-/* Sidebar Overlay for Mobile */
-.sidebar-overlay {
-    display: none; /* Hidden by default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 99; /* Below modal, above main content */
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-/* 1. Status Dots */
-.status-dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-right: 6px;
-}
-
-.status-dot.in-progress {
-  background-color: #007bff; /* blue */
-}
-
-.status-dot.completed {
-  background-color: #28a745; /* green */
-}
-
-/* 2. Progress Bar */
-.progress-bar-container {
-  width: 100%;
-  height: 6px;
-  background-color: #e0e0e0;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-top: 6px;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background-color: #007bff; /* blue progress */
-  transition: width 0.3s ease-in-out;
-}
-
-/* 3. Priority Labels */
-.priority-label {
-  padding: 4px 10px;
-  font-size: 12px;
-  border-radius: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: white;
-}
-
-.priority-label.high {
-  background-color: #e74c3c; /* red */
-}
-
-.priority-label.medium {
-  background-color: #f1c40f; /* yellow */
-}
-
-.priority-label.low {
-  background-color: #2ecc71; /* green */
-}
-
-/* 4. Meta Icons */
-.task-meta-icons {
-  font-size: 14px;
-  color: #888;
-  display: flex;
-  gap: 10px;
-  margin-top: 6px;
-}
-
-.task-meta-icons i {
-  vertical-align: middle;
-}
-
-/* 5. Avatar Group */
-.avatar-group {
-  display: flex;
-  margin-top: 10px;
-}
-
-.avatar-group img {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  box-shadow: 0 0 0 1px #ddd;
-  margin-left: -8px;
-}
-
-/* 6. Task Card Hover Animation */
-.task-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border-radius: 12px;
-  padding: 16px;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin-bottom: 20px;
-}
-
-.task-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-}
-
-/* Responsive Design */
-@media (max-width: 1200px) {
-    .sidebar-right {
-        width: 320px; /* Adjust for slightly smaller screens */
-        padding: 1.2rem 0.8rem;
-    }
-    .project-card {
-        flex: 0 0 260px;
-        min-width: 260px;
-    }
-    .main-content {
-        padding: 1.2rem;
-    }
-}
-
-@media (max-width: 992px) {
-    .header-top {
-        padding: 0.8rem 1.2rem;
-    }
-    .header-greeting h1 {
-        font-size: 1.2rem;
-    }
-    .search-bar {
-        margin: 0 0.8rem;
-        max-width: 220px; /* Adjust search bar width */
-    }
-    .project-card {
-        flex: 0 0 240px;
-        min-width: 240px;
-    }
-    .tasks-list-container {
-        flex-direction: column; /* Stack task columns */
-    }
-    .task-column {
-        flex: none; /* Remove flex growing */
-        width: 100%; /* Full width */
-    }
-    .tasks-filters {
-        justify-content: flex-start; /* Align filters to left */
-        gap: 0.5rem; /* Smaller gap */
-    }
-    .tasks-filters button, .tasks-filters select {
-        padding: 0.4rem 0.7rem;
-        font-size: 0.8rem;
-    }
-    .form-group-grid {
-        flex-direction: column; /* Stack form grid items */
-    }
-}
-
-@media (max-width: 768px) {
-    .dashboard-container {
-        flex-direction: column; /* Stack sidebars and main content */
-    }
-
-    .sidebar-left {
-        position: fixed; /* Fix sidebar position for mobile */
-        left: 0;
-        top: 0;
-        width: 220px;
-        height: 100%; /* Full height */
-        transform: translateX(-100%); /* Hide by default */
-        transition: transform 0.3s ease-in-out;
-        z-index: 100; /* Ensure it's above other content */
-        box-shadow: 4px 0 15px rgba(0,0,0,0.2);
-    }
-
-    /* Show sidebar when dashboard-container has sidebar-open class */
-    .dashboard-container.sidebar-open .sidebar-left {
-        transform: translateX(0);
-    }
-    /* Show overlay when sidebar is open */
-    .dashboard-container.sidebar-open .sidebar-overlay {
-        display: block;
-        opacity: 1;
-    }
-
-    .mobile-menu-toggle {
-        display: flex; /* Show hamburger menu on mobile */
-        margin-right: 1rem; /* Space between toggle and greeting */
-        font-size: 22px;
-        padding: 0.3rem;
-    }
-
-    .header-top {
-        flex-wrap: wrap; /* Allow items to wrap */
-        gap: 0.4rem;
-        padding: 0.6rem 0.8rem;
-        justify-content: flex-start; /* Align items to start */
-    }
-    .header-greeting {
-        width: auto; /* Let it take natural width */
-        text-align: left;
-        flex-grow: 1;
-    }
-    .header-greeting h1 {
-        font-size: 1.1rem;
-    }
-    .header-greeting p {
-        font-size: 0.75rem;
-    }
-    .search-bar {
-        order: 4; /* Move search bar to bottom row */
-        width: 100%;
-        max-width: 100%;
-        margin: 0.5rem 0 0 0;
-    }
-    .search-bar input {
-        padding: 0.6rem 1rem 0.6rem 2rem;
-        font-size: 0.8rem; 
-    }
-    .search-bar .bx {
-        font-size: 14px;
-        left: 0.7rem;
-    }
-    .header-icons {
-        order: 2; /* Keep icons next to user profile */
-        margin-left: auto;
-        gap: 0.8rem;
-    }
-    .user-profile {
-        order: 3;
-    }
-
-    .main-content {
-        padding: 1rem;
-    }
-
-    .project-cards-container {
-        flex-direction: column; /* Stack project cards */
-        align-items: center;
-        padding-bottom: 0; /* No need for horizontal scroll on stacked cards */
-    }
-    .project-card {
-        flex: none;
-        width: 100%; /* Full width for mobile */
-        max-width: 450px; /* Limit max width on larger mobile devices */
-        height: auto; /* Allow height to adjust */
-    }
-    .project-card p {
-        margin-bottom: 0.5rem; /* Reduce margin */
-    }
-
-    .tasks-controls {
-        flex-direction: column; /* Stack tabs and filters */
-        align-items: flex-start;
-        gap: 1rem;
-    }
-    .tasks-filters {
-        width: 100%; /* Make filters take full width */
-        justify-content: flex-start;
-    }
-    .tasks-tabs {
-        width: 100%;
-        justify-content: space-around; /* Distribute tabs */
-        gap: 0.5rem;
-    }
-    .tasks-tabs button {
-        flex: 1; /* Make buttons take equal width */
-        text-align: center;
-    }
-
-
-    .sidebar-right {
-        width: 100%;
-        padding: 1rem;
-        box-shadow: 0 -2px 10px var(--shadow-light); /* Shadow on top when stacked */
-        order: 4; /* Place it after main content */
-    }
-
-    .calendar-grid {
-        gap: 0.2rem; /* Reduce gap for smaller screens */
-    }
-    .calendar-day {
-        padding: 0.3rem 0.15rem;
-        font-size: 0.8rem;
-    }
-
-    .schedule-item {
-        flex-wrap: wrap; /* Allow schedule items to wrap */
-        padding: 0.8rem;
-    }
-    .schedule-item-actions {
-        flex-direction: row; /* Make actions horizontal on mobile */
-        margin-top: 0.5rem;
-        width: 100%;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 1rem;
-        font-size: 11px;
-    }
-    .schedule-item-actions .avatar-group {
-        margin-top: 0;
-    }
-}
-
-/* Modal specific responsive adjustments */
-@media (max-width: 500px) {
-    .modal-content {
-        padding: 1.5rem;
-        width: 95%;
-    }
-    .close-button {
-        font-size: 1.8rem;
-        top: 5px;
-        right: 15px;
-    }
-    .form-group-grid {
-        flex-direction: column;
-        gap: 0.8rem;
-    }
-    .form-buttons {
-        flex-direction: column;
-        gap: 0.8rem;
-    }
-    .form-buttons button {
-        width: 100%;
-    }
-    .description-input-area textarea {
-        min-height: 60px; /* Lebih kecil di mobile */
-        padding: 8px 10px;
-    }
-}
-
+/*=========================================
+            START: MODAL OVERLAY     
+===========================================*/
 /* Modal Overlay */
 .modal-overlay {
     display: none;
@@ -1662,7 +1239,7 @@ body {
     box-sizing: border-box;
 }
 
-.form-container { 
+.form-container {
     background-color: var(--surface-white);
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -1673,7 +1250,7 @@ body {
     flex-direction: column;
 }
 
-.form-header { 
+.form-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1689,7 +1266,7 @@ body {
     color: var(--text-dark);
 }
 
-.close-button { 
+.close-button {
     background: none;
     border: none;
     font-size: 1.8rem;
@@ -1700,219 +1277,214 @@ body {
     transition: color 0.2s ease;
 }
 
-        .close-button:hover {
-            color: var(--text-medium);
-        }
+.close-button:hover {
+    color: var(--text-medium);
+}
 
-        .form-body {
-            padding: 20px 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px; /* Jarak antar grup form */
-        }
+.form-body {
+    padding: 20px 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px; /* Jarak antar grup form */
+}
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            margin-bottom: 0 !important;
-        }
+.form-group {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-bottom: 0 !important;
+}
 
-        /* Common styles for sections with icon on left and text/dropdown/input on right */
-        .icon-text-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.8rem;
-            color: var(--text-medium);
-            white-space: nowrap;
-        }
+/* --- TITLE OF TASK GROUP --- */
+.title-task-group .input-label {
+    font-size: 0.8rem;
+    color: var(--text-medium);
+    margin-bottom: 5px;
+}
 
-        .icon-text-left .fas {
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
+.input-underline-wrapper {
+    position: relative;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+}
 
-        /* Styles for custom select/dropdown appearance - still needed for Choose Team */
-        .custom-dropdown-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 6px 10px;
-            background-color: var(--bg-white);
-            cursor: pointer;
-            width: fit-content;
-            min-width: 100px;
-        }
+.input-underline-wrapper input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 0;
+    color: var(--text-dark);
+    background-color: transparent;
+}
 
-        .custom-dropdown-wrapper select {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background: transparent;
-            border: none;
-            outline: none;
-            font-size: 0.8rem;
-            color: var(--text-dark);
-            padding-right: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
+.icon-edit-text {
+    color: var(--primary-color);
+    font-size: 0.75rem;
+    margin-left: auto;
+    cursor: pointer;
+    font-weight: 500;
+    white-space: nowrap;
+}
 
-        .custom-dropdown-wrapper .select-arrow {
-            color: var(--text-light);
-            font-size: 0.7rem;
-            margin-left: auto;
-            pointer-events: none;
-        }
+.icon-edit-text .fas {
+    margin-right: 5px;
+    font-size: 0.7rem;
+}
 
-        /* Styles for generic text input that looks like a dropdown/box */
-        .styled-input-wrapper {
-            display: flex;
-            align-items: center;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 6px 10px;
-            background-color: var(--bg-white);
-            flex-grow: 1;
-            /* max-width: 180px; */ /* Removed fixed max-width for better responsiveness */
-        }
+/* --- CHOOSE TEAM GROUP --- */
+.choose-team-group {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -5px;
+    flex-wrap: wrap; /* Izinkan wrap jika layar sangat kecil */
+}
 
-        .styled-input-wrapper input[type="text"] {
-            border: none;
-            outline: none;
-            width: 100%;
-            font-size: 0.8rem;
-            color: var(--text-dark);
-            background-color: transparent;
-            padding: 0;
-        }
+.choose-team-group .icon-text-left {
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
 
+.choose-team-group .icon-text-left:hover {
+    background-color: var(--bg-light);
+    border-color: #C0C0C0;
+}
 
-        /* --- TITLE OF TASK GROUP --- */
-        .title-task-group .input-label {
-            font-size: 0.8rem;
-            color: var(--text-medium);
-            margin-bottom: 5px;
-        }
+.choose-team-group .icon-text-left .fas {
+    color: var(--primary-color);
+    font-size: 0.85rem;
+}
 
-        .input-underline-wrapper {
-            position: relative;
-            padding-bottom: 5px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-        }
+/* Common styles for sections with icon on left and text/dropdown/input on right */
+.icon-text-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: var(--text-medium);
+    white-space: nowrap;
+}
 
-        .input-underline-wrapper input {
-            border: none;
-            outline: none;
-            width: 100%;
-            font-size: 0.9rem;
-            padding: 0;
-            color: var(--text-dark);
-            background-color: transparent;
-        }
+.icon-text-left .fas {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
 
-        .icon-edit-text {
-            color: var(--primary-color);
-            font-size: 0.75rem;
-            margin-left: auto;
-            cursor: pointer;
-            font-weight: 500;
-            white-space: nowrap;
-        }
+/* Styles for custom select/dropdown appearance - still needed for Choose Team */
+.custom-dropdown-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px 10px;
+    background-color: var(--bg-white);
+    cursor: pointer;
+    width: fit-content;
+    min-width: 100px;
+}
 
-        .icon-edit-text .fas {
-            margin-right: 5px;
-            font-size: 0.7rem;
-        }
+.custom-dropdown-wrapper select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    padding-right: 5px;
+    cursor: pointer;
+    width: 100%;
+}
 
+.custom-dropdown-wrapper .select-arrow {
+    color: var(--text-light);
+    font-size: 0.7rem;
+    margin-left: auto;
+    pointer-events: none;
+}
 
-        /* --- CHOOSE TEAM GROUP --- */
-        .choose-team-group {
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: -5px;
-            flex-wrap: wrap; /* Izinkan wrap jika layar sangat kecil */
-        }
+/* Styles for generic text input that looks like a dropdown/box */
+.styled-input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px 10px;
+    background-color: var(--bg-white);
+    flex-grow: 1;
+}
 
-        .choose-team-group .icon-text-left {
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 8px 15px;
-            cursor: pointer;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-        }
+.styled-input-wrapper input[type="text"] {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    background-color: transparent;
+    padding: 0;
+}
 
-        .choose-team-group .icon-text-left:hover {
-            background-color: var(--bg-light);
-            border-color: #C0C0C0;
-        }
+/* Team input area specific styles */
+.team-input-area {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    width: 100%; /* Pastikan 100% lebar saat aktif */
+}
 
-        .choose-team-group .icon-text-left .fas {
-            color: var(--primary-color);
-            font-size: 0.85rem;
-        }
+.team-input-area input[type="text"] {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    outline: none;
+}
 
-        /* Team input area specific styles */
-        .team-input-area {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-top: 10px;
-            width: 100%; /* Pastikan 100% lebar saat aktif */
-        }
+.team-input-area button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
 
-        .team-input-area input[type="text"] {
-            flex-grow: 1;
-            padding: 8px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 0.8rem;
-            outline: none;
-        }
+.team-input-area button:hover {
+    background-color: #5A57E0;
+}
 
-        .team-input-area button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
+/* --- ADD DESCRIPTION GROUP --- */
+/* Styles for description input area */
+.description-group .icon-text-left {
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
 
-        .team-input-area button:hover {
-            background-color: #5A57E0;
-        }
+.description-group .icon-text-left:hover {
+    color: var(--primary-color);
+}
 
+.description-group .icon-text-left:hover .fas {
+    color: var(--primary-color);
+}
 
-        /* --- ADD DESCRIPTION GROUP --- */
-        /* Styles for description input area */
+.description-input-area {
+    margin-top: 10px;
+}
 
-        .description-group .icon-text-left {
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-
-        .description-group .icon-text-left:hover {
-            color: var(--primary-color);
-        }
-
-        .description-group .icon-text-left:hover .fas {
-            color: var(--primary-color);
-        }
-
-        .description-input-area {
-            margin-top: 10px;
-        }
-
-        /* Styles for description input area */
+/* Styles for description input area */
 .description-input-area textarea {
     width: 100%;
     min-height: 80px; /* Cukup tinggi untuk deskripsi */
@@ -1931,309 +1503,353 @@ body {
     border-color: var(--primary-blue-light);
 }
 
-        /* --- TIME ENTRY GROUP (Starts & Ends) --- */
-        .time-entry-full-group {
-            gap: 15px;
-        }
-
-        .time-entry-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            flex-wrap: wrap; /* Izinkan wrap jika layar sangat kecil */
-            gap: 10px; /* Jarak antar elemen jika wrap */
-        }
-
-        .time-entry-row .icon-text-left {
-            flex-basis: 100px; /* Lebar minimum untuk label ikon */
-            flex-grow: 1; /* Biarkan tumbuh */
-            margin-right: 0; /* Hilangkan margin kanan */
-        }
-
-        .time-inputs {
-            display: flex;
-            gap: 10px;
-            flex-grow: 2; /* Biarkan grup input tumbuh lebih banyak */
-            justify-content: flex-end; /* Dorong input ke kanan */
-            flex-wrap: wrap; /* Izinkan wrap */
-        }
-
-        .time-inputs .date-display {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 0.8rem;
-            color: var(--text-dark);
-            outline: none;
-            background-color: var(--bg-white);
-            transition: border-color 0.2s ease;
-            width: 95px; /* Base width */
-            text-align: center;
-            cursor: pointer;
-            box-sizing: border-box;
-        }
-
-        .time-inputs input[type="time"] {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 0.8rem;
-            color: var(--text-dark);
-            outline: none;
-            background-color: var(--bg-white);
-            transition: border-color 0.2s ease;
-            width: 95px; /* Base width */
-            text-align: center;
-            cursor: pointer;
-            box-sizing: border-box;
-        }
-
-        .time-inputs .date-display:focus,
-        .time-inputs input[type="time"]:focus {
-            border-color: var(--primary-color);
-        }
-
-        .hidden-date-input {
-            display: none;
-        }
-
-        input[type="time"]::-webkit-inner-spin-button,
-        input[type="time"]::-webkit-clear-button {
-            display: none;
-            -webkit-appearance: none;
-        }
-        input[type="time"] {
-            -moz-appearance: textfield;
-        }
-
-        /* --- ASSIGN GROUP & ATTACHMENT GROUP --- */
-        .assign-group,
-        .attachment-group {
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap; /* Izinkan wrap */
-            gap: 10px; /* Jarak antar elemen jika wrap */
-        }
-
-        .attachment-group {
-            justify-content: flex-start;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-
-        .attachment-group:hover .icon-text-left {
-            color: var(--primary-color);
-        }
-        .attachment-group:hover .icon-text-left .fas {
-            color: var(--primary-color);
-        }
-
-        .attachment-file-display {
-            font-size: 0.75rem;
-            color: var(--text-medium);
-            margin-left: 10px;
-            max-width: calc(100% - 150px); /* Adjust max-width dynamically */
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .hidden-file-input {
-            display: none;
-        }
-
-        /* --- priority --- */
-        .priority-group select {
-        display: flex;
-            align-items: center;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 6px 10px;
-            background-color: var(--bg-white);
-            color: var(--text-medium);
-            flex-grow: 1;
-            margin-top: 0.70rem;
-        }
-
-
-        /* --- CREATE BUTTON --- */
-        .create-button {
-            background-color: var(--primary-color);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 20px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            width: 100%;
-            margin-top: 15px;
-        }
-
-        .create-button:hover {
-            background-color: #5A57E0;
-        }
-
-        /* ========================================= */
-        /* MEDIA QUERIES UNTUK RESPONSIVITAS */
-        /* ========================================= */
-
-        @media (max-width: 480px) { /* Untuk layar smartphone portrait */
-            body {
-                font-size: 0.8rem; /* Sedikit lebih kecil untuk font dasar */
-            }
-            .form-container {
-                border-radius: 8px; /* Sudut sedikit lebih kecil */
-            }
-            .form-header {
-                padding: 12px 15px;
-            }
-            .form-header h2 {
-                font-size: 0.9rem;
-            }
-            .close-button {
-                font-size: 1.6rem;
-            }
-            .form-body {
-                padding: 15px 18px; /* Kurangi padding */
-                gap: 15px; /* Kurangi jarak antar grup */
-            }
-
-            .icon-text-left,
-            .custom-dropdown-wrapper select,
-            .styled-input-wrapper input {
-                font-size: 0.75rem; /* Font untuk teks ikon dan input */
-            }
-
-            .icon-text-left .fas {
-                font-size: 0.8rem; /* Ukuran ikon */
-            }
-
-            .title-task-group .input-label {
-                font-size: 0.75rem;
-            }
-            .input-underline-wrapper input {
-                font-size: 0.85rem;
-            }
-            .icon-edit-text {
-                font-size: 0.7rem;
-            }
-
-            .choose-team-group .icon-text-left {
-                padding: 6px 12px; /* Padding tombol "Choose Team" */
-                font-size: 0.7rem; /* Font tombol */
-                flex-basis: auto; /* Biarkan lebar menyesuaikan konten */
-            }
-
-            .time-entry-row {
-                flex-direction: column; /* Ubah ke kolom untuk baris waktu */
-                align-items: flex-start; /* Sejajarkan ke kiri */
-                gap: 5px; /* Kurangi jarak */
-            }
-            .time-inputs {
-                justify-content: flex-start; /* Sejajarkan input waktu ke kiri */
-                width: 100%; /* Ambil seluruh lebar */
-            }
-            .time-inputs .date-display,
-            .time-inputs input[type="time"] {
-                width: 100px; /* Tetapkan lebar tetap agar tidak terlalu kecil */
-                padding: 6px 10px;
-                font-size: 0.75rem;
-            }
-            .styled-input-wrapper {
-                width: 100%; /* Assign to input mengambil lebar penuh */
-                max-width: none; /* Hapus batasan max-width */
-            }
-            .attachment-file-display {
-                margin-left: 5px;
-                font-size: 0.7rem;
-                max-width: calc(100% - 120px); /* Sesuaikan max-width untuk nama file */
-            }
-
-            .create-button {
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-        }
-
-        @media (max-width: 360px) { /* Untuk layar yang lebih kecil lagi (misal iPhone SE lama) */
-            body {
-                font-size: 0.75rem;
-            }
-            .form-body {
-                padding: 10px 12px;
-                gap: 12px;
-            }
-            .form-header h2 {
-                font-size: 0.85rem;
-            }
-            .close-button {
-                font-size: 1.5rem;
-            }
-
-            .icon-text-left,
-            .custom-dropdown-wrapper select,
-            .styled-input-wrapper input {
-                font-size: 0.7rem;
-            }
-            .icon-edit-text {
-                font-size: 0.65rem;
-            }
-
-            .time-inputs .date-display,
-            .time-inputs input[type="time"] {
-                width: 90px; /* Lebih kecil lagi */
-                padding: 5px 8px;
-                font-size: 0.7rem;
-            }
-
-            .attachment-file-display {
-                max-width: calc(100% - 100px); /* Lebih kecil lagi */
-            }
-        }
-    /* Responsive Adjustments */
-    @media (max-width: 600px) {
-        .add-task-modal-content {
-            padding: 1rem;
-            border-radius: 12px;
-            width: 95%; /* Even narrower on small screens */
-        }
-        .add-task-modal-header {
-            margin-bottom: 1rem;
-        }
-        .add-task-modal-header h3 {
-            font-size: 1.4rem;
-        }
-        .add-task-modal-close {
-            font-size: 1.8rem;
-        }
-        .form-group-header label {
-            font-size: 1rem;
-        }
-        .choose-team-button, .design-dropdown select {
-            font-size: 0.9rem;
-            padding: 0.6rem 0.8rem;
-        }
-        .add-description-placeholder {
-            font-size: 0.95rem;
-        }
-        .datetime-group {
-            flex-wrap: wrap; /* Allow wrapping of icon and inputs */
-            gap: 0.5rem;
-        }
-        .datetime-inputs {
-            flex-wrap: wrap; /* Allow date/time inputs to stack if needed */
-        }
-        .datetime-inputs input {
-            padding: 0.6rem 0.8rem;
-            font-size: 0.95rem;
-        }
-        .create-task-button {
-            font-size: 1rem;
-            padding: 0.8rem;
-        }
-    }
+/* --- TIME ENTRY GROUP (Starts & Ends) --- */
+.time-entry-full-group {
+    gap: 15px;
 }
+
+.time-entry-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap; /* Izinkan wrap jika layar sangat kecil */
+    gap: 10px; /* Jarak antar elemen jika wrap */
+}
+
+.time-entry-row .icon-text-left {
+    flex-basis: 100px; /* Lebar minimum untuk label ikon */
+    flex-grow: 1; /* Biarkan tumbuh */
+    margin-right: 0; /* Hilangkan margin kanan */
+}
+
+.time-inputs {
+    display: flex;
+    gap: 10px;
+    flex-grow: 2; /* Biarkan grup input tumbuh lebih banyak */
+    justify-content: flex-end; /* Dorong input ke kanan */
+    flex-wrap: wrap; /* Izinkan wrap */
+}
+
+.time-inputs .date-display {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    outline: none;
+    background-color: var(--bg-white);
+    transition: border-color 0.2s ease;
+    width: 95px; /* Base width */
+    text-align: center;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.time-inputs input[type="time"] {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    outline: none;
+    background-color: var(--bg-white);
+    transition: border-color 0.2s ease;
+    width: 95px; /* Base width */
+    text-align: center;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.time-inputs .date-display:focus,
+.time-inputs input[type="time"]:focus {
+    border-color: var(--primary-color);
+}
+
+.hidden-date-input {
+    display: none;
+}
+
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-clear-button {
+    display: none;
+    -webkit-appearance: none;
+}
+
+input[type="time"] {
+    -moz-appearance: textfield;
+}
+
+/* --- ASSIGN GROUP & ATTACHMENT GROUP --- */
+.assign-group,
+.attachment-group {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Izinkan wrap */
+    gap: 10px; /* Jarak antar elemen jika wrap */
+}
+
+.attachment-group {
+    justify-content: flex-start;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.attachment-group:hover .icon-text-left {
+    color: var(--primary-color);
+}
+
+.attachment-group:hover .icon-text-left .fas {
+    color: var(--primary-color);
+}
+
+.attachment-file-display {
+    font-size: 0.75rem;
+    color: var(--text-medium);
+    margin-left: 10px;
+    max-width: calc(100% - 150px); /* Adjust max-width dynamically */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hidden-file-input {
+    display: none;
+}
+
+/* --- priority --- */
+.priority-group select {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px 10px;
+    background-color: var(--bg-white);
+    color: var(--text-medium);
+    flex-grow: 1;
+    margin-top: 0.70rem;
+}
+
+/* --- CREATE BUTTON --- */
+.create-button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.create-button:hover {
+    background-color: #5A57E0;
+}
+
+/*=========================================
+            END: MODAL OVERLAY     
+===========================================*/
+
+/*=========================================
+            START: TASK COLUMN     
+===========================================*/
+/* 1. Status Dots */
+.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-dot.in-progress {
+    background-color: #007bff; /* blue */
+}
+
+.status-dot.completed {
+    background-color: #28a745; /* green */
+}
+
+/* 2. Progress Bar */
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #007bff; /* blue progress */
+    transition: width 0.3s ease-in-out;
+}
+
+/* 3. Priority Labels */
+.priority-label {
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: white;
+}
+
+.priority-label.high {
+    background-color: #e74c3c; /* red */
+}
+
+.priority-label.medium {
+    background-color: #f1c40f; /* yellow */
+}
+
+.priority-label.low {
+    background-color: #2ecc71; /* green */
+}
+
+/* 4. Meta Icons */
+.task-meta-icons {
+    font-size: 14px;
+    color: #888;
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.task-meta-icons i {
+    vertical-align: middle;
+}
+
+/* 5. Avatar Group */
+.avatar-group {
+    display: flex;
+    margin-top: 10px;
+}
+
+.avatar-group img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px #ddd;
+    margin-left: -8px;
+}
+
+/* 6. Task Card Hover Animation */
+.task-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 12px;
+    padding: 16px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.task-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* New styles for add subtask input form */
+.new-subtask-input-container {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.new-subtask-input-field {
+    flex-grow: 1;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.new-subtask-input-field:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 5px var(--primary-blue-light);
+}
+
+.new-subtask-add-button,
+.new-subtask-cancel-button {
+    padding: 0.3rem 0.8rem;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+}
+
+.new-subtask-add-button {
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+.new-subtask-add-button:hover {
+    background-color: var(--primary-blue-dark);
+}
+
+.new-subtask-cancel-button {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+.new-subtask-cancel-button:hover {
+    background-color: var(--border-light);
+}
+
+/* Team badge styles */
+.team-badge {
+    display: inline-block;
+    padding: 0.2em 0.6em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 12px;
+    color: white;
+    margin-right: 0.5rem;
+    text-transform: capitalize;
+    user-select: none;
+}
+
+/* Colors for known teams */
+.team-badge.design {
+    background-color: #6f42c1; /* purple */
+}
+
+.team-badge.development {
+    background-color: #28a745; /* green */
+}
+
+.team-badge.marketing {
+    background-color: #fd7e14; /* orange */
+}
+
+.team-badge.general {
+    background-color: #6c757d; /* gray */
+}
+/*=========================================
+            END: TASK COLUMN     
+===========================================*/
+
+/* Sidebar Overlay for Mobile */
+.sidebar-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99; /* Below modal, above main content */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
