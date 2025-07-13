@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DOINITIAL - Dashboard</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="media_query.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,6 +15,10 @@
 </head>
 <body>
     <div class="dashboard-container" id="dashboardContainer">
+
+        <!--===========================================================================================================-->
+        <!--                                         START: SIDEBAR LEFT                                               -->
+        <!--===========================================================================================================-->
         <aside class="sidebar-left" id="sidebarLeft">
             <button class="sidebar-close-button" id="sidebarCloseButton" aria-label="Close Sidebar">&times;</button>
             <div>
@@ -46,12 +51,16 @@
                     </ul>
                 </nav>
             </div>
-            <a href="#" class="sidebar-logout">
-                <i class='bx bx-log-out'></i>
-                Logout
-            </a>
         </aside>
+        <!--===========================================================================================================-->
+        <!--                                           END: SIDEBAR LEFT                                               -->
+        <!--===========================================================================================================-->
 
+
+
+        <!--===========================================================================================================-->
+        <!--                                         START: MAIN CONTENT                                               -->
+        <!--===========================================================================================================-->
         <main class="main-content">
             <header class="header-top">
                 <button class="mobile-menu-toggle" id="mobileMenuToggle">
@@ -142,7 +151,13 @@
                 </div>
             </section>
         </main>
+         <!--===========================================================================================================-->
+        <!--                                            END: MAIN CONTENT                                               -->
+        <!--============================================================================================================-->
 
+        <!--===========================================================================================================-->
+        <!--                                           START: SIDEBAR RIGHT                                            -->
+        <!--===========================================================================================================-->
         <aside class="sidebar-right">
             <section class="calendar-section">
                 <div class="calendar-header">
@@ -171,8 +186,13 @@
             </section>
         </aside>
     </div>
+    <!--===========================================================================================================-->
+    <!--                                             END: SIDEBAR RIGHT                                            -->
+    <!--===========================================================================================================-->
 
-    <!-- START: MODAL ADD TASK -->
+    <!--===========================================================================================================-->
+    <!--                                             START: MODAL ADD TASK                                         -->
+    <!--===========================================================================================================-->
     <div class="modal-overlay modal" id="addTaskModalOverlay" style="display: none;">
         <div class="form-container">
             <div class="form-header">
@@ -300,7 +320,9 @@
             </form>
         </div>
     </div>
-    <!-- END: MODAL ADD TASK -->
+    <!--===========================================================================================================-->
+    <!--                                              END: MODAL ADD TASK                                          -->
+    <!--===========================================================================================================-->
 
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
