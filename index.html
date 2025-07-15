@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -22,10 +25,10 @@
         <aside class="sidebar-left" id="sidebarLeft">
             <button class="sidebar-close-button" id="sidebarCloseButton" aria-label="Close Sidebar">&times;</button>
             <div>
-                <div class="sidebar-logo">DOINITIAL</div>
+                <div class="sidebar-logo">So.Learn</div>
                 <nav class="sidebar-nav">
                     <ul>
-                        <li><a href="#" class="active" data-nav="overview">
+                        <li><a href="index.html" class="active" data-nav="overview">
                             <i class='bx bx-grid-alt'></i>
                             Overview
                         </a></li>
@@ -71,7 +74,7 @@
                     <p>Let's finish your task today!</p>
                 </div>
                 <div class="search-bar">
-                    <input type="text" placeholder="Search Task">
+                    <input type="text" id="taskSearchInput" placeholder="Search Task">
                     <i class='bx bx-search'></i>
                 </div>
                 <div class="header-icons">
@@ -109,19 +112,16 @@
                     <div class="tasks-filters">
                         <button class="active" data-filter="all">
                             <i class='bx bx-category'></i>
-                            Category
+                            All
                         </button>
-                        <button data-filter="todo">
-                            <i class='bx bx-list-ul'></i>
-                            To-do
-                        </button>
+                        <!-- Removed To-do button as per user request -->
                         <select name="filter" id="taskStatusFilterSelect">
                             <option value="">Filter</option>
                             <option value="in-progress">In Progress</option>
                             <option value="completed">Completed</option>
                         </select>
-                        <select>
-                            <option>Sort by priority</option>
+                        <select id="priorityFilterSelect">
+                            <option value="all">Sort by priority</option>
                             <option value="high">High</option>
                             <option value="normal">Normal</option>
                             <option value="low">Low</option>
@@ -134,7 +134,7 @@
                         <div class="task-column-header">
                             <span class="status-dot in-progress"></span>
                             <span>In Progress (<span id="inProgressCount">0</span>)</span>
-                            <i class='bx bx-chevron-down'></i>
+                            <i id="inProgressToggle" class='bx bx-chevron-down' style="cursor:pointer;"></i>
                         </div>
                         <div id="inProgressTasks">
                         </div>
@@ -143,7 +143,7 @@
                         <div class="task-column-header">
                             <span class="status-dot completed"></span>
                             <span>Completed (<span id="completedCount">0</span>)</span>
-                            <i class='bx bx-chevron-down'></i>
+                            <i id="completedToggle" class='bx bx-chevron-down' style="cursor:pointer;"></i>
                         </div>
                         <div id="completedTasks">
                         </div>
@@ -325,6 +325,19 @@
     <!--===========================================================================================================-->
 
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Modal for schedule details -->
+    <div class="modal-overlay" id="scheduleDetailsModal" style="display:none;">
+        <div class="form-container schedule-details-container">
+            <div class="form-header">
+                <h2>Schedule Details</h2>
+                <button type="button" class="close-button" id="closeScheduleDetailsModal" aria-label="Close Modal">&times;</button>
+            </div>
+            <div class="form-body" id="scheduleDetailsContent">
+                <!-- Schedule details will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
 
     <!--<script src="script.js"></script>-->
     <script src="script.js" defer></script>
