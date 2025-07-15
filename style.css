@@ -1,3 +1,41 @@
+/* New style for today dot indicator in calendar */
+.today-dot-indicator {
+    display: block;
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary-blue);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Ensure calendar day is positioned relative for dot positioning */
+.calendar-day {
+    position: relative;
+}
+
+/* Global font family update to Nunito */
+body, input, select, textarea, button {
+    font-family: "Nunito", sans-serif !important;
+}
+
+/* Smooth toggle transition for task columns */
+.task-column > div {
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  max-height: 1000px; /* large enough to show content */
+  opacity: 1;
+}
+
+.task-column > div.collapsed {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
 :root {
     --primary-blue: #007bff;
     --secondary-blue: #00c6ff;
@@ -13,8 +51,8 @@
     --shadow-light: rgba(0, 0, 0, 0.08);
     --shadow-medium: rgba(0, 0, 0, 0.15);
     --accent-orange: #FF8C00;
-    --gradient-blue: linear-gradient(135deg, #00c6ff, #0072ff);
-    --gradient-purple: linear-gradient(135deg, #a65ee0, #734af1);
+    --gradient-blue: linear-gradient(135deg, #3fcfbc, #41bcdb, #0072ff);
+    --gradient-purple: linear-gradient(135deg, #b77be9, #714be2, #5f32e6);
     --gradient-red: linear-gradient(135deg, #ff8a65, #ff5722);
     --primary-blue-light: #6A67F0;
     --primary-blue-dark: #5A57E0;
@@ -84,8 +122,9 @@ body {
     left: 0;
 }
 
-/* Show sidebar close button on all screen sizes */
+/* Hide sidebar close button by default (on large screens) */
 .sidebar-close-button {
+    display: none;
     position: absolute;
     top: 10px;
     right: 10px;
@@ -98,6 +137,13 @@ body {
     padding: 0;
     line-height: 1;
     transition: color 0.2s ease;
+}
+
+@media (max-width: 900px) {
+    /* Show sidebar close button on small to medium screens */
+    .sidebar-close-button {
+        display: block !important;
+    }
 }
 
 .sidebar-close-button:hover {
@@ -992,7 +1038,6 @@ body {
     flex-direction: column;
     gap: 1.5rem;
     flex-shrink: 0;
-    background-color: var(--surface-white);
     color: var(--text-dark);
 }
 
