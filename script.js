@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     // --- 1. Utility Functions ---
     // Fungsi untuk mendapatkan data dari localStorage
@@ -211,11 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setStorage("tasks", tasks);
         }
         if (schedules.length === 0) {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = today.getMonth();
-            const day = today.getDate();
-
+            // Use July 2025 dates to match the calendar display in index page
             schedules = [
                 {
                     id: 1,
@@ -225,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     statusColor: "green",
                     completed: false,
                     avatars: ["men/1", "women/2"],
-                    date: new Date(year, month, day).toISOString(),
+                    date: "2025-07-13",
                 },
                 {
                     id: 2,
@@ -235,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     statusColor: "blue",
                     completed: false,
                     avatars: ["men/3", "women/4"],
-                    date: new Date(year, month, day).toISOString(),
+                    date: "2025-07-15",
                 },
                 {
                     id: 3,
@@ -245,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     statusColor: "red",
                     completed: false,
                     avatars: ["men/5", "women/6"],
-                    date: new Date(year, month, day).toISOString(),
+                    date: "2025-07-20",
                 },
             ];
             setStorage("schedules", schedules);
@@ -451,7 +448,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    const renderTasks = () => {
+    const renderTasks = (searchKeyword = "") => {
         if (!DOMElements.inProgressTasksDiv || !DOMElements.completedTasksDiv)
             return;
         DOMElements.inProgressTasksDiv.innerHTML = "";
@@ -459,7 +456,49 @@ document.addEventListener("DOMContentLoaded", () => {
         let inProgressCount = 0;
         let completedCount = 0;
 
-        const filteredTasks = tasks; // filter jika perlu
+        // Normalize search keyword for case-insensitive comparison
+        const normalizedSearch = searchKeyword.trim().toLowerCase();
+
+        // Get current filter values
+        const statusFilter = DOMElements.taskStatusFilterSelect ? DOMElements.taskStatusFilterSelect.value : "";
+        const priorityFilter = priorityFilterSelect ? priorityFilterSelect.value : "all";
+
+        // Filter tasks by status, priority, and search keyword
+        const filteredTasks = tasks.filter(task => {
+            // Filter by status
+            if (statusFilter && statusFilter !== "") {
+                if (task.status !== statusFilter) {
+                    return false;
+                }
+            }
+            // Filter by priority
+            if (priorityFilter && priorityFilter !== "all") {
+                if (task.priority !== priorityFilter) {
+                    return false;
+                }
+            }
+            // Filter by search keyword in title or subtasks
+            if (normalizedSearch) {
+                const titleMatch = task.title.toLowerCase().includes(normalizedSearch);
+                const subtaskMatch = Array.isArray(task.subtasks) && task.subtasks.some(sub => sub.text.toLowerCase().includes(normalizedSearch));
+                if (!titleMatch && !subtaskMatch) {
+                    return false;
+                }
+            }
+            return true;
+        });
+
+        if (filteredTasks.length === 0) {
+            // Show no tasks match message
+            const noTasksMessage = document.createElement("div");
+            noTasksMessage.classList.add("no-tasks-message");
+            noTasksMessage.textContent = "No tasks match your search.";
+            DOMElements.inProgressTasksDiv.appendChild(noTasksMessage);
+            DOMElements.completedTasksDiv.appendChild(noTasksMessage.cloneNode(true));
+            DOMElements.inProgressCountSpan.textContent = "0";
+            DOMElements.completedCountSpan.textContent = "0";
+            return;
+        }
 
         filteredTasks.forEach((task) => {
             const taskCard = document.createElement("div");
@@ -779,30 +818,51 @@ ${(task.avatars || [])
             DOMElements.calendarGridEl.appendChild(emptyDay);
         }
 
-        const today = new Date();
-        const todayDateString = today.toISOString().split("T")[0];
+    // Helper function to get local YYYY-MM-DD date string without timezone shift
+    function getLocalDateString(date) {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    }
 
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dayElement = document.createElement("div");
-            dayElement.classList.add("calendar-day");
-            dayElement.textContent = day;
+    // Helper function to compare two dates by year, month, and day
+    const isSameDate = (d1, d2) =>
+        d1.getFullYear() === d2.getFullYear() &&
+        d1.getMonth() === d2.getMonth() &&
+        d1.getDate() === d2.getDate();
 
-            const currentDate = new Date(year, month, day);
-            const currentDayDateString = currentDate.toISOString().split("T")[0];
+    // Use the passed date parameter as "today" for consistent highlighting
+    const today = date;
 
-            if (currentDayDateString === todayDateString) {
-                dayElement.classList.add("today");
-            }
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayElement = document.createElement("div");
+        dayElement.classList.add("calendar-day");
+        dayElement.textContent = day;
 
-            const hasSchedule = schedules.some(
-                (s) => s.date && s.date.split("T")[0] === currentDayDateString
-            );
-            if (hasSchedule && currentDayDateString !== todayDateString) {
-                dayElement.classList.add("schedule-highlighted");
-            }
+        const currentDate = new Date(year, month, day);
+        const currentDayDateString = getLocalDateString(currentDate);
 
-            DOMElements.calendarGridEl.appendChild(dayElement);
+        const todayDateString = getLocalDateString(today);
+        const hasSchedule = schedules.some(
+            (s) => s.date && getLocalDateString(new Date(s.date)) === currentDayDateString
+        );
+
+        if (isSameDate(currentDate, today)) {
+            // Add dot indicator span for today
+            const dotIndicator = document.createElement("span");
+            dotIndicator.classList.add("today-dot-indicator");
+            dayElement.appendChild(dotIndicator);
+            // Add highlight class for today date background color
+            dayElement.classList.add("today-highlight");
         }
+
+        if (hasSchedule) {
+            dayElement.classList.add("highlighted");
+        }
+
+        DOMElements.calendarGridEl.appendChild(dayElement);
+    }
     };
 
     // Render jadwal hari ini
@@ -1406,6 +1466,14 @@ ${(task.avatars || [])
                 tasks.unshift(newTask);
                 setStorage("tasks", tasks);
                 alert("Task added successfully!");
+                // Reset priority filter to 'all' to ensure new task is visible
+                const priorityFilterSelect = document.getElementById("priorityFilterSelect");
+                if (priorityFilterSelect) {
+                    priorityFilterSelect.value = "all";
+                    priorityFilterSelect.style.backgroundColor = "";
+                    priorityFilterSelect.title = "";
+                    localStorage.setItem("priorityFilter", "all");
+                }
             }
 
             DOMElements.addTaskModalOverlay.style.display = "none";
@@ -1416,10 +1484,49 @@ ${(task.avatars || [])
 
     // Filter status tugas
     if (DOMElements.taskStatusFilterSelect) {
-        DOMElements.taskStatusFilterSelect.addEventListener("change", renderTasks);
+        DOMElements.taskStatusFilterSelect.addEventListener("change", () => {
+            renderTasks();
+            // Save filter state to localStorage
+            localStorage.setItem("taskStatusFilter", DOMElements.taskStatusFilterSelect.value);
+        });
+        // Restore filter state from localStorage
+        const savedStatusFilter = localStorage.getItem("taskStatusFilter");
+        if (savedStatusFilter) {
+            DOMElements.taskStatusFilterSelect.value = savedStatusFilter;
+        } else {
+            // Set default status filter to "in-progress" if no saved value
+            DOMElements.taskStatusFilterSelect.value = "in-progress";
+        }
     }
 
-    // Tab tugas (Kategori, To-do, Anggota)
+    // Priority filter dropdown
+    const priorityFilterSelect = document.getElementById("priorityFilterSelect");
+    if (priorityFilterSelect) {
+        priorityFilterSelect.addEventListener("change", () => {
+            renderTasks();
+            // Save priority filter state to localStorage
+            localStorage.setItem("priorityFilter", priorityFilterSelect.value);
+            // Visual feedback for active filter
+            if (priorityFilterSelect.value !== "all") {
+                priorityFilterSelect.style.backgroundColor = "#d0e6ff"; // light blue
+                priorityFilterSelect.title = `Filtered by: ${priorityFilterSelect.options[priorityFilterSelect.selectedIndex].text}`;
+            } else {
+                priorityFilterSelect.style.backgroundColor = "";
+                priorityFilterSelect.title = "";
+            }
+        });
+        // Restore priority filter state from localStorage
+        const savedPriorityFilter = localStorage.getItem("priorityFilter");
+        if (savedPriorityFilter) {
+            priorityFilterSelect.value = savedPriorityFilter;
+            if (savedPriorityFilter !== "all") {
+                priorityFilterSelect.style.backgroundColor = "#d0e6ff";
+                priorityFilterSelect.title = `Filtered by: ${priorityFilterSelect.options[priorityFilterSelect.selectedIndex].text}`;
+            }
+        }
+    }
+
+    // Tab tugas (Kategori, Anggota) - removed To-do tab handling as per user request
     if (DOMElements.tasksTabs) {
         DOMElements.tasksTabs.addEventListener("click", (e) => {
             const clickedButton = e.target.closest("button");
@@ -1436,13 +1543,6 @@ ${(task.avatars || [])
                     filterValueFromButton = "";
                     if (DOMElements.tasksListContainer)
                         DOMElements.tasksListContainer.style.display = "flex";
-                } else if (buttonText.includes("To-do")) {
-                    alert(
-                        "Tab To-do diklik - implementasikan tampilan daftar To-do spesifik."
-                    );
-                    if (DOMElements.tasksListContainer)
-                        DOMElements.tasksListContainer.style.display = "none";
-                    return;
                 } else if (buttonText.includes("Anggota")) {
                     alert(
                         "Tab Anggota diklik - implementasikan tampilan daftar anggota."
@@ -1565,6 +1665,41 @@ ${(task.avatars || [])
     updateDateDisplay(DOMElements.endDateDisplay, DOMElements.endDateInput);
 
     // --- 8. Initial Renders ---
+
+    // Toggle visibility of In Progress and Completed task columns
+    const inProgressToggle = document.getElementById("inProgressToggle");
+    const completedToggle = document.getElementById("completedToggle");
+    const inProgressTasksDiv = document.getElementById("inProgressTasks");
+    const completedTasksDiv = document.getElementById("completedTasks");
+
+    if (inProgressToggle && inProgressTasksDiv) {
+        inProgressToggle.addEventListener("click", () => {
+            if (inProgressTasksDiv.classList.contains("collapsed")) {
+                inProgressTasksDiv.classList.remove("collapsed");
+                inProgressToggle.classList.remove("bx-chevron-up");
+                inProgressToggle.classList.add("bx-chevron-down");
+            } else {
+                inProgressTasksDiv.classList.add("collapsed");
+                inProgressToggle.classList.remove("bx-chevron-down");
+                inProgressToggle.classList.add("bx-chevron-up");
+            }
+        });
+    }
+
+    if (completedToggle && completedTasksDiv) {
+        completedToggle.addEventListener("click", () => {
+            if (completedTasksDiv.classList.contains("collapsed")) {
+                completedTasksDiv.classList.remove("collapsed");
+                completedToggle.classList.remove("bx-chevron-up");
+                completedToggle.classList.add("bx-chevron-down");
+            } else {
+                completedTasksDiv.classList.add("collapsed");
+                completedToggle.classList.remove("bx-chevron-down");
+                completedToggle.classList.add("bx-chevron-up");
+            }
+        });
+    }
+
     // Panggil fungsi render awal setelah semua disiapkan
     renderProjectSummary();
     renderTasks();
