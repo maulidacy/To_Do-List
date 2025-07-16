@@ -1366,17 +1366,7 @@ body {
 }
 
 .icon-edit-text {
-    color: var(--primary-color);
-    font-size: 0.75rem;
-    margin-left: auto;
-    cursor: pointer;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.icon-edit-text .fas {
-    margin-right: 5px;
-    font-size: 0.7rem;
+    display: none;
 }
 
 /* --- CHOOSE TEAM GROUP --- */
