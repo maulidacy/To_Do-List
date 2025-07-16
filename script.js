@@ -1,7 +1,6 @@
-
 document.addEventListener("DOMContentLoaded", () => {
     // --- 1. Utility Functions ---
-    // Fungsi untuk mendapatkan data dari localStorage
+    // Function to get data from localStorage
     const getStorage = (key) => {
         try {
             const data = localStorage.getItem(key);
@@ -12,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Fungsi untuk menyimpan data ke localStorage
+    // Function to save data to localStorage
     const setStorage = (key, data) => {
         try {
             localStorage.setItem(key, JSON.stringify(data));
@@ -22,16 +21,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Fungsi untuk mendapatkan ID berikutnya
+    // Function to get the next ID
     const getNextId = (arr) =>
         arr.length > 0 ? Math.max(...arr.map((item) => item.id)) + 1 : 1;
 
-    // Fungsi untuk memformat tanggal
+    // Function to format date for display
     const formatDateForDisplay = (dateString) => {
         if (!dateString) return "";
         try {
             const date = new Date(dateString);
-            // Menggunakan 'id-ID' untuk format tanggal Indonesia
+            // Using 'id-ID' for Indonesian date format
             return date.toLocaleDateString("id-ID", {
                 day: "numeric",
                 month: "short",
@@ -43,224 +42,238 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    // Helper function to get local YYYY-MM-DD date string without timezone shift
+    const getLocalDateString = (date) => {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    };
+
+    // Helper function to compare two dates by year, month, and day
+    const isSameDate = (d1, d2) =>
+        d1.getFullYear() === d2.getFullYear() &&
+        d1.getMonth() === d2.getMonth() &&
+        d1.getDate() === d2.getDate();
+
     // --- 2. Data Management (Simulated API with localStorage) ---
-    // Inisialisasi data dari localStorage atau dummy data jika kosong
+    // Initialize data from localStorage or dummy data if empty
     let projects = getStorage("projects");
     let tasks = getStorage("tasks");
     let schedules = getStorage("schedules");
     let teams = getStorage("teams");
     let currentCalendarDate = new Date();
 
-    // Inisialisasi dummy data jika storage kosong
+    // Initialize dummy data if storage is empty
     const initializeDummyData = () => {
         if (projects.length === 0) {
-            projects = [
-                {
-                    id: 1,
-                    title: "Diskusi Proyek Perangkat Lunak",
-                    description:
-                        "Tim perangkat lunak bertanggung jawab atas perencanaan, penjadwalan, penganggaran, pelaksanaan, dan pengiriman proyek perangkat lunak dan web. Mereka memastikan keberhasilan penyelesaian semua proyek perangkat lunak.",
-                    progress: 75,
-                    daysLeft: 3,
-                    avatars: ["men/32", "women/44", "men/54"],
-                    type: "blue",
-                },
-                {
-                    id: 2,
-                    title: "Pengembangan Modul Autentikasi",
-                    description:
-                        "Mengembangkan modul autentikasi pengguna baru dengan fitur login dan registrasi yang aman.",
-                    progress: 40,
-                    daysLeft: 7,
-                    avatars: ["men/10", "women/20"],
-                    type: "purple",
-                },
-                {
-                    id: 3,
-                    title: "Perencanaan Proyek Q3",
-                    description:
-                        "Menguraikan seluruh ruang lingkup proyek, tonggak sejarah, dan alokasi sumber daya untuk kuartal mendatang.",
-                    progress: 10,
-                    daysLeft: 14,
-                    avatars: ["women/5", "men/15"],
-                    type: "red",
-                },
-            ];
+            projects = [{
+                id: 1,
+                title: "Diskusi Proyek Perangkat Lunak",
+                description: "Tim perangkat lunak bertanggung jawab atas perencanaan, penjadwalan, penganggaran, pelaksanaan, dan pengiriman proyek perangkat lunak dan web. Mereka memastikan keberhasilan penyelesaian semua proyek perangkat lunak.",
+                progress: 75,
+                daysLeft: 3,
+                avatars: ["men/32", "women/44", "men/54"],
+                type: "blue",
+            }, {
+                id: 2,
+                title: "Pengembangan Modul Autentikasi",
+                description: "Mengembangkan modul autentikasi pengguna baru dengan fitur login dan registrasi yang aman.",
+                progress: 40,
+                daysLeft: 7,
+                avatars: ["men/10", "women/20"],
+                type: "purple",
+            }, {
+                id: 3,
+                title: "Perencanaan Proyek Q3",
+                description: "Menguraikan seluruh ruang lingkup proyek, tonggak sejarah, dan alokasi sumber daya untuk kuartal mendatang.",
+                progress: 10,
+                daysLeft: 14,
+                avatars: ["women/5", "men/15"],
+                type: "red",
+            }, ];
             setStorage("projects", projects);
         }
 
-            if (tasks.length === 0) {
-                tasks = [
-                    {
-                        id: 1,
-                        title: "Desain Aplikasi Seluler",
-                        description: "Pertemuan Desain UI/UX",
-                        subject: "Desain",
-                        teacher: "Ms Diana Smith",
-                        type: "Task",
-                        status: "in-progress",
-                        progress: 5,
-                        priority: "high",
-                        subtasks: [{ id: 1, text: "Brainstorming Konsep", completed: false }],
-                        avatars: ["men/1", "women/2"],
-                        team: "design",
-                        startDate: "2025-07-10",
-                        startTime: "09:00",
-                        endDate: "2025-07-15",
-                        endTime: "17:00",
-                        assignTo: "John Doe",
-                    },
-                    {
-                        id: 2,
-                        title: "Kisah Motivator Terkenal",
-                        description: "Menganalisis biografi tokoh inspiratif",
-                        subject: "Biografi",
-                        teacher: "Mr Melvin Ruslan",
-                        type: "Theory",
-                        status: "completed",
-                        progress: 100,
-                        priority: "normal",
-                        subtasks: [],
-                        avatars: ["men/3", "women/4"],
-                        team: "development",
-                        startDate: "2025-07-01",
-                        startTime: "10:00",
-                        endDate: "2025-07-05",
-                        endTime: "12:00",
-                        assignTo: "Jane Smith",
-                    },
-                    {
-                        id: 6,
-                        title: "Tugas Prioritas Medium",
-                        description: "Contoh tugas dengan prioritas medium",
-                        subject: "Umum",
-                        teacher: "Ms Medium",
-                        type: "Task",
-                        status: "in-progress",
-                        progress: 30,
-                        priority: "medium",
-                        subtasks: [],
-                        avatars: ["men/11", "women/12"],
-                        team: "general",
-                        startDate: "2025-07-20",
-                        startTime: "09:00",
-                        endDate: "2025-07-25",
-                        endTime: "17:00",
-                        assignTo: "Medium User",
-                    },
-                {
-                    id: 3,
-                    title: "Tugas Properti Aljabar",
-                    description: "Penyelesaian masalah properti aljabar dari buku teks",
-                    subject: "Matematika",
-                    teacher: "Mr Jhon Lock",
-                    type: "Task",
-                    status: "in-progress",
-                    progress: 60,
-                    priority: "high",
-                    subtasks: [
-                        { id: 1, text: "Selesaikan soal 1-5", completed: false },
-                        { id: 2, text: "Periksa jawaban", completed: false },
-                    ],
-                    avatars: ["men/5", "women/6"],
-                    team: "marketing",
-                    startDate: "2025-07-12",
-                    startTime: "13:00",
-                    endDate: "2025-07-18",
-                    endTime: "16:00",
-                    assignTo: "Michael Johnson",
-                },
-                {
-                    id: 4,
-                    title: "Teori Properti Aljabar",
-                    description: "Memahami konsep dasar properti aljabar",
-                    subject: "Matematika",
-                    teacher: "Mr Jhon Lock",
-                    type: "Theory",
-                    status: "completed",
-                    progress: 100,
-                    priority: "normal",
-                    subtasks: [],
-                    avatars: ["men/7", "women/8"],
-                    team: "design",
-                    startDate: "2025-07-08",
-                    startTime: "09:00",
-                    endDate: "2025-07-09",
-                    endTime: "11:00",
-                    assignTo: "Emily Brown",
-                },
-                {
-                    id: 5,
-                    title: "Menentukan IQ Seseorang",
-                    description: "Memahami berbagai metode dan tes untuk mengukur IQ",
-                    subject: "Psikologi",
-                    teacher: "Mr Melvin Ruslan",
-                    type: "Theory",
-                    status: "in-progress",
-                    progress: 80,
-                    priority: "low",
-                    subtasks: [{ id: 1, text: "Baca Bab 3", completed: false }],
-                    avatars: ["men/9", "women/10"],
-                    team: "development",
-                    startDate: "2025-07-11",
-                    startTime: "14:00",
-                    endDate: "2025-07-13",
-                    endTime: "17:00",
-                    assignTo: "Chris Green",
-                },
-            ];
+        if (tasks.length === 0) {
+            tasks = [{
+                id: 1,
+                title: "Desain Aplikasi Seluler",
+                description: "Pertemuan Desain UI/UX",
+                subject: "Desain",
+                teacher: "Ms Diana Smith",
+                type: "Task",
+                status: "in-progress",
+                progress: 5,
+                priority: "high",
+                subtasks: [{
+                    id: 1,
+                    text: "Brainstorming Konsep",
+                    completed: false
+                }],
+                avatars: ["men/1", "women/2"],
+                team: "design",
+                startDate: "2025-07-10",
+                startTime: "09:00",
+                endDate: "2025-07-15",
+                endTime: "17:00",
+                assignTo: "John Doe",
+            }, {
+                id: 2,
+                title: "Kisah Motivator Terkenal",
+                description: "Menganalisis biografi tokoh inspiratif",
+                subject: "Biografi",
+                teacher: "Mr Melvin Ruslan",
+                type: "Theory",
+                status: "completed",
+                progress: 100,
+                priority: "normal",
+                subtasks: [],
+                avatars: ["men/3", "women/4"],
+                team: "development",
+                startDate: "2025-07-01",
+                startTime: "10:00",
+                endDate: "2025-07-05",
+                endTime: "12:00",
+                assignTo: "Jane Smith",
+            }, {
+                id: 6,
+                title: "Tugas Prioritas Medium",
+                description: "Contoh tugas dengan prioritas medium",
+                subject: "Umum",
+                teacher: "Ms Medium",
+                type: "Task",
+                status: "in-progress",
+                progress: 30,
+                priority: "medium",
+                subtasks: [],
+                avatars: ["men/11", "women/12"],
+                team: "general",
+                startDate: "2025-07-20",
+                startTime: "09:00",
+                endDate: "2025-07-25",
+                endTime: "17:00",
+                assignTo: "Medium User",
+            }, {
+                id: 3,
+                title: "Tugas Properti Aljabar",
+                description: "Penyelesaian masalah properti aljabar dari buku teks",
+                subject: "Matematika",
+                teacher: "Mr Jhon Lock",
+                type: "Task",
+                status: "in-progress",
+                progress: 60,
+                priority: "high",
+                subtasks: [{
+                    id: 1,
+                    text: "Selesaikan soal 1-5",
+                    completed: false
+                }, {
+                    id: 2,
+                    text: "Periksa jawaban",
+                    completed: false
+                }, ],
+                avatars: ["men/5", "women/6"],
+                team: "marketing",
+                startDate: "2025-07-12",
+                startTime: "13:00",
+                endDate: "2025-07-18",
+                endTime: "16:00",
+                assignTo: "Michael Johnson",
+            }, {
+                id: 4,
+                title: "Teori Properti Aljabar",
+                description: "Memahami konsep dasar properti aljabar",
+                subject: "Matematika",
+                teacher: "Mr Jhon Lock",
+                type: "Theory",
+                status: "completed",
+                progress: 100,
+                priority: "normal",
+                subtasks: [],
+                avatars: ["men/7", "women/8"],
+                team: "design",
+                startDate: "2025-07-08",
+                startTime: "09:00",
+                endDate: "2025-07-09",
+                endTime: "11:00",
+                assignTo: "Emily Brown",
+            }, {
+                id: 5,
+                title: "Menentukan IQ Seseorang",
+                description: "Memahami berbagai metode dan tes untuk mengukur IQ",
+                subject: "Psikologi",
+                teacher: "Mr Melvin Ruslan",
+                type: "Theory",
+                status: "in-progress",
+                progress: 80,
+                priority: "low",
+                subtasks: [{
+                    id: 1,
+                    text: "Baca Bab 3",
+                    completed: false
+                }],
+                avatars: ["men/9", "women/10"],
+                team: "development",
+                startDate: "2025-07-11",
+                startTime: "14:00",
+                endDate: "2025-07-13",
+                endTime: "17:00",
+                assignTo: "Chris Green",
+            }, ];
             setStorage("tasks", tasks);
         }
         if (schedules.length === 0) {
             // Use July 2025 dates to match the calendar display in index page
-            schedules = [
-                {
-                    id: 1,
-                    title: "Membuat Aplikasi Seluler yang Keren",
-                    description: "Pertemuan Desain UI/UX",
-                    time: "09:00 - 10:00 AM",
-                    statusColor: "green",
-                    completed: false,
-                    avatars: ["men/1", "women/2"],
-                    date: "2025-07-13",
-                },
-                {
-                    id: 2,
-                    title: "Rencana & Strategi Pemasaran",
-                    description: "Pertemuan Pemasaran",
-                    time: "10:00 - 11:00 AM",
-                    statusColor: "blue",
-                    completed: false,
-                    avatars: ["men/3", "women/4"],
-                    date: "2025-07-15",
-                },
-                {
-                    id: 3,
-                    title: "Persiapan Ujian Literatur Proyek",
-                    description: "Sesi Kelompok Belajar",
-                    time: "13:00 - 15:00 PM",
-                    statusColor: "red",
-                    completed: false,
-                    avatars: ["men/5", "women/6"],
-                    date: "2025-07-20",
-                },
-            ];
+            schedules = [{
+                id: 1,
+                title: "Membuat Aplikasi Seluler yang Keren",
+                description: "Pertemuan Desain UI/UX",
+                time: "09:00 - 10:00 AM",
+                statusColor: "green",
+                completed: false,
+                avatars: ["men/1", "women/2"],
+                date: "2025-07-13",
+            }, {
+                id: 2,
+                title: "Rencana & Strategi Pemasaran",
+                description: "Pertemuan Pemasaran",
+                time: "10:00 - 11:00 AM",
+                statusColor: "blue",
+                completed: false,
+                avatars: ["men/3", "women/4"],
+                date: "2025-07-15",
+            }, {
+                id: 3,
+                title: "Persiapan Ujian Literatur Proyek",
+                description: "Sesi Kelompok Belajar",
+                time: "13:00 - 15:00 PM",
+                statusColor: "red",
+                completed: false,
+                avatars: ["men/5", "women/6"],
+                date: "2025-07-20",
+            }, ];
             setStorage("schedules", schedules);
         }
         if (teams.length === 0) {
-            teams = [
-                { id: "design", name: "Desain" },
-                { id: "development", name: "Pengembangan" },
-                { id: "marketing", name: "Pemasaran" },
-            ];
+            teams = [{
+                id: "design",
+                name: "Desain"
+            }, {
+                id: "development",
+                name: "Pengembangan"
+            }, {
+                id: "marketing",
+                name: "Pemasaran"
+            }, ];
             setStorage("teams", teams);
         }
     };
 
-    initializeDummyData(); // Panggil inisialisasi data saat DOM dimuat
+    initializeDummyData(); // Call data initialization when DOM is loaded
 
     // --- 3. DOM Elements Cache ---
-    // Cache semua elemen DOM yang akan sering diakses
+    // Cache all frequently accessed DOM elements
     const DOMElements = {
         dashboardContainer: document.getElementById("dashboardContainer"),
         mobileMenuToggle: document.getElementById("mobileMenuToggle"),
@@ -285,6 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         tasksTabs: document.querySelector(".tasks-filters"),
         taskStatusFilterSelect: document.getElementById("taskStatusFilterSelect"),
+        priorityFilterSelect: document.getElementById("priorityFilterSelect"), // Added to DOMElements
 
         currentMonthYearHeader: document.getElementById("currentMonthYear"),
         calendarGridEl: document.getElementById("calendarGrid"),
@@ -292,6 +306,10 @@ document.addEventListener("DOMContentLoaded", () => {
         nextMonthBtn: document.getElementById("nextMonthBtn"),
 
         todayScheduleList: document.getElementById("todayScheduleList"),
+        todayScheduleMenuButton: document.getElementById("todayScheduleMenuButton"), // Added
+        todayScheduleDropdown: document.getElementById("todayScheduleDropdown"), // Added
+        addNewScheduleBtn: document.getElementById("addNewScheduleBtn"), // Added
+        editTodayScheduleBtn: document.getElementById("editTodayScheduleBtn"), // Added
 
         addDescriptionToggle: document.getElementById("addDescriptionToggle"),
         descriptionInputArea: document.querySelector(".description-input-area"),
@@ -315,29 +333,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
         attachmentInput: document.getElementById("attachmentInput"),
         attachmentFileNameDisplay: document.getElementById("attachmentFileName"),
-        tasksListContainer: document.getElementById("tasksListContainer"), // Tambahkan ini
+        tasksListContainer: document.getElementById("tasksListContainer"),
     };
 
     // --- 4. Render Functions ---
 
-    // Render kartu ringkasan proyek
+    // Render project summary cards
     const renderProjectSummary = () => {
         if (!DOMElements.projectSummaryContainer) return;
         DOMElements.projectSummaryContainer.innerHTML = "";
 
-        // Get tasks from localStorage
         const allTasks = getStorage("tasks") || [];
-        const allTeams = getStorage("teams") || [
-            { id: "design", name: "Desain" },
-            { id: "development", name: "Pengembangan" },
-            { id: "marketing", name: "Pemasaran" },
-            { id: "general", name: "Umum" },
-        ];
+        const allTeams = getStorage("teams") || [{
+            id: "design",
+            name: "Desain"
+        }, {
+            id: "development",
+            name: "Pengembangan"
+        }, {
+            id: "marketing",
+            name: "Pemasaran"
+        }, {
+            id: "general",
+            name: "Umum"
+        }, ];
 
-        // Filter in-progress tasks
         const inProgressTasks = allTasks.filter(task => task.status === "in-progress");
 
-        // Group tasks by project key (using team as project identifier)
         const projectsMap = new Map();
 
         // Initialize projectsMap with all teams, even if no tasks
@@ -378,7 +400,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (Array.isArray(task.avatars)) {
                 task.avatars.forEach(av => project.avatars.add(av));
             } else if (task.assignTo) {
-                project.avatars.add(task.assignTo);
+                // Generate a consistent avatar string for assignedTo if no specific avatar is given
+                const seed = task.assignTo.split(' ')[0]; // Use first name as a seed
+                const gender = Math.random() < 0.5 ? 'men' : 'women'; // Random gender
+                const number = Math.floor(Math.random() * 100); // Random number
+                project.avatars.add(`${gender}/${number}`);
             }
             // Use description from first task as project description
             if (!project.description && task.description) {
@@ -389,9 +415,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // Render each project card
         projectsMap.forEach((project, key) => {
             const avgProgress = project.tasks.length > 0 ? Math.round(project.progressSum / project.tasks.length) : 0;
-            const daysLeft = project.daysLeftMin
-                ? Math.max(0, Math.ceil((project.daysLeftMin - new Date()) / (1000 * 60 * 60 * 24)))
-                : "N/A";
+            const daysLeft = project.daysLeftMin ?
+                Math.max(0, Math.ceil((project.daysLeftMin - new Date()) / (1000 * 60 * 60 * 24))) :
+                "N/A";
 
             const projectCard = document.createElement("div");
             projectCard.classList.add("project-card");
@@ -409,13 +435,14 @@ document.addEventListener("DOMContentLoaded", () => {
             // Avatars HTML
             const avatarsHtml = Array.from(project.avatars)
                 .map(av => {
-                    if (typeof av === "string" && av.startsWith("men/") || av.startsWith("women/")) {
+                    if (typeof av === "string" && (av.startsWith("men/") || av.startsWith("women/"))) {
                         return `<img src="https://randomuser.me/api/portraits/${av}.jpg" alt="User Avatar">`;
-                    } else {
+                    } else if (typeof av === "string") {
                         // For names or unknown format, show initials
                         const initials = av.split(" ").map(n => n[0]).join("").toUpperCase();
                         return `<div class="avatar-initials">${initials}</div>`;
                     }
+                    return ''; // Fallback for unexpected avatar format
                 })
                 .join("");
 
@@ -428,7 +455,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <i class='bx bx-dots-horizontal-rounded'></i>
                 </div>
                 <h3>${project.tasks[0]?.title || "No Title"}</h3>
-                <p>${project.description}</p>
+                <p>${project.description || "No description available."}</p>
                 <div class="project-card-footer">
                     <div class="progress-info">
                         <span>Progress</span>
@@ -456,28 +483,18 @@ document.addEventListener("DOMContentLoaded", () => {
         let inProgressCount = 0;
         let completedCount = 0;
 
-        // Normalize search keyword for case-insensitive comparison
         const normalizedSearch = searchKeyword.trim().toLowerCase();
 
-        // Get current filter values
         const statusFilter = DOMElements.taskStatusFilterSelect ? DOMElements.taskStatusFilterSelect.value : "";
-        const priorityFilter = priorityFilterSelect ? priorityFilterSelect.value : "all";
+        const priorityFilter = DOMElements.priorityFilterSelect ? DOMElements.priorityFilterSelect.value : "all"; // Use DOMElements.priorityFilterSelect
 
-        // Filter tasks by status, priority, and search keyword
         const filteredTasks = tasks.filter(task => {
-            // Filter by status
-            if (statusFilter && statusFilter !== "") {
-                if (task.status !== statusFilter) {
-                    return false;
-                }
+            if (statusFilter && statusFilter !== "all" && task.status !== statusFilter) {
+                return false;
             }
-            // Filter by priority
-            if (priorityFilter && priorityFilter !== "all") {
-                if (task.priority !== priorityFilter) {
-                    return false;
-                }
+            if (priorityFilter && priorityFilter !== "all" && task.priority !== priorityFilter) {
+                return false;
             }
-            // Filter by search keyword in title or subtasks
             if (normalizedSearch) {
                 const titleMatch = task.title.toLowerCase().includes(normalizedSearch);
                 const subtaskMatch = Array.isArray(task.subtasks) && task.subtasks.some(sub => sub.text.toLowerCase().includes(normalizedSearch));
@@ -489,12 +506,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (filteredTasks.length === 0) {
-            // Show no tasks match message
             const noTasksMessage = document.createElement("div");
             noTasksMessage.classList.add("no-tasks-message");
             noTasksMessage.textContent = "No tasks match your search.";
             DOMElements.inProgressTasksDiv.appendChild(noTasksMessage);
-            DOMElements.completedTasksDiv.appendChild(noTasksMessage.cloneNode(true));
+            // Only add to completed if there's no in-progress message to avoid duplication
+            if (statusFilter === "all" || statusFilter === "completed") {
+                DOMElements.completedTasksDiv.appendChild(noTasksMessage.cloneNode(true));
+            }
             DOMElements.inProgressCountSpan.textContent = "0";
             DOMElements.completedCountSpan.textContent = "0";
             return;
@@ -506,101 +525,98 @@ document.addEventListener("DOMContentLoaded", () => {
             taskCard.dataset.taskId = task.id;
 
             const dateRange =
-                task.startDate && task.endDate
-                    ? `${formatDateForDisplay(task.startDate)} - ${formatDateForDisplay(
+                task.startDate && task.endDate ?
+                `${formatDateForDisplay(task.startDate)} - ${formatDateForDisplay(
                         task.endDate
-                    )}`
-                    : "";
+                    )}` :
+                "";
 
             const progress =
-                Array.isArray(task.subtasks) && task.subtasks.length > 0
-                    ? Math.round(
-                        (task.subtasks.filter((s) => s.completed).length /
-                            task.subtasks.length) *
-                        100
-                    )
-                    : task.progress || 0;
+                Array.isArray(task.subtasks) && task.subtasks.length > 0 ?
+                Math.round(
+                    (task.subtasks.filter((s) => s.completed).length /
+                        task.subtasks.length) *
+                    100
+                ) :
+                task.progress || 0;
 
-            const priorityLabel = task.priority
-                ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1)
-                : "Normal";
+            const priorityLabel = task.priority ?
+                task.priority.charAt(0).toUpperCase() + task.priority.slice(1) :
+                "Normal";
 
-            const commentCount = Array.isArray(task.comments)
-                ? task.comments.length
-                : 0;
-            const attachmentCount = Array.isArray(task.attachments)
-                ? task.attachments.length
-                : 0;
+            const commentCount = Array.isArray(task.comments) ?
+                task.comments.length :
+                0;
+            const attachmentCount = Array.isArray(task.attachments) ?
+                task.attachments.length :
+                0;
 
-            // Determine progress bar color based on progress
             let progressBarColor = "#007bff"; // default blue
             if (progress === 100) {
                 progressBarColor = "#28a745"; // green for completed
             }
 
             taskCard.innerHTML = `
-<div class="task-menu" data-task-id="${task.id}">&#8942;</div>
-<div class="task-menu-dropdown" style="display: none;">
-<button class="edit-task-button" data-task-id="${task.id}">Edit Tugas</button>
-<button class="delete-task-button" data-task-id="${task.id}">Hapus Tugas</button>
-</div>
+                <div class="task-menu" data-task-id="${task.id}">&#8942;</div>
+                <div class="task-menu-dropdown" style="display: none;">
+                    <button class="edit-task-button" data-task-id="${task.id}">Edit Tugas</button>
+                    <button class="delete-task-button" data-task-id="${task.id}">Hapus Tugas</button>
+                </div>
 
-<h4>${task.title}</h4>
-<p class="task-date-range">${dateRange}</p>
+                <h4>${task.title}</h4>
+                <p class="task-date-range">${dateRange}</p>
 
-<div class="task-card-subtasks">
-<ul>
-${(task.subtasks || [])
-                    .map(
-                        (sub) => `
-<li>
-<input type="checkbox" data-task-id="${task.id}" data-subtask-id="${sub.id}" ${sub.completed ? "checked" : ""}
-                            }>
-<label>${sub.text}</label>
-</li>
-`
-                    )
-                    .join("")}
-</ul>
-<div style="display: flex; justify-content: space-between; align-items: center;">
-    <button class="add-subtask-button" data-task-id="${task.id}">
-        <i class='bx bx-plus-medical'></i>
-        Add Subtask
-    </button>
-    <span class="priority-label ${task.priority ? task.priority.toLowerCase() : 'medium'}">
-        ${priorityLabel}
-    </span>
-</div>
-</div>
+                <div class="task-card-subtasks">
+                    <ul>
+                        ${(task.subtasks || [])
+                            .map(
+                                (sub) => `
+                            <li>
+                                <input type="checkbox" data-task-id="${task.id}" data-subtask-id="${sub.id}" ${sub.completed ? "checked" : ""}>
+                                <label>${sub.text}</label>
+                            </li>
+                        `
+                            )
+                            .join("")}
+                    </ul>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <button class="add-subtask-button" data-task-id="${task.id}">
+                            <i class='bx bx-plus-medical'></i>
+                            Add Subtask
+                        </button>
+                        <span class="priority-label ${task.priority ? task.priority.toLowerCase() : 'medium'}">
+                            ${priorityLabel}
+                        </span>
+                    </div>
+                </div>
 
-<div class="task-card-progress">
-<div class="progress-info">
-<span>Progress</span>
-<span>${progress}%</span>
-</div>
-<div class="progress-bar-container">
-  <div class="progress-bar-fill" style="width: ${progress}%; background-color: ${progressBarColor};"></div>
-</div>
-</div>
+                <div class="task-card-progress">
+                    <div class="progress-info">
+                        <span>Progress</span>
+                        <span>${progress}%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" style="width: ${progress}%; background-color: ${progressBarColor};"></div>
+                    </div>
+                </div>
 
-<div class="task-card-footer-meta">
-<div class="avatar-group">
-${(task.avatars || [])
-                    .map(
-                        (avatar) => `
-<img src="https://randomuser.me/api/portraits/${avatar}.jpg" alt="User">
-`
-                    )
-                    .join("")}
-</div>
-<div class="task-meta-icons">
-<i class='bx bx-message-rounded-dots'></i> ${commentCount}
-<i class='bx bx-paperclip'></i> ${attachmentCount}
-</div>
-</div>
-`;
+                <div class="task-card-footer-meta">
+                    <div class="avatar-group">
+                        ${(task.avatars || [])
+                            .map(
+                                (avatar) => `
+                            <img src="https://randomuser.me/api/portraits/${avatar}.jpg" alt="User">
+                        `
+                            )
+                            .join("")}
+                    </div>
+                    <div class="task-meta-icons">
+                        <i class='bx bx-message-rounded-dots'></i> ${commentCount}
+                        <i class='bx bx-paperclip'></i> ${attachmentCount}
+                    </div>
+                </div>
+            `;
 
-            // Masukkan ke kolom sesuai status
             if (task.status === "completed") {
                 DOMElements.completedTasksDiv.appendChild(taskCard);
                 completedCount++;
@@ -608,195 +624,28 @@ ${(task.avatars || [])
                 DOMElements.inProgressTasksDiv.appendChild(taskCard);
                 inProgressCount++;
             }
-
-            // Pasang event listener titik tiga
-            const menuBtn = taskCard.querySelector(".task-menu");
-            const dropdown = taskCard.querySelector(".task-menu-dropdown");
-            if (menuBtn && dropdown) {
-                menuBtn.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    dropdown.style.display =
-                        dropdown.style.display === "none" ? "flex" : "none";
-                });
-            }
-
-            // Edit
-            const editBtn = taskCard.querySelector(".edit-task-button");
-            if (editBtn) {
-                editBtn.addEventListener("click", () => {
-                    const id = parseInt(editBtn.dataset.taskId);
-                    const taskToEdit = tasks.find((t) => t.id === id);
-                    if (taskToEdit) openEditTaskModal(taskToEdit);
-                    dropdown.style.display = "none";
-                });
-            }
-
-            // Delete
-            const deleteBtn = taskCard.querySelector(".delete-task-button");
-            if (deleteBtn) {
-                deleteBtn.addEventListener("click", () => {
-                    const id = parseInt(deleteBtn.dataset.taskId);
-                    if (confirm("Yakin ingin menghapus tugas ini?")) {
-                        tasks = tasks.filter((t) => t.id !== id);
-                        setStorage("tasks", tasks);
-                        renderTasks();
-                    }
-                    dropdown.style.display = "none";
-                });
-            }
-
-            // Subtask checkbox
-            taskCard
-                .querySelectorAll('input[type="checkbox"][data-subtask-id]')
-                .forEach((cb) => {
-                    cb.addEventListener("change", (e) => {
-                        const taskId = parseInt(cb.dataset.taskId);
-                        const subtaskId = parseInt(cb.dataset.subtaskId);
-                        const task = tasks.find((t) => t.id === taskId);
-                        if (!task) return;
-
-                        const subtask = task.subtasks.find((s) => s.id === subtaskId);
-                        if (subtask) subtask.completed = cb.checked;
-
-                        const total = task.subtasks.length;
-                        const done = task.subtasks.filter((s) => s.completed).length;
-
-                        task.progress = total > 0 ? Math.round((done / total) * 100) : 0;
-                        task.status = task.progress === 100 ? "completed" : "in-progress";
-
-                        setStorage("tasks", tasks);
-                        renderTasks();
-                    });
-                });
-
-            // Add Subtask
-            const addSubtaskBtn = taskCard.querySelector(".add-subtask-button");
-            if (addSubtaskBtn) {
-            addSubtaskBtn.addEventListener("click", () => {
-                addSubtaskBtn.style.display = "none"; // Hide the button when showing the form
-
-                const input = document.createElement("input");
-                input.type = "text";
-                input.placeholder = "Subtask name";
-                input.classList.add("new-subtask-input-field");
-
-                const saveBtn = document.createElement("button");
-                saveBtn.textContent = "Add";
-                saveBtn.classList.add("new-subtask-add-button");
-
-                const cancelBtn = document.createElement("button");
-                cancelBtn.textContent = "Cancel";
-                cancelBtn.classList.add("new-subtask-cancel-button");
-
-                const container = document.createElement("div");
-                container.classList.add("new-subtask-input-container");
-
-                container.appendChild(input);
-                container.appendChild(saveBtn);
-                container.appendChild(cancelBtn);
-
-                addSubtaskBtn.parentElement.insertBefore(container, addSubtaskBtn);
-
-                const showButtonAgain = () => {
-                    addSubtaskBtn.style.display = "flex"; // Show the button again
-                    container.remove();
-                };
-
-                saveBtn.addEventListener("click", () => {
-                    const id = parseInt(addSubtaskBtn.dataset.taskId);
-                    const task = tasks.find((t) => t.id === id);
-                    if (!task || !input.value.trim()) return;
-
-                    const newSubtask = {
-                        id: getNextId(task.subtasks),
-                        text: input.value.trim(),
-                        completed: false,
-                    };
-                    task.subtasks.push(newSubtask);
-                    setStorage("tasks", tasks);
-                    renderTasks();
-                    showButtonAgain();
-                });
-
-                cancelBtn.addEventListener("click", () => {
-                    showButtonAgain();
-                });
-            });
-            }
         });
 
         DOMElements.inProgressCountSpan.textContent = inProgressCount;
         DOMElements.completedCountSpan.textContent = completedCount;
+
+        // Re-attach listeners after rendering tasks
+        attachTaskListeners();
     };
 
-    // Handler for edit button click
-    const handleEditButtonClick = (e) => {
-        console.log("Edit button clicked");
-        e.stopPropagation();
-        const button = e.target.closest("button[data-task-id]");
-        const taskIdStr = button ? button.dataset.taskId : null;
-        console.log("Edit button clicked, dataset.taskId:", taskIdStr);
-        const taskId = taskIdStr ? parseInt(taskIdStr) : NaN;
-        console.log("Parsed taskId:", taskId);
-        if (!isNaN(taskId)) {
-            const task = tasks.find((t) => t.id === taskId);
-            if (task) {
-                openEditTaskModal(task);
-            } else {
-                console.error("Tugas tidak ditemukan untuk diedit:", taskId);
-            }
-        } else {
-            console.error("ID tugas tidak valid untuk diedit:", taskIdStr);
-        }
-        // Close dropdown menu after click edit
-        if (button) {
-            const dropdown = button.closest(".task-menu-dropdown");
-            if (dropdown) dropdown.style.display = "none";
-        }
-    };
-
-    // Handler for delete button click
-    const handleDeleteButtonClick = (e) => {
-        console.log("Delete button clicked");
-        e.stopPropagation();
-        const button = e.target.closest("button[data-task-id]");
-        const taskIdStr = button ? button.dataset.taskId : null;
-        console.log("Delete button clicked, dataset.taskId:", taskIdStr);
-        const taskId = taskIdStr ? parseInt(taskIdStr) : NaN;
-        console.log("Parsed taskId:", taskId);
-        if (!isNaN(taskId)) {
-            if (confirm("Apakah Anda yakin ingin menghapus tugas ini?")) {
-                const taskIndex = tasks.findIndex((t) => t.id === taskId);
-                if (taskIndex !== -1) {
-                    tasks.splice(taskIndex, 1);
-                    setStorage("tasks", tasks);
-                    renderTasks();
-                    alert("Tugas berhasil dihapus!");
-                } else {
-                    console.error("Tugas tidak ditemukan untuk dihapus:", taskId);
-                }
-            }
-        } else {
-            console.error("ID tugas tidak valid untuk dihapus:", taskIdStr);
-        }
-        // Close dropdown menu after click delete
-        if (button) {
-            const dropdown = button.closest(".task-menu-dropdown");
-            if (dropdown) dropdown.style.display = "none";
-        }
-    };
-
-    // Render kalender
+    // Render calendar
     const renderCalendar = (date) => {
         if (!DOMElements.currentMonthYearHeader || !DOMElements.calendarGridEl)
             return;
         DOMElements.currentMonthYearHeader.textContent = date.toLocaleString(
-            "id-ID",
-            { month: "long", year: "numeric" }
+            "id-ID", {
+                month: "long",
+                year: "numeric"
+            }
         );
         DOMElements.calendarGridEl.innerHTML = "";
 
-        const weekdays = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"]; // Sesuaikan dengan bahasa Indonesia
+        const weekdays = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"]; // Indonesian weekdays
         weekdays.forEach((day) => {
             const weekdayEl = document.createElement("div");
             weekdayEl.classList.add("calendar-weekday");
@@ -808,7 +657,7 @@ ${(task.avatars || [])
         const month = date.getMonth();
 
         const firstDayOfMonth = new Date(year, month, 1).getDay();
-        const startDayIndex = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1; // Senin sebagai hari pertama
+        const startDayIndex = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1; // Monday as first day
 
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -818,62 +667,42 @@ ${(task.avatars || [])
             DOMElements.calendarGridEl.appendChild(emptyDay);
         }
 
-    // Helper function to get local YYYY-MM-DD date string without timezone shift
-    function getLocalDateString(date) {
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        return `${year}-${month}-${day}`;
-    }
+        const today = new Date(); // Get current date for "today" highlighting
 
-    // Helper function to compare two dates by year, month, and day
-    const isSameDate = (d1, d2) =>
-        d1.getFullYear() === d2.getFullYear() &&
-        d1.getMonth() === d2.getMonth() &&
-        d1.getDate() === d2.getDate();
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement("div");
+            dayElement.classList.add("calendar-day");
+            dayElement.textContent = day;
 
-    // Use the passed date parameter as "today" for consistent highlighting
-    const today = date;
+            const currentDate = new Date(year, month, day);
+            const currentDayDateString = getLocalDateString(currentDate);
 
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dayElement = document.createElement("div");
-        dayElement.classList.add("calendar-day");
-        dayElement.textContent = day;
+            if (isSameDate(currentDate, today)) {
+                const dotIndicator = document.createElement("span");
+                dotIndicator.classList.add("today-dot-indicator");
+                dayElement.appendChild(dotIndicator);
+                dayElement.classList.add("today-highlight");
+            }
 
-        const currentDate = new Date(year, month, day);
-        const currentDayDateString = getLocalDateString(currentDate);
+            const hasSchedule = schedules.some(
+                (s) => s.date && getLocalDateString(new Date(s.date)) === currentDayDateString
+            );
+            if (hasSchedule) {
+                dayElement.classList.add("highlighted");
+            }
 
-        const todayDateString = getLocalDateString(today);
-        const hasSchedule = schedules.some(
-            (s) => s.date && getLocalDateString(new Date(s.date)) === currentDayDateString
-        );
-
-        if (isSameDate(currentDate, today)) {
-            // Add dot indicator span for today
-            const dotIndicator = document.createElement("span");
-            dotIndicator.classList.add("today-dot-indicator");
-            dayElement.appendChild(dotIndicator);
-            // Add highlight class for today date background color
-            dayElement.classList.add("today-highlight");
+            DOMElements.calendarGridEl.appendChild(dayElement);
         }
-
-        if (hasSchedule) {
-            dayElement.classList.add("highlighted");
-        }
-
-        DOMElements.calendarGridEl.appendChild(dayElement);
-    }
     };
 
-    // Render jadwal hari ini
+    // Render today's schedule
     const renderTodaySchedule = (date) => {
         if (!DOMElements.todayScheduleList) return;
         DOMElements.todayScheduleList.innerHTML = "";
-        const todayDateString = date.toISOString().split("T")[0];
-        // Reload schedules from localStorage to get latest updates
-        schedules = getStorage("schedules");
+        const todayDateString = getLocalDateString(date); // Use getLocalDateString for consistency
+        schedules = getStorage("schedules"); // Reload schedules to get latest updates
         const relevantSchedules = schedules.filter(
-            (s) => s.date && s.date.split("T")[0] === todayDateString
+            (s) => s.date && getLocalDateString(new Date(s.date)) === todayDateString
         );
 
         if (relevantSchedules.length === 0) {
@@ -886,31 +715,26 @@ ${(task.avatars || [])
             const scheduleItem = document.createElement("div");
             scheduleItem.classList.add("schedule-item");
             scheduleItem.innerHTML = `
-                <div class="schedule-item-indicator ${schedule.statusColor
-                }"></div>
+                <div class="schedule-item-indicator ${schedule.statusColor}"></div>
                 <div class="schedule-item-content">
                     <h4>${schedule.title}</h4>
-                    <p>${schedule.description ? schedule.description : (schedule.desc ? schedule.desc : '')}</p>
+                    <p>${schedule.description || schedule.desc || ''}</p>
                     <div class="schedule-item-time">
                         <i class='bx bx-time'></i>
-                        ${schedule.startTime ? schedule.startTime : (schedule.time ? schedule.time.split(' - ')[0] : 'undefined')} - ${schedule.endTime ? schedule.endTime : (schedule.time ? schedule.time.split(' - ')[1] : 'undefined')}
+                        ${schedule.startTime || (schedule.time ? schedule.time.split(' - ')[0] : 'undefined')} - ${schedule.endTime || (schedule.time ? schedule.time.split(' - ')[1] : 'undefined')}
                     </div>
                 </div>
                 <div class="schedule-item-actions">
-                    <div class="checkbox-container ${schedule.completed ? "checked" : ""
-                }" data-schedule-id="${schedule.id}">
+                    <div class="checkbox-container ${schedule.completed ? "checked" : ""}" data-schedule-id="${schedule.id}">
                         <i class='bx bx-check'></i>
                     </div>
                     <div class="avatar-group">
-                        ${(Array.isArray(schedule.avatars)
-                    ? schedule.avatars
-                    : []
-                )
-                    .map(
-                        (avatar) =>
-                            `<img src="https://randomuser.me/api/portraits/${avatar}.jpg" alt="User Avatar">`
-                    )
-                    .join("")}
+                        ${(Array.isArray(schedule.avatars) ? schedule.avatars : [])
+                            .map(
+                                (avatar) =>
+                                    `<img src="https://randomuser.me/api/portraits/${avatar}.jpg" alt="User Avatar">`
+                            )
+                            .join("")}
                     </div>
                 </div>
             `;
@@ -918,7 +742,7 @@ ${(task.avatars || [])
         });
     };
 
-    // Mengisi dropdown pilihan tim
+    // Populate team selection dropdown
     const populateChooseTeamSelect = () => {
         if (!DOMElements.chooseTeamSelect) return;
         DOMElements.chooseTeamSelect.innerHTML = "";
@@ -929,17 +753,17 @@ ${(task.avatars || [])
             DOMElements.chooseTeamSelect.appendChild(option);
         });
         if (teams.length > 0) {
-            // Pastikan nilai yang dipilih tetap ada jika tim yang dipilih masih ada
+            // Ensure the selected value remains if the chosen team still exists
             if (
                 !DOMElements.chooseTeamSelect.value ||
                 !teams.some((team) => team.id === DOMElements.chooseTeamSelect.value)
             ) {
-                DOMElements.chooseTeamSelect.value = teams[0].id; // Pilih tim pertama jika tidak ada yang dipilih
+                DOMElements.chooseTeamSelect.value = teams[0].id; // Select first team if none is selected
             }
         }
     };
 
-    // Memperbarui tampilan tanggal pada input
+    // Update date display on input fields
     const updateDateDisplay = (displayEl, hiddenEl) => {
         if (!displayEl || !hiddenEl) return;
         displayEl.value = formatDateForDisplay(hiddenEl.value);
@@ -960,8 +784,8 @@ ${(task.avatars || [])
     // --- 5. Modal Management Functions ---
 
     /**
-     * Mereset modal tambah/edit tugas ke mode "Tambah Tugas" awal.
-     * Membersihkan bidang formulir, mereset toggle tampilan, dan memperbarui judul/tombol modal.
+     * Resets the add/edit task modal to initial "Add New Task" mode.
+     * Clears form fields, resets display toggles, and updates modal title/button.
      */
     const resetModalToAddMode = () => {
         if (DOMElements.modalTitle)
@@ -984,8 +808,8 @@ ${(task.avatars || [])
     };
 
     /**
-     * Membuka modal tambah/edit tugas dan mengisi formulir untuk mengedit tugas yang sudah ada.
-     * @param {Object} task Objek tugas yang akan diedit.
+     * Opens the add/edit task modal and populates the form for editing an existing task.
+     * @param {Object} task The task object to be edited.
      */
     const openEditTaskModal = (task) => {
         if (!DOMElements.addTaskModalOverlay || !DOMElements.addTaskForm) return;
@@ -997,13 +821,13 @@ ${(task.avatars || [])
 
         DOMElements.addTaskModalOverlay.style.display = "flex";
 
-        // Mengisi bidang formulir dengan data tugas
+        // Fill form fields with task data
         document.getElementById("taskTitle").value = task.title || "";
         document.getElementById("description").value = task.description || "";
         if (DOMElements.descriptionInputArea) {
-            DOMElements.descriptionInputArea.style.display = task.description
-                ? "block"
-                : "none";
+            DOMElements.descriptionInputArea.style.display = task.description ?
+                "block" :
+                "none";
         }
 
         if (DOMElements.chooseTeamSelect) {
@@ -1024,33 +848,32 @@ ${(task.avatars || [])
         if (DOMElements.prioritySelect)
             DOMElements.prioritySelect.value = task.priority || "normal";
 
-        // Perbarui tampilan tanggal
-        updateDateDisplay(DOMElements.startDateDisplay, DOMElements.startDateInput);
-        updateDateDisplay(DOMElements.endDateDisplay, DOMElements.endDateInput);
-
         if (DOMElements.attachmentInput) DOMElements.attachmentInput.value = "";
         if (DOMElements.attachmentFileNameDisplay)
             DOMElements.attachmentFileNameDisplay.textContent =
-                task.attachmentFile || "";
+            task.attachmentFile || "";
 
         DOMElements.addTaskForm.dataset.editingTaskId = task.id;
+
+        // Update date displays
+        updateDateDisplay(DOMElements.startDateDisplay, DOMElements.startDateInput);
+        updateDateDisplay(DOMElements.endDateDisplay, DOMElements.endDateInput);
     };
 
     // --- 6. Event Handlers ---
 
-    // Handler untuk menambahkan subtask
+    // Handler for adding a subtask
     const handleAddSubtaskClick = (e) => {
-        console.log("Add Subtask button clicked");
         const addSubtaskBtn = e.currentTarget;
         const taskId = parseInt(addSubtaskBtn.dataset.taskId);
         const task = tasks.find((t) => t.id === taskId);
 
         if (task) {
-            const existingInput = addSubtaskBtn.parentElement.querySelector(
+            const existingInputContainer = addSubtaskBtn.parentElement.querySelector(
                 ".new-subtask-input-container"
             );
-            if (existingInput) {
-                existingInput.querySelector("input").focus();
+            if (existingInputContainer) {
+                existingInputContainer.querySelector("input").focus();
                 return;
             }
 
@@ -1125,164 +948,7 @@ ${(task.avatars || [])
         }
     };
 
-    // Fungsi untuk memasang semua event listener terkait tugas
-    const attachTaskListeners = () => {
-        // Hapus listener sebelumnya untuk mencegah duplikasi (delegasi yang lebih baik)
-        if (DOMElements.tasksListContainer) {
-            // Event listener untuk menu titik tiga, edit, delete, dan status button
-            // Menggunakan event delegation pada tasksListContainer
-            DOMElements.tasksListContainer.removeEventListener(
-                "click",
-                handleTasksListContainerClick
-            );
-            DOMElements.tasksListContainer.addEventListener(
-                "click",
-                handleTasksListContainerClick
-            );
-        }
-
-        // Event listener untuk tombol "Add Subtask"
-        document.querySelectorAll(".add-subtask-button").forEach((button) => {
-            button.removeEventListener("click", handleAddSubtaskClick); // Pastikan tidak ada duplikat
-            button.addEventListener("click", handleAddSubtaskClick);
-        });
-
-        // Event listener untuk checkbox subtask
-        document
-            .querySelectorAll('input[type="checkbox"][data-subtask-id]')
-            .forEach((checkbox) => {
-                checkbox.removeEventListener("change", handleSubtaskCheckboxChange);
-                checkbox.addEventListener("change", handleSubtaskCheckboxChange);
-            });
-    };
-
-    // Handler umum untuk klik di dalam tasksListContainer
-    const handleTasksListContainerClick = (e) => {
-        // Ignore clicks on edit or delete buttons since they have direct event listeners
-        if (
-            e.target.closest(".edit-task-button") ||
-            e.target.closest(".delete-task-button")
-        ) {
-            return;
-        }
-
-        // Klik tombol status tugas
-        const statusButton = e.target.closest(".task-status-button");
-        if (statusButton) {
-            const taskId = parseInt(statusButton.dataset.taskId);
-            const task = tasks.find((t) => t.id === taskId);
-            if (task) {
-                const action = statusButton.dataset.action;
-                if (action === "mark-as-done-task") {
-                    task.status = "completed";
-                    task.progress = 100;
-                    setStorage("tasks", tasks);
-                    renderTasks();
-                    alert(`Tugas "${task.title}" ditandai selesai!`);
-                } else if (action === "add-or-create-task") {
-                    const detail = prompt(
-                        `Masukkan detail atau konten untuk "${task.title}":`
-                    );
-                    if (detail !== null) {
-                        alert(
-                            `Detail untuk "${task.title}": "${detail}" (Tidak disimpan, aksi placeholder)`
-                        );
-                    }
-                }
-            }
-            return;
-        }
-
-        // Klik menu titik tiga
-        const menuButton = e.target.closest(".task-menu");
-        if (menuButton) {
-            e.stopPropagation(); // Mencegah event bubbling yang akan menutup dropdown
-            const dropdown = menuButton.nextElementSibling;
-            if (dropdown && dropdown.classList.contains("task-menu-dropdown")) {
-                // Tutup semua dropdown lain sebelum membuka yang ini
-                document.querySelectorAll(".task-menu-dropdown").forEach((dd) => {
-                    if (dd !== dropdown) dd.style.display = "none";
-                });
-                dropdown.style.display =
-                    dropdown.style.display === "flex" ? "none" : "flex";
-            }
-            return;
-        }
-
-        // Klik tombol Edit Tugas
-        let editButton = e.target.closest(".edit-task-button");
-        console.log("Clicked element:", e.target);
-        console.log("Found editButton:", editButton);
-        if (!editButton && e.target.dataset && e.target.dataset.taskId) {
-            // If no closest editButton found, but event target has data-task-id, use event target
-            editButton = e.target;
-            console.log("Using event target as editButton:", editButton);
-        }
-        if (editButton) {
-            // If the clicked element is inside the button but not the button itself, find the button parent
-            if (!editButton.dataset || !editButton.dataset.taskId) {
-                editButton = editButton.closest("button[data-task-id]");
-            }
-            const taskIdStr =
-                editButton && editButton.dataset ? editButton.dataset.taskId : null;
-            console.log("editButton dataset.taskId:", taskIdStr);
-            const taskId = taskIdStr ? parseInt(taskIdStr) : NaN;
-            if (!isNaN(taskId)) {
-                // Perbaikan: Pastikan taskId adalah angka
-                const task = tasks.find((t) => t.id === taskId);
-                if (task) {
-                    openEditTaskModal(task);
-                } else {
-                    console.error("Tugas tidak ditemukan untuk diedit:", taskId);
-                }
-            } else {
-                console.error("ID tugas tidak valid untuk diedit:", taskIdStr);
-            }
-            // Tutup dropdown menu setelah klik edit
-            const dropdown = editButton.closest(".task-menu-dropdown");
-            if (dropdown) dropdown.style.display = "none";
-            return;
-        }
-
-        // Klik tombol Hapus Tugas
-        let deleteButton = e.target.closest(".delete-task-button");
-        console.log("Clicked element:", e.target);
-        console.log("Found deleteButton:", deleteButton);
-        if (deleteButton) {
-            // If the clicked element is inside the button but not the button itself, find the button parent
-            if (!deleteButton.dataset || !deleteButton.dataset.taskId) {
-                deleteButton = deleteButton.closest("button[data-task-id]");
-            }
-            const taskIdStr =
-                deleteButton && deleteButton.dataset
-                    ? deleteButton.dataset.taskId
-                    : null;
-            console.log("deleteButton dataset.taskId:", taskIdStr);
-            const taskId = taskIdStr ? parseInt(taskIdStr) : NaN;
-            if (!isNaN(taskId)) {
-                // Perbaikan: Pastikan taskId adalah angka
-                if (confirm("Apakah Anda yakin ingin menghapus tugas ini?")) {
-                    const taskIndex = tasks.findIndex((t) => t.id === taskId);
-                    if (taskIndex !== -1) {
-                        tasks.splice(taskIndex, 1);
-                        setStorage("tasks", tasks);
-                        renderTasks();
-                        alert("Tugas berhasil dihapus!");
-                    } else {
-                        console.error("Tugas tidak ditemukan untuk dihapus:", taskId);
-                    }
-                }
-            } else {
-                console.error("ID tugas tidak valid untuk dihapus:", taskIdStr);
-            }
-            // Tutup dropdown menu setelah klik delete
-            const dropdown = deleteButton.closest(".task-menu-dropdown");
-            if (dropdown) dropdown.style.display = "none";
-            return;
-        }
-    };
-
-    // Handler untuk perubahan checkbox subtask
+    // Handler for subtask checkbox change
     const handleSubtaskCheckboxChange = (e) => {
         const subtaskCheckbox = e.currentTarget;
         const taskId = parseInt(subtaskCheckbox.dataset.taskId);
@@ -1318,12 +984,95 @@ ${(task.avatars || [])
         }
     };
 
+    // General handler for clicks within tasksListContainer (event delegation)
+    const handleTasksListContainerClick = (e) => {
+        const target = e.target;
+
+        // Task Menu (three dots)
+        const menuButton = target.closest(".task-menu");
+        if (menuButton) {
+            e.stopPropagation();
+            const dropdown = menuButton.nextElementSibling;
+            if (dropdown && dropdown.classList.contains("task-menu-dropdown")) {
+                document.querySelectorAll(".task-menu-dropdown").forEach((dd) => {
+                    if (dd !== dropdown) dd.style.display = "none";
+                });
+                dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+            }
+            return;
+        }
+
+        // Edit Task button
+        const editButton = target.closest(".edit-task-button");
+        if (editButton) {
+            const taskId = parseInt(editButton.dataset.taskId);
+            const taskToEdit = tasks.find((t) => t.id === taskId);
+            if (taskToEdit) openEditTaskModal(taskToEdit);
+            const dropdown = editButton.closest(".task-menu-dropdown");
+            if (dropdown) dropdown.style.display = "none";
+            return;
+        }
+
+        // Delete Task button
+        const deleteButton = target.closest(".delete-task-button");
+        if (deleteButton) {
+            const taskId = parseInt(deleteButton.dataset.taskId);
+            if (confirm("Yakin ingin menghapus tugas ini?")) {
+                tasks = tasks.filter((t) => t.id !== taskId);
+                setStorage("tasks", tasks);
+                renderTasks();
+                alert("Tugas berhasil dihapus!");
+            }
+            const dropdown = deleteButton.closest(".task-menu-dropdown");
+            if (dropdown) dropdown.style.display = "none";
+            return;
+        }
+
+        // Add Subtask button
+        const addSubtaskButton = target.closest(".add-subtask-button");
+        if (addSubtaskButton) {
+            handleAddSubtaskClick(e); // Delegate to the specific handler
+            return;
+        }
+
+        // Subtask checkbox
+        const subtaskCheckbox = target.closest('input[type="checkbox"][data-subtask-id]');
+        if (subtaskCheckbox) {
+            handleSubtaskCheckboxChange(e); // Delegate to the specific handler
+            return;
+        }
+    };
+
+    // Function to attach all task-related event listeners (using delegation where possible)
+    const attachTaskListeners = () => {
+        // Clear previous listeners to prevent duplication (better delegation)
+        if (DOMElements.tasksListContainer) {
+            DOMElements.tasksListContainer.removeEventListener(
+                "click",
+                handleTasksListContainerClick
+            );
+            DOMElements.tasksListContainer.addEventListener(
+                "click",
+                handleTasksListContainerClick
+            );
+        }
+    };
+
     // --- 7. Initialize All Event Listeners ---
 
-    // Toggle menu seluler
+    // Toggle mobile menu
     if (DOMElements.mobileMenuToggle && DOMElements.dashboardContainer) {
         DOMElements.mobileMenuToggle.addEventListener("click", () => {
             DOMElements.dashboardContainer.classList.toggle("sidebar-open");
+        });
+    }
+
+    // Real-time search input event listener
+    const taskSearchInput = document.getElementById("taskSearchInput");
+    if (taskSearchInput) {
+        taskSearchInput.addEventListener("input", (e) => {
+            const searchValue = e.target.value;
+            renderTasks(searchValue);
         });
     }
 
@@ -1335,14 +1084,14 @@ ${(task.avatars || [])
         });
     }
 
-    // Overlay sidebar (klik untuk menutup)
+    // Overlay sidebar (click to close)
     if (DOMElements.sidebarOverlay && DOMElements.dashboardContainer) {
         DOMElements.sidebarOverlay.addEventListener("click", () => {
             DOMElements.dashboardContainer.classList.remove("sidebar-open");
         });
     }
 
-    // Tombol navigasi proyek (placeholder)
+    // Project navigation buttons (placeholder)
     if (DOMElements.prevProjectBtn)
         DOMElements.prevProjectBtn.addEventListener("click", () =>
             alert("Proyek Sebelumnya (fungsi belum diimplementasikan)")
@@ -1352,7 +1101,7 @@ ${(task.avatars || [])
             alert("Proyek Berikutnya (fungsi belum diimplementasikan)")
         );
 
-    // Buka modal tambah tugas
+    // Open add task modal
     if (DOMElements.addTaskButton && DOMElements.addTaskModalOverlay) {
         DOMElements.addTaskButton.addEventListener("click", () => {
             resetModalToAddMode();
@@ -1363,7 +1112,7 @@ ${(task.avatars || [])
         });
     }
 
-    // Tutup modal tambah tugas
+    // Close add task modal
     if (DOMElements.addTaskModalCloseButton && DOMElements.addTaskModalOverlay) {
         DOMElements.addTaskModalCloseButton.addEventListener("click", () => {
             DOMElements.addTaskModalOverlay.style.display = "none";
@@ -1371,7 +1120,7 @@ ${(task.avatars || [])
         });
     }
 
-    // Tutup dropdown menu tugas saat mengklik di luar
+    // Close task dropdown menu when clicking outside
     document.addEventListener("click", (e) => {
         document.querySelectorAll(".task-menu-dropdown").forEach((dd) => {
             const menuButton = dd.previousElementSibling;
@@ -1385,7 +1134,7 @@ ${(task.avatars || [])
         });
     });
 
-    // Submit formulir tambah/edit tugas
+    // Submit add/edit task form
     if (DOMElements.addTaskForm) {
         DOMElements.addTaskForm.addEventListener("submit", (event) => {
             event.preventDefault();
@@ -1400,22 +1149,12 @@ ${(task.avatars || [])
             const assignTo = DOMElements.assignToInput.value;
             const priority = DOMElements.prioritySelect.value;
             const attachmentFile =
-                DOMElements.attachmentInput && DOMElements.attachmentInput.files[0]
-                    ? DOMElements.attachmentInput.files[0].name
-                    : null;
+                DOMElements.attachmentInput && DOMElements.attachmentInput.files[0] ?
+                DOMElements.attachmentInput.files[0].name :
+                null;
 
-            if (
-                !taskTitle ||
-                !chosenTeam ||
-                !startDate ||
-                !startTime ||
-                !endDate ||
-                !endTime ||
-                !assignTo
-            ) {
-                alert(
-                    "Please fill in all required fields: Title, Team, Start/End Date & Time, and Assignee."
-                );
+            if (!taskTitle || !chosenTeam || !startDate || !startTime || !endDate || !endTime || !assignTo) {
+                alert("Please fill in all required fields: Title, Team, Start/End Date & Time, and Assignee.");
                 return;
             }
 
@@ -1436,7 +1175,7 @@ ${(task.avatars || [])
                     task.endTime = endTime;
                     task.assignTo = assignTo;
                     task.priority = priority;
-                    if (attachmentFile) task.attachmentFile = attachmentFile; // Hanya perbarui jika ada file baru
+                    if (attachmentFile) task.attachmentFile = attachmentFile; // Only update if there's a new file
                     setStorage("tasks", tasks);
                     alert("Task updated successfully!");
                 } else {
@@ -1467,22 +1206,21 @@ ${(task.avatars || [])
                 setStorage("tasks", tasks);
                 alert("Task added successfully!");
                 // Reset priority filter to 'all' to ensure new task is visible
-                const priorityFilterSelect = document.getElementById("priorityFilterSelect");
-                if (priorityFilterSelect) {
-                    priorityFilterSelect.value = "all";
-                    priorityFilterSelect.style.backgroundColor = "";
-                    priorityFilterSelect.title = "";
+                if (DOMElements.priorityFilterSelect) {
+                    DOMElements.priorityFilterSelect.value = "all";
+                    DOMElements.priorityFilterSelect.style.backgroundColor = "";
+                    DOMElements.priorityFilterSelect.title = "";
                     localStorage.setItem("priorityFilter", "all");
                 }
             }
 
             DOMElements.addTaskModalOverlay.style.display = "none";
             resetModalToAddMode();
-            renderTasks(); // Render ulang tugas setelah penambahan/pengeditan
+            renderTasks(); // Re-render tasks after add/edit
         });
     }
 
-    // Filter status tugas
+    // Task status filter
     if (DOMElements.taskStatusFilterSelect) {
         DOMElements.taskStatusFilterSelect.addEventListener("change", () => {
             renderTasks();
@@ -1494,39 +1232,38 @@ ${(task.avatars || [])
         if (savedStatusFilter) {
             DOMElements.taskStatusFilterSelect.value = savedStatusFilter;
         } else {
-            // Set default status filter to "in-progress" if no saved value
-            DOMElements.taskStatusFilterSelect.value = "in-progress";
+            // Set default status filter to "all" (show all) if no saved value
+            DOMElements.taskStatusFilterSelect.value = "all";
         }
     }
 
     // Priority filter dropdown
-    const priorityFilterSelect = document.getElementById("priorityFilterSelect");
-    if (priorityFilterSelect) {
-        priorityFilterSelect.addEventListener("change", () => {
+    if (DOMElements.priorityFilterSelect) {
+        DOMElements.priorityFilterSelect.addEventListener("change", () => {
             renderTasks();
             // Save priority filter state to localStorage
-            localStorage.setItem("priorityFilter", priorityFilterSelect.value);
+            localStorage.setItem("priorityFilter", DOMElements.priorityFilterSelect.value);
             // Visual feedback for active filter
-            if (priorityFilterSelect.value !== "all") {
-                priorityFilterSelect.style.backgroundColor = "#d0e6ff"; // light blue
-                priorityFilterSelect.title = `Filtered by: ${priorityFilterSelect.options[priorityFilterSelect.selectedIndex].text}`;
+            if (DOMElements.priorityFilterSelect.value !== "all") {
+                DOMElements.priorityFilterSelect.style.backgroundColor = "#d0e6ff"; // light blue
+                DOMElements.priorityFilterSelect.title = `Filtered by: ${DOMElements.priorityFilterSelect.options[DOMElements.priorityFilterSelect.selectedIndex].text}`;
             } else {
-                priorityFilterSelect.style.backgroundColor = "";
-                priorityFilterSelect.title = "";
+                DOMElements.priorityFilterSelect.style.backgroundColor = "";
+                DOMElements.priorityFilterSelect.title = "";
             }
         });
         // Restore priority filter state from localStorage
         const savedPriorityFilter = localStorage.getItem("priorityFilter");
         if (savedPriorityFilter) {
-            priorityFilterSelect.value = savedPriorityFilter;
+            DOMElements.priorityFilterSelect.value = savedPriorityFilter;
             if (savedPriorityFilter !== "all") {
-                priorityFilterSelect.style.backgroundColor = "#d0e6ff";
-                priorityFilterSelect.title = `Filtered by: ${priorityFilterSelect.options[priorityFilterSelect.selectedIndex].text}`;
+                DOMElements.priorityFilterSelect.style.backgroundColor = "#d0e6ff";
+                DOMElements.priorityFilterSelect.title = `Filtered by: ${DOMElements.priorityFilterSelect.options[DOMElements.priorityFilterSelect.selectedIndex].text}`;
             }
         }
     }
 
-    // Tab tugas (Kategori, Anggota) - removed To-do tab handling as per user request
+    // Task tabs (Kategori, Anggota)
     if (DOMElements.tasksTabs) {
         DOMElements.tasksTabs.addEventListener("click", (e) => {
             const clickedButton = e.target.closest("button");
@@ -1537,30 +1274,22 @@ ${(task.avatars || [])
                 clickedButton.classList.add("active");
 
                 const buttonText = clickedButton.textContent.trim();
-                let filterValueFromButton = "";
 
                 if (buttonText.includes("Kategori")) {
-                    filterValueFromButton = "";
                     if (DOMElements.tasksListContainer)
                         DOMElements.tasksListContainer.style.display = "flex";
+                    renderTasks(); // Re-render tasks for "Kategori" tab
                 } else if (buttonText.includes("Anggota")) {
-                    alert(
-                        "Tab Anggota diklik - implementasikan tampilan daftar anggota."
-                    );
+                    alert("Tab Anggota diklik - implementasikan tampilan daftar anggota.");
                     if (DOMElements.tasksListContainer)
                         DOMElements.tasksListContainer.style.display = "none";
                     return;
                 }
-
-                if (DOMElements.taskStatusFilterSelect) {
-                    DOMElements.taskStatusFilterSelect.value = filterValueFromButton;
-                }
-                renderTasks();
             }
         });
     }
 
-    // Navigasi bulan kalender
+    // Calendar month navigation
     if (DOMElements.prevMonthBtn) {
         DOMElements.prevMonthBtn.addEventListener("click", () => {
             currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
@@ -1576,7 +1305,7 @@ ${(task.avatars || [])
         });
     }
 
-    // Centang jadwal selesai
+    // Mark schedule as completed
     if (DOMElements.todayScheduleList) {
         DOMElements.todayScheduleList.addEventListener("click", (e) => {
             const checkboxContainer = e.target.closest(".checkbox-container");
@@ -1592,25 +1321,25 @@ ${(task.avatars || [])
         });
     }
 
-    // Toggle area deskripsi
+    // Toggle description area
     if (DOMElements.addDescriptionToggle) {
-        DOMElements.addDescriptionToggle.addEventListener("click", function () {
+        DOMElements.addDescriptionToggle.addEventListener("click", function() {
             if (DOMElements.descriptionInputArea) {
                 const isHidden =
                     DOMElements.descriptionInputArea.style.display === "none" ||
                     DOMElements.descriptionInputArea.style.display === "";
-                DOMElements.descriptionInputArea.style.display = isHidden
-                    ? "block"
-                    : "none";
+                DOMElements.descriptionInputArea.style.display = isHidden ?
+                    "block" :
+                    "none";
                 if (isHidden && DOMElements.descriptionTextarea)
                     DOMElements.descriptionTextarea.focus();
             }
         });
     }
 
-    // Toggle area input tim baru
+    // Toggle new team input area
     if (DOMElements.chooseTeamToggle) {
-        DOMElements.chooseTeamToggle.addEventListener("click", function () {
+        DOMElements.chooseTeamToggle.addEventListener("click", function() {
             if (DOMElements.teamDisplayDropdown)
                 DOMElements.teamDisplayDropdown.style.display = "none";
             if (DOMElements.teamInputArea) {
@@ -1620,14 +1349,17 @@ ${(task.avatars || [])
         });
     }
 
-    // Tambah tim baru dari modal
+    // Add new team from modal
     if (DOMElements.addTeamButtonModal) {
-        DOMElements.addTeamButtonModal.addEventListener("click", function () {
+        DOMElements.addTeamButtonModal.addEventListener("click", function() {
             const newTeamName = DOMElements.newTeamInput.value.trim();
             if (newTeamName) {
                 const newTeamId = newTeamName.toLowerCase().replace(/\s/g, "-");
                 if (!teams.some((team) => team.id === newTeamId)) {
-                    teams.push({ id: newTeamId, name: newTeamName });
+                    teams.push({
+                        id: newTeamId,
+                        name: newTeamName
+                    });
                     setStorage("teams", teams);
                     populateChooseTeamSelect();
                     DOMElements.chooseTeamSelect.value = newTeamId;
@@ -1646,13 +1378,13 @@ ${(task.avatars || [])
         });
     }
 
-    // Tampilkan nama file lampiran
+    // Display attachment file name
     if (DOMElements.attachmentInput) {
-        DOMElements.attachmentInput.addEventListener("change", function () {
+        DOMElements.attachmentInput.addEventListener("change", function() {
             if (this.files.length > 0) {
                 if (DOMElements.attachmentFileNameDisplay)
                     DOMElements.attachmentFileNameDisplay.textContent =
-                        this.files[0].name;
+                    this.files[0].name;
             } else {
                 if (DOMElements.attachmentFileNameDisplay)
                     DOMElements.attachmentFileNameDisplay.textContent = "";
@@ -1660,7 +1392,7 @@ ${(task.avatars || [])
         });
     }
 
-    // Inisialisasi tampilan tanggal untuk modal (jika ada)
+    // Initialize date displays for modal
     updateDateDisplay(DOMElements.startDateDisplay, DOMElements.startDateInput);
     updateDateDisplay(DOMElements.endDateDisplay, DOMElements.endDateInput);
 
@@ -1674,36 +1406,92 @@ ${(task.avatars || [])
 
     if (inProgressToggle && inProgressTasksDiv) {
         inProgressToggle.addEventListener("click", () => {
-            if (inProgressTasksDiv.classList.contains("collapsed")) {
-                inProgressTasksDiv.classList.remove("collapsed");
-                inProgressToggle.classList.remove("bx-chevron-up");
-                inProgressToggle.classList.add("bx-chevron-down");
-            } else {
-                inProgressTasksDiv.classList.add("collapsed");
-                inProgressToggle.classList.remove("bx-chevron-down");
-                inProgressToggle.classList.add("bx-chevron-up");
-            }
+            inProgressTasksDiv.classList.toggle("collapsed");
+            inProgressToggle.classList.toggle("bx-chevron-up");
+            inProgressToggle.classList.toggle("bx-chevron-down");
         });
     }
 
     if (completedToggle && completedTasksDiv) {
         completedToggle.addEventListener("click", () => {
-            if (completedTasksDiv.classList.contains("collapsed")) {
-                completedTasksDiv.classList.remove("collapsed");
-                completedToggle.classList.remove("bx-chevron-up");
-                completedToggle.classList.add("bx-chevron-down");
-            } else {
-                completedTasksDiv.classList.add("collapsed");
-                completedToggle.classList.remove("bx-chevron-down");
-                completedToggle.classList.add("bx-chevron-up");
-            }
+            completedTasksDiv.classList.toggle("collapsed");
+            completedToggle.classList.toggle("bx-chevron-up");
+            completedToggle.classList.toggle("bx-chevron-down");
         });
     }
 
-    // Panggil fungsi render awal setelah semua disiapkan
+    // Call initial render functions after everything is set up
+    if (DOMElements.taskStatusFilterSelect) {
+        DOMElements.taskStatusFilterSelect.value = localStorage.getItem("taskStatusFilter") || "all";
+    }
     renderProjectSummary();
     renderTasks();
     renderCalendar(currentCalendarDate);
     renderTodaySchedule(currentCalendarDate);
     populateChooseTeamSelect();
+
+    // --- 9. Today Schedule Dropdown Menu Functionality ---
+
+    // Toggle dropdown menu visibility
+    if (DOMElements.todayScheduleMenuButton && DOMElements.todayScheduleDropdown) {
+        DOMElements.todayScheduleMenuButton.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const dropdown = DOMElements.todayScheduleDropdown;
+            if (dropdown.style.display === "none" || dropdown.style.display === "") {
+                dropdown.style.display = "block";
+                updateEditTodayScheduleButtonVisibility();
+            } else {
+                dropdown.style.display = "none";
+            }
+        });
+
+        // Close dropdown if clicking outside
+        document.addEventListener("click", (e) => {
+            if (
+                DOMElements.todayScheduleDropdown &&
+                !DOMElements.todayScheduleDropdown.contains(e.target) &&
+                DOMElements.todayScheduleMenuButton && // Check if button exists before using contains
+                !DOMElements.todayScheduleMenuButton.contains(e.target)
+            ) {
+                DOMElements.todayScheduleDropdown.style.display = "none";
+            }
+        });
+    }
+
+    // Function to check if there is a schedule today and toggle edit button visibility
+    function updateEditTodayScheduleButtonVisibility() {
+        if (!DOMElements.editTodayScheduleBtn) return;
+        const todayDateString = getLocalDateString(new Date()); // Use getLocalDateString
+        const hasTodaySchedule = schedules.some(
+            (s) => s.date && getLocalDateString(new Date(s.date)) === todayDateString
+        );
+        DOMElements.editTodayScheduleBtn.style.display = hasTodaySchedule ? "flex" : "none";
+    }
+
+    // Handler for "Tambah jadwal baru" button
+    if (DOMElements.addNewScheduleBtn) {
+        DOMElements.addNewScheduleBtn.addEventListener("click", () => {
+            // Open schedule.html page for adding new schedule
+            window.location.href = "schedule.html#add";
+        });
+    }
+
+    // Handler for "Edit schedule hari ini" button
+    if (DOMElements.editTodayScheduleBtn) {
+        DOMElements.editTodayScheduleBtn.addEventListener("click", () => {
+            const todayDateString = getLocalDateString(new Date()); // Use getLocalDateString
+            const todaySchedule = schedules.find(
+                (s) => s.date && getLocalDateString(new Date(s.date)) === todayDateString
+            );
+            if (todaySchedule) {
+                // Open schedule.html page with hash to edit the schedule by id
+                window.location.href = `schedule.html#edit-${todaySchedule.id}`;
+            } else {
+                alert("Tidak ada jadwal hari ini untuk diedit.");
+            }
+        });
+    }
+
+    // Initial call to update edit schedule button visibility
+    updateEditTodayScheduleButtonVisibility();
 });
