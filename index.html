@@ -110,22 +110,18 @@
 
                 <div class="tasks-controls">
                     <div class="tasks-filters">
-                        <button class="active" data-filter="all">
-                            <i class='bx bx-category'></i>
-                            All
-                        </button>
-                        <!-- Removed To-do button as per user request -->
-                        <select name="filter" id="taskStatusFilterSelect">
-                            <option value="">Filter</option>
-                            <option value="in-progress">In Progress</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                        <select id="priorityFilterSelect">
-                            <option value="all">Sort by priority</option>
-                            <option value="high">High</option>
-                            <option value="normal">Normal</option>
-                            <option value="low">Low</option>
-                        </select>
+                    <!-- Removed All button as per user request -->
+                    <select name="filter" id="taskStatusFilterSelect">
+                        <option value="all">All</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <select id="priorityFilterSelect">
+                        <option value="all">Sort by priority</option>
+                        <option value="high">High</option>
+                        <option value="normal">Normal</option>
+                        <option value="low">Low</option>
+                    </select>
                     </div>
                 </div>
 
@@ -177,9 +173,19 @@
             </section>
 
             <section class="today-schedule-section">
-                <div class="section-header">
+                <div class="section-header" style="position: relative;">
                     <h2>Today Schedule</h2>
-                    <button class="icon-button"><i class='bx bx-dots-vertical-rounded'></i></button>
+                    <button class="icon-button" id="todayScheduleMenuButton" aria-label="Open schedule menu">
+                        <i class='bx bx-dots-vertical-rounded'></i>
+                    </button>
+                    <div id="todayScheduleDropdown" class="dropdown-menu" style="display:none; position: absolute; top: 100%; right: 0; background: white; border: 1px solid #ccc; border-radius: 4px; z-index: 1000; width: 220px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                        <button class="dropdown-item" id="addNewScheduleBtn" type="button" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px; border: none; background: none; cursor: pointer;">
+                            <span>➕</span> Tambah jadwal baru
+                        </button>
+                        <button class="dropdown-item" id="editTodayScheduleBtn" type="button" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px; border: none; background: none; cursor: pointer;">
+                            <span>✏️</span> Edit schedule hari ini
+                        </button>
+                    </div>
                 </div>
                 <div class="today-schedule-list" id="todayScheduleList">
                 </div>
