@@ -535,6 +535,65 @@ body {
     }
 }
 
+/* Dropdown menu styles for Today Schedule */
+#todayScheduleDropdown {
+    background-color: var(--surface-white);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-medium);
+    width: 220px;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1000;
+    /* Kunci Perbaikan 1: Pastikan ini adalah default dan JavaScript yang mengubahnya */
+    display: none; /* Ini harus menjadi nilai awal */
+    flex-direction: column; /* Ini akan berlaku saat display bukan 'none' */
+    padding: 0.25rem 0;
+}
+
+#todayScheduleDropdown .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    text-align: left;
+}
+
+#todayScheduleDropdown .dropdown-item:hover {
+    background-color: var(--background-light) !important;
+}
+
+/* Kunci Perbaikan 2: Gabungkan aturan active/focus untuk kejelasan dan hindari penimpaan */
+#todayScheduleDropdown .dropdown-item:active,
+#todayScheduleDropdown .dropdown-item:focus,
+#todayScheduleDropdown .dropdown-item.active { /* Pertahankan kelas .active jika Anda menggunakannya secara JS */
+    background-color: var(--primary-blue-light);
+    color: var(--text-dark); /* Ganti var(--primary-color) jika Anda ingin teks tetap gelap */
+    outline: none;
+}
+
+
+#todayScheduleDropdown .dropdown-item span {
+    font-size: 1rem;
+}
+
+/* Pastikan elemen induk untuk dropdown memiliki positioning */
+/* Misalnya, section-header atau container terdekat */
+.section-header {
+    position: relative; /* Ini PENTING agar dropdown dengan position: absolute; bekerja dengan benar */
+}
+
+
+
+/* Responsive Adjustments for Modal */
 @media (max-width: 480px) {
     .modal-overlay {
         padding: 5px;
