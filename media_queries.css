@@ -22,6 +22,9 @@
             START: MAX WIDTH 992px   
 ===========================================*/
 @media (max-width: 992px) {
+    .sidebar-close-button {
+        display: block !important;
+    }
     .header-top {
         padding: 0.8rem 1.2rem;
     }
@@ -64,6 +67,7 @@
             START: MAX WIDTH 768px   
 ===========================================*/
 @media (max-width: 768px) {
+
     .dashboard-container {
         flex-direction: column; /* Stack sidebars and main content */
     }
@@ -265,6 +269,7 @@
 ===========================================*/
 /* Modal specific responsive adjustments */
 @media (max-width: 500px) {
+
     .modal-content {
         padding: 1.5rem;
         width: 95%;
@@ -344,18 +349,22 @@
         flex-basis: auto; /* Biarkan lebar menyesuaikan konten */
     }
 
+    /* Change time-entry-row to row for side-by-side layout on mobile */
     .time-entry-row {
-        flex-direction: column; /* Ubah ke kolom untuk baris waktu */
-        align-items: flex-start; /* Sejajarkan ke kiri */
-        gap: 5px; /* Kurangi jarak */
+        flex-direction: row !important; /* Override previous column */
+        align-items: center; /* Vertically center items */
+        gap: 10px; /* Space between items */
+        flex-wrap: nowrap; /* Prevent wrapping */
     }
     .time-inputs {
         justify-content: flex-start; /* Sejajarkan input waktu ke kiri */
-        width: 100%; /* Ambil seluruh lebar */
+        width: auto; /* Adjust width to content */
+        flex-wrap: nowrap; /* Prevent wrapping */
+        gap: 10px;
     }
     .time-inputs .date-display,
     .time-inputs input[type="time"] {
-        width: 100px; /* Tetapkan lebar tetap agar tidak terlalu kecil */
+        width: 95px; /* Fixed width for inputs */
         padding: 6px 10px;
         font-size: 0.75rem;
     }
