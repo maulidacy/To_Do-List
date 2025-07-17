@@ -1,69 +1,69 @@
 document.addEventListener("DOMContentLoaded", () => {
     // =====================================================================
-    // --- 1. Fungsi Utilitas ---
+    // --- 1. Utility Functions ---
     // =====================================================================
 
     /**
-     * Mengambil data dari localStorage.
-     * @param {string} key Kunci penyimpanan.
-     * @returns {Array} Data yang diurai atau array kosong jika tidak ada/error.
+     * Get data from localStorage.
+     * @param {string} key Storage key.
+     * @returns {Array} Parsed data or an empty array if not found/error.
      */
     const getStorage = (key) => {
         try {
             const data = localStorage.getItem(key);
             return data ? JSON.parse(data) : [];
         } catch (e) {
-            console.error(`Error membaca dari localStorage untuk kunci: ${key}`, e);
+            console.error(`Error reading from localStorage for key: ${key}`, e);
             return [];
         }
     };
 
     /**
-     * Menyimpan data ke localStorage.
-     * @param {string} key Kunci penyimpanan.
-     * @param {Array} data Data yang akan disimpan.
+     * Save data to localStorage.
+     * @param {string} key Storage key.
+     * @param {Array} data Data to be saved.
      */
     const setStorage = (key, data) => {
         try {
             localStorage.setItem(key, JSON.stringify(data));
-            console.log(`Data untuk kunci '${key}' berhasil disimpan ke localStorage.`);
+            console.log(`Data for key '${key}' saved to localStorage.`);
         } catch (e) {
-            console.error(`Error menulis ke localStorage untuk kunci: ${key}`, e);
+            console.error(`Error writing to localStorage for key: ${key}`, e);
         }
     };
 
     /**
-     * Mendapatkan ID berikutnya untuk item baru dalam array.
-     * @param {Array} arr Array data.
-     * @returns {number} ID berikutnya.
+     * Get the next available ID for a new item in an array.
+     * @param {Array} arr Data array.
+     * @returns {number} Next ID.
      */
     const getNextId = (arr) =>
         arr.length > 0 ? Math.max(...arr.map((item) => item.id)) + 1 : 1;
 
     /**
-     * Memformat string tanggal menjadi format tampilan lokal (id-ID).
-     * @param {string} dateString String tanggal (misal: "YYYY-MM-DD").
-     * @returns {string} Tanggal yang diformat.
+     * Format date string for display (English - short month, numeric day, numeric year).
+     * @param {string} dateString Date string (e.g., "YYYY-MM-DD").
+     * @returns {string} Formatted date.
      */
     const formatDateForDisplay = (dateString) => {
         if (!dateString) return "";
         try {
             const date = new Date(dateString);
-            return date.toLocaleDateString("id-ID", {
+            return date.toLocaleDateString("en-GB", { // Changed to en-GB for English format
                 day: "numeric",
                 month: "short",
                 year: "numeric",
             });
         } catch (e) {
-            console.error(`String tanggal tidak valid untuk pemformatan: ${dateString}`, e);
+            console.error(`Invalid date string for formatting: ${dateString}`, e);
             return dateString;
         }
     };
 
     /**
-     * Mendapatkan string tanggal YYYY-MM-DD lokal tanpa pergeseran zona waktu.
-     * @param {Date} date Objek Date.
-     * @returns {string} String tanggal dalam format YYYY-MM-DD.
+     * Get local YYYY-MM-DD date string without timezone shift.
+     * @param {Date} date Date object.
+     * @returns {string} Date string in YYYY-MM-DD format.
      */
     const getLocalDateString = (date) => {
         const year = date.getFullYear();
@@ -73,10 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     /**
-     * Membandingkan dua tanggal berdasarkan tahun, bulan, dan hari.
-     * @param {Date} d1 Tanggal pertama.
-     * @param {Date} d2 Tanggal kedua.
-     * @returns {boolean} True jika tanggalnya sama.
+     * Compare two dates by year, month, and day.
+     * @param {Date} d1 First date.
+     * @param {Date} d2 Second date.
+     * @returns {boolean} True if dates are the same.
      */
     const isSameDate = (d1, d2) =>
         d1.getFullYear() === d2.getFullYear() &&
@@ -84,42 +84,40 @@ document.addEventListener("DOMContentLoaded", () => {
         d1.getDate() === d2.getDate();
 
     // =====================================================================
-    // --- 2. Manajemen Data (Simulasi API dengan localStorage) ---
+    // --- 2. Data Management (Simulated API with localStorage) ---
     // =====================================================================
 
-    // Inisialisasi data dari localStorage atau dummy data jika kosong
     let projects = getStorage("projects");
     let tasks = getStorage("tasks");
     let schedules = getStorage("schedules");
     let teams = getStorage("teams");
-    let currentCalendarDate = new Date(); // Tanggal kalender yang sedang aktif
+    let currentCalendarDate = new Date();
 
     /**
-     * Menginisialisasi data dummy jika localStorage kosong.
-     * Ini memastikan aplikasi memiliki data untuk ditampilkan pertama kali.
+     * Initialize dummy data if localStorage is empty.
      */
     const initializeDummyData = () => {
         if (projects.length === 0) {
             projects = [{
                 id: 1,
-                title: "Diskusi Proyek Perangkat Lunak",
-                description: "Tim perangkat lunak bertanggung jawab atas perencanaan, penjadwalan, penganggaran, pelaksanaan, dan pengiriman proyek perangkat lunak dan web. Mereka memastikan keberhasilan penyelesaian semua proyek perangkat lunak.",
+                title: "Software Project Discussion", // English
+                description: "The software team is responsible for planning, scheduling, budgeting, executing, and delivering software and web projects. They ensure the successful completion of all software projects.", // English
                 progress: 75,
                 daysLeft: 3,
                 avatars: ["men/32", "women/44", "men/54"],
                 type: "blue",
             }, {
                 id: 2,
-                title: "Pengembangan Modul Autentikasi",
-                description: "Mengembangkan modul autentikasi pengguna baru dengan fitur login dan registrasi yang aman.",
+                title: "Authentication Module Development", // English
+                description: "Developing a new user authentication module with secure login and registration features.", // English
                 progress: 40,
                 daysLeft: 7,
                 avatars: ["men/10", "women/20"],
                 type: "purple",
             }, {
                 id: 3,
-                title: "Perencanaan Proyek Q3",
-                description: "Menguraikan seluruh ruang lingkup proyek, tonggak sejarah, dan alokasi sumber daya untuk kuartal mendatang.",
+                title: "Q3 Project Planning", // English
+                description: "Outlining the entire project scope, milestones, and resource allocation for the upcoming quarter.", // English
                 progress: 10,
                 daysLeft: 14,
                 avatars: ["women/5", "men/15"],
@@ -131,9 +129,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (tasks.length === 0) {
             tasks = [{
                 id: 1,
-                title: "Desain Aplikasi Seluler",
-                description: "Pertemuan Desain UI/UX",
-                subject: "Desain",
+                title: "Mobile App Design", // English
+                description: "UI/UX Design Meeting", // English
+                subject: "Design", // English
                 teacher: "Ms Diana Smith",
                 type: "Task",
                 status: "in-progress",
@@ -141,9 +139,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 priority: "high",
                 subtasks: [{
                     id: 1,
-                    text: "Brainstorming Konsep",
+                    text: "Brainstorming Concepts",
                     completed: false
-                }],
+                }], // English
                 avatars: ["men/1", "women/2"],
                 team: "design",
                 startDate: "2025-07-10",
@@ -153,9 +151,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 assignTo: "John Doe",
             }, {
                 id: 2,
-                title: "Kisah Motivator Terkenal",
-                description: "Menganalisis biografi tokoh inspiratif",
-                subject: "Biografi",
+                title: "Famous Motivator Story", // English
+                description: "Analyzing biographies of inspiring figures", // English
+                subject: "Biography", // English
                 teacher: "Mr Melvin Ruslan",
                 type: "Theory",
                 status: "completed",
@@ -171,9 +169,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 assignTo: "Jane Smith",
             }, {
                 id: 6,
-                title: "Tugas Prioritas Medium",
-                description: "Contoh tugas dengan prioritas medium",
-                subject: "Umum",
+                title: "Medium Priority Task", // English
+                description: "Example task with medium priority", // English
+                subject: "General", // English
                 teacher: "Ms Medium",
                 type: "Task",
                 status: "in-progress",
@@ -189,23 +187,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 assignTo: "Medium User",
             }, {
                 id: 3,
-                title: "Tugas Properti Aljabar",
-                description: "Penyelesaian masalah properti aljabar dari buku teks",
-                subject: "Matematika",
-                teacher: "Mr Jhon Lock",
+                title: "Algebraic Properties Task", // English
+                description: "Solving algebraic properties problems from the textbook", // English
+                subject: "Mathematics", // English
+                teacher: "Mr John Lock",
                 type: "Task",
                 status: "in-progress",
                 progress: 60,
                 priority: "high",
                 subtasks: [{
                     id: 1,
-                    text: "Selesaikan soal 1-5",
+                    text: "Solve problems 1-5",
                     completed: false
                 }, {
                     id: 2,
-                    text: "Periksa jawaban",
+                    text: "Check answers",
                     completed: false
-                }, ],
+                }, ], // English
                 avatars: ["men/5", "women/6"],
                 team: "marketing",
                 startDate: "2025-07-12",
@@ -215,10 +213,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 assignTo: "Michael Johnson",
             }, {
                 id: 4,
-                title: "Teori Properti Aljabar",
-                description: "Memahami konsep dasar properti aljabar",
-                subject: "Matematika",
-                teacher: "Mr Jhon Lock",
+                title: "Algebraic Properties Theory", // English
+                description: "Understanding basic concepts of algebraic properties", // English
+                subject: "Mathematics", // English
+                teacher: "Mr John Lock",
                 type: "Theory",
                 status: "completed",
                 progress: 100,
@@ -233,9 +231,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 assignTo: "Emily Brown",
             }, {
                 id: 5,
-                title: "Menentukan IQ Seseorang",
-                description: "Memahami berbagai metode dan tes untuk mengukur IQ",
-                subject: "Psikologi",
+                title: "Determining One's IQ", // English
+                description: "Understanding various methods and tests for measuring IQ", // English
+                subject: "Psychology", // English
                 teacher: "Mr Melvin Ruslan",
                 type: "Theory",
                 status: "in-progress",
@@ -243,9 +241,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 priority: "low",
                 subtasks: [{
                     id: 1,
-                    text: "Baca Bab 3",
+                    text: "Read Chapter 3",
                     completed: false
-                }],
+                }], // English
                 avatars: ["men/9", "women/10"],
                 team: "development",
                 startDate: "2025-07-11",
@@ -263,8 +261,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             schedules = [{
                 id: 1,
-                title: "Diskusi Desain Aplikasi",
-                description: "Rapat tim untuk finalisasi wireframe.",
+                title: "Mobile App Design Discussion", // English
+                description: "Team meeting to finalize wireframes.", // English
                 startTime: "09:00",
                 endTime: "10:00",
                 statusColor: "green",
@@ -273,8 +271,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 date: getLocalDateString(today),
             }, {
                 id: 2,
-                title: "Presentasi Proyek Klien",
-                description: "Presentasi kemajuan proyek kepada klien utama.",
+                title: "Client Project Presentation", // English
+                description: "Progress presentation to the main client.", // English
                 startTime: "13:00",
                 endTime: "14:30",
                 statusColor: "blue",
@@ -283,8 +281,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 date: getLocalDateString(today),
             }, {
                 id: 3,
-                title: "Sesi Brainstorming Marketing",
-                description: "Sesi ide untuk kampanye Q4.",
+                title: "Marketing Brainstorming Session", // English
+                description: "Ideation session for Q4 campaign.", // English
                 startTime: "10:00",
                 endTime: "11:00",
                 statusColor: "red",
@@ -297,16 +295,16 @@ document.addEventListener("DOMContentLoaded", () => {
         if (teams.length === 0) {
             teams = [{
                 id: "design",
-                name: "Desain"
+                name: "Design"
             }, {
                 id: "development",
-                name: "Pengembangan"
+                name: "Development"
             }, {
                 id: "marketing",
-                name: "Pemasaran"
+                name: "Marketing"
             }, {
                 id: "general",
-                name: "Umum"
+                name: "General"
             }, ];
             setStorage("teams", teams);
         }
@@ -315,13 +313,14 @@ document.addEventListener("DOMContentLoaded", () => {
     initializeDummyData();
 
     // =====================================================================
-    // --- 3. Cache Elemen DOM ---
+    // --- 3. DOM Elements Cache --- 
     // =====================================================================
 
     const DOMElements = {
         dashboardContainer: document.getElementById("dashboardContainer"),
         mobileMenuToggle: document.getElementById("mobileMenuToggle"),
         sidebarOverlay: document.getElementById("sidebarOverlay"),
+        sidebarCloseButton: document.getElementById("sidebarCloseButton"),
 
         projectSummaryContainer: document.getElementById("projectSummaryContainer"),
         prevProjectBtn: document.getElementById("prevProject"),
@@ -336,8 +335,8 @@ document.addEventListener("DOMContentLoaded", () => {
         taskStatusFilterSelect: document.getElementById("taskStatusFilterSelect"),
         priorityFilterSelect: document.getElementById("priorityFilterSelect"),
         tasksTabs: document.querySelector(".tasks-filters"),
-        inProgressToggle: document.getElementById("inProgressToggle"),
-        completedToggle: document.getElementById("completedToggle"),
+        inProgressToggle: document.getElementById("inProgressToggle"), // Icon for In Progress toggle
+        completedToggle: document.getElementById("completedToggle"), // Icon for Completed toggle
 
         addTaskButton: document.getElementById("addTaskButton"),
         addTaskModalOverlay: document.getElementById("addTaskModalOverlay"),
@@ -379,7 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // =====================================================================
-    // --- 4. Fungsi Render ---
+    // --- 4. Render Functions ---
     // =====================================================================
 
     const renderProjectSummary = () => {
@@ -387,7 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
         DOMElements.projectSummaryContainer.innerHTML = "";
 
         const allTasks = getStorage("tasks") || [];
-        const allTeams = getStorage("teams") || [{ id: "general", name: "Umum" }];
+        const allTeams = getStorage("teams") || [{ id: "general", name: "General" }]; // English
         const inProgressTasks = allTasks.filter(task => task.status === "in-progress");
         const projectsMap = new Map();
 
@@ -452,7 +451,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
                 .join("");
 
-            const teamName = project.title || "General";
+            const teamName = project.title || "General"; // English
             const teamClass = teamName.toLowerCase().replace(/\s+/g, "-");
 
             projectCard.innerHTML = `
@@ -460,17 +459,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span class="team-badge ${teamClass}">${teamName}</span>
                     <i class='bx bx-dots-horizontal-rounded'></i>
                 </div>
-                <h3>${project.tasks[0]?.title || "Tidak Ada Judul"}</h3>
-                <p>${project.description || "Tidak ada deskripsi."}</p>
-                <div class="project-card-footer">
+                <h3>${project.tasks[0]?.title || "No Title"}</h3> <p>${project.description || "No description available."}</p> <div class="project-card-footer">
                     <div class="progress-info">
-                        <span>Progres</span>
-                        <span>${avgProgress}%</span>
+                        <span>Progress</span> <span>${avgProgress}%</span>
                     </div>
                     <progress value="${avgProgress}" max="100"></progress>
                     <div class="progress-info">
-                        <span>${daysLeft} Hari Tersisa</span>
-                        <div class="avatar-group">
+                        <span>${daysLeft} Days Left</span> <div class="avatar-group">
                             ${avatarsHtml}
                         </div>
                     </div>
@@ -503,7 +498,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (filteredTasks.length === 0) {
-            const noTasksMessage = `<div class="no-tasks-message">Tidak ada tugas yang cocok dengan pencarian/filter.</div>`;
+            const noTasksMessage = `<div class="no-tasks-message">No tasks matching your search/filters.</div>`; // English
             DOMElements.inProgressTasksDiv.innerHTML = noTasksMessage;
             DOMElements.completedTasksDiv.innerHTML = noTasksMessage;
             DOMElements.inProgressCountSpan.textContent = "0";
@@ -518,12 +513,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const dateRange = task.startDate && task.endDate ?
                 `${formatDateForDisplay(task.startDate)} - ${formatDateForDisplay(task.endDate)}` : "";
-            // CALCULATE PROGRESS DYNAMICALLY
             const progress = Array.isArray(task.subtasks) && task.subtasks.length > 0 ?
                 Math.round((task.subtasks.filter((s) => s.completed).length / task.subtasks.length) * 100) :
-                task.progress || 0; // Fallback to stored progress if no subtasks
+                task.progress || 0;
 
-            const priorityLabel = task.priority ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1) : "Normal";
+            const priorityLabel = task.priority ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1) : "Normal"; // English
             const commentCount = Array.isArray(task.comments) ? task.comments.length : 0;
             const attachmentCount = Array.isArray(task.attachments) ? task.attachments.length : 0;
             let progressBarColor = "#007bff";
@@ -532,9 +526,7 @@ document.addEventListener("DOMContentLoaded", () => {
             taskCard.innerHTML = `
                 <div class="task-menu" data-task-id="${task.id}">&#8942;</div>
                 <div class="task-menu-dropdown" style="display: none;">
-                    <button class="edit-task-button" data-task-id="${task.id}">Edit Tugas</button>
-                    <button class="delete-task-button" data-task-id="${task.id}">Hapus Tugas</button>
-                </div>
+                    <button class="edit-task-button" data-task-id="${task.id}">Edit Task</button> <button class="delete-task-button" data-task-id="${task.id}">Delete Task</button> </div>
                 <h4>${task.title}</h4>
                 <p class="task-date-range">${dateRange}</p>
                 <div class="task-card-subtasks">
@@ -550,8 +542,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <button class="add-subtask-button" data-task-id="${task.id}">
                             <i class='bx bx-plus-medical'></i>
-                            Tambah Subtugas
-                        </button>
+                            Add Subtask </button>
                         <span class="priority-label ${task.priority ? task.priority.toLowerCase() : 'medium'}">
                             ${priorityLabel}
                         </span>
@@ -559,8 +550,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <div class="task-card-progress">
                     <div class="progress-info">
-                        <span>Progres</span>
-                        <span>${progress}%</span>
+                        <span>Progress</span> <span>${progress}%</span>
                     </div>
                     <div class="progress-bar-container">
                         <div class="progress-bar-fill" style="width: ${progress}%; background-color: ${progressBarColor};"></div>
@@ -589,20 +579,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         DOMElements.inProgressCountSpan.textContent = inProgressCount;
         DOMElements.completedCountSpan.textContent = completedCount;
-        attachTaskListeners(); // Attach listeners after rendering
+        attachTaskListeners();
     };
 
     const renderCalendar = (date) => {
         if (!DOMElements.currentMonthYearHeader || !DOMElements.calendarGridEl) return;
-        DOMElements.currentMonthYearHeader.textContent = date.toLocaleString("id-ID", { month: "long", year: "numeric" });
+        DOMElements.currentMonthYearHeader.textContent = date.toLocaleString("en-US", { month: "long", year: "numeric" }); // English Month/Year
         DOMElements.calendarGridEl.querySelectorAll('.calendar-day').forEach(el => el.remove());
 
-        const weekdays = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
+        const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]; // English
+        // Assuming weekday elements are static in HTML. If not, add them here.
 
         const year = date.getFullYear();
         const month = date.getMonth();
         const firstDayOfMonth = new Date(year, month, 1).getDay();
-        const startDayIndex = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
+        const startDayIndex = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1; // Monday as first day
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const today = new Date();
 
@@ -645,7 +636,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         if (relevantSchedules.length === 0) {
-            DOMElements.todayScheduleList.innerHTML = '<p style="text-align: center; color: var(--text-light);">Tidak ada jadwal untuk hari ini.</p>';
+            DOMElements.todayScheduleList.innerHTML = '<p style="text-align: center; color: var(--text-light);">No schedules for today.</p>'; // English
             updateDeleteSelectedTodayScheduleButtonVisibility();
             updateEditTodayScheduleButtonVisibility();
             return;
@@ -666,10 +657,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${schedule.startTime || (schedule.time ? schedule.time.split(' - ')[0] : 'undefined')} - ${schedule.endTime || (schedule.time ? schedule.time.split(' - ')[1] : 'undefined')}
                     </div>
                 </div>
-                <input type="checkbox" class="schedule-select-checkbox" data-id="${schedule.id}" aria-label="Pilih jadwal untuk dihapus" style="float: right; margin-left: 10px;"/>
+                <input type="checkbox" class="schedule-select-checkbox" data-id="${schedule.id}" aria-label="Select schedule for deletion" style="float: right; margin-left: 10px;"/>
                 <div class="avatar-group">
                     ${(Array.isArray(schedule.avatars) ? schedule.avatars : [])
-                        .map((avatar) => `<img src="https://randomuser.me/api/portraits/${avatar}.jpg" alt="Avatar Pengguna">`).join("")}
+                        .map((avatar) => `<img src="https://randomuser.me/api/portraits/${avatar}.jpg" alt="User Avatar">`).join("")}
                 </div>
             `;
             DOMElements.todayScheduleList.appendChild(scheduleItem);
@@ -712,12 +703,12 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // =====================================================================
-    // --- 5. Fungsi Manajemen Modal ---
+    // --- 5. Modal Management Functions ---
     // =====================================================================
 
     const resetModalToAddMode = () => {
-        if (DOMElements.modalTitle) DOMElements.modalTitle.textContent = "Tambah Tugas Baru";
-        if (DOMElements.createTaskModalButton) DOMElements.createTaskModalButton.textContent = "Buat Tugas";
+        if (DOMElements.modalTitle) DOMElements.modalTitle.textContent = "Add New Task"; // English
+        if (DOMElements.createTaskModalButton) DOMElements.createTaskModalButton.textContent = "Create Task"; // English
         if (DOMElements.addTaskForm) {
             DOMElements.addTaskForm.removeAttribute("data-editing-task-id");
             DOMElements.addTaskForm.reset();
@@ -732,8 +723,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const openEditTaskModal = (task) => {
         if (!DOMElements.addTaskModalOverlay || !DOMElements.addTaskForm) return;
 
-        if (DOMElements.modalTitle) DOMElements.modalTitle.textContent = "Edit Tugas";
-        if (DOMElements.createTaskModalButton) DOMElements.createTaskModalButton.textContent = "Simpan Perubahan";
+        if (DOMElements.modalTitle) DOMElements.modalTitle.textContent = "Edit Task"; // English
+        if (DOMElements.createTaskModalButton) DOMElements.createTaskModalButton.textContent = "Save Changes"; // English
 
         DOMElements.addTaskModalOverlay.style.display = "flex";
 
@@ -772,16 +763,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- 6. Event Handler ---
     // =====================================================================
 
-    // NOTE: This function is now using event delegation on tasksListContainer
-    // It's not attached to individual buttons, but checks the click target.
-    const handleAddSubtaskClick = (targetButton) => { // Mengubah parameter
-        const taskId = parseInt(targetButton.dataset.taskId); // Menggunakan targetButton
+    const handleAddSubtaskClick = (targetButton) => {
+        const taskId = parseInt(targetButton.dataset.taskId);
         const task = tasks.find((t) => t.id === taskId);
 
         if (task) {
-            const taskCard = targetButton.closest('.task-card'); // Temukan kartu tugas induk
-            const subtasksDiv = taskCard.querySelector('.task-card-subtasks'); // Area subtask dalam kartu itu
-            
+            const taskCard = targetButton.closest('.task-card');
+            const subtasksDiv = taskCard.querySelector('.task-card-subtasks');
+
             const existingInputContainer = subtasksDiv.querySelector(".new-subtask-input-container");
             if (existingInputContainer) {
                 existingInputContainer.querySelector(".new-subtask-input-field").focus();
@@ -791,15 +780,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const inputContainer = document.createElement("div");
             inputContainer.classList.add("new-subtask-input-container");
             inputContainer.innerHTML = `
-                <input type="text" placeholder="Masukkan subtugas baru" class="new-subtask-input-field">
-                <button type="button" class="new-subtask-add-button">Tambah</button>
-                <button type="button" class="new-subtask-cancel-button">Batal</button>
-            `;
-            // Sisipkan inputContainer di dalam task-card-subtasks, sebelum div yang berisi tombol add subtask
-            // Atau bisa juga sebelum ul jika ingin di atas daftar subtask
-            subtasksDiv.insertBefore(inputContainer, targetButton.parentElement); // Sisipkan sebelum div parent tombol
+                <input type="text" placeholder="Enter new subtask" class="new-subtask-input-field"> <button type="button" class="new-subtask-add-button">Add</button> <button type="button" class="new-subtask-cancel-button">Cancel</button> `;
+            subtasksDiv.insertBefore(inputContainer, targetButton.parentElement);
 
-            targetButton.style.display = "none"; // Sembunyikan tombol saat input muncul
+            targetButton.style.display = "none";
 
             const input = inputContainer.querySelector(".new-subtask-input-field");
             const addButton = inputContainer.querySelector(".new-subtask-add-button");
@@ -813,16 +797,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (!Array.isArray(task.subtasks)) task.subtasks = [];
                     task.subtasks.push({ id: getNextId(task.subtasks), text: newSubtaskText, completed: false });
                     setStorage("tasks", tasks);
-                    renderTasks(); // Render ulang untuk melihat perubahan
+                    renderTasks();
                 } else {
-                    alert("Deskripsi subtugas tidak boleh kosong.");
+                    alert("Subtask description cannot be empty."); // English
                 }
             };
 
             addButton.addEventListener("click", addAndRenderSubtask);
             cancelButton.addEventListener("click", () => {
                 inputContainer.remove();
-                targetButton.style.display = "flex"; // Tampilkan kembali tombol
+                targetButton.style.display = "flex";
             });
             input.addEventListener("keydown", (event) => {
                 if (event.key === "Enter") {
@@ -830,15 +814,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     addAndRenderSubtask();
                 } else if (event.key === "Escape") {
                     inputContainer.remove();
-                    targetButton.style.display = "flex"; // Tampilkan kembali tombol
+                    targetButton.style.display = "flex";
                 }
             });
         }
     };
 
-    // NOTE: This function is now using event delegation on tasksListContainer
-    // It's not attached to individual checkboxes.
-    const handleSubtaskCheckboxChange = (checkbox) => { // Mengubah parameter
+    const handleSubtaskCheckboxChange = (checkbox) => {
         const taskId = parseInt(checkbox.dataset.taskId);
         const subtaskId = parseInt(checkbox.dataset.subtaskId);
         const task = tasks.find((t) => t.id === taskId);
@@ -847,24 +829,20 @@ document.addEventListener("DOMContentLoaded", () => {
             const subtask = task.subtasks.find((s) => s.id === subtaskId);
             if (subtask) {
                 subtask.completed = checkbox.checked;
-                console.log(`Subtask ${subtask.id} of Task ${task.id} completed: ${subtask.completed}`);
 
                 const totalSubtasks = task.subtasks.length;
                 const completedSubtasks = task.subtasks.filter((s) => s.completed).length;
 
                 task.progress = totalSubtasks > 0 ? Math.round((completedSubtasks / totalSubtasks) * 100) : 0;
-                console.log(`Task ${task.id} progress: ${task.progress}%`);
 
-                // Update task status based on subtask completion
                 if (task.progress === 100) {
                     task.status = "completed";
                 } else {
                     task.status = "in-progress";
                 }
-                console.log(`Task ${task.id} status: ${task.status}`);
 
                 setStorage("tasks", tasks);
-                renderTasks(); // Render ulang untuk melihat perubahan progres
+                renderTasks();
             }
         }
     };
@@ -896,28 +874,26 @@ document.addEventListener("DOMContentLoaded", () => {
         const deleteButton = target.closest(".delete-task-button");
         if (deleteButton) {
             const taskId = parseInt(deleteButton.dataset.taskId);
-            if (confirm("Yakin ingin menghapus tugas ini?")) {
+            if (confirm("Are you sure you want to delete this task?")) { // English
                 tasks = tasks.filter((t) => t.id !== taskId);
                 setStorage("tasks", tasks);
                 renderTasks();
-                alert("Tugas berhasil dihapus!");
+                alert("Task deleted successfully!"); // English
             }
             const dropdown = deleteButton.closest(".task-menu-dropdown");
             if (dropdown) dropdown.style.display = "none";
             return;
         }
 
-        // Delegasikan klik pada tombol 'Tambah Subtugas'
         const addSubtaskButton = target.closest(".add-subtask-button");
         if (addSubtaskButton) {
-            handleAddSubtaskClick(addSubtaskButton); // Pass the clicked button to the handler
+            handleAddSubtaskClick(addSubtaskButton);
             return;
         }
 
-        // Delegasikan klik pada checkbox subtugas
-        const subtaskCheckbox = target.closest('.subtask-checkbox'); // Use the class added in renderTasks
+        const subtaskCheckbox = target.closest('.subtask-checkbox');
         if (subtaskCheckbox) {
-            handleSubtaskCheckboxChange(subtaskCheckbox); // Pass the clicked checkbox to the handler
+            handleSubtaskCheckboxChange(subtaskCheckbox);
             return;
         }
     };
@@ -930,17 +906,25 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // =====================================================================
-    // --- 7. Inisialisasi Semua Event Listener Utama Aplikasi ---
+    // --- 7. Initialize All Application Event Listeners ---
     // =====================================================================
 
     if (DOMElements.mobileMenuToggle && DOMElements.dashboardContainer) {
         DOMElements.mobileMenuToggle.addEventListener("click", () => {
+            console.log("DEBUG: mobileMenuToggle clicked");
             DOMElements.dashboardContainer.classList.toggle("sidebar-open");
+            console.log("DEBUG: sidebar-open class toggled on dashboardContainer");
         });
     }
 
     if (DOMElements.sidebarOverlay && DOMElements.dashboardContainer) {
         DOMElements.sidebarOverlay.addEventListener("click", () => {
+            DOMElements.dashboardContainer.classList.remove("sidebar-open");
+        });
+    }
+
+    if (DOMElements.sidebarCloseButton && DOMElements.dashboardContainer) {
+        DOMElements.sidebarCloseButton.addEventListener("click", () => {
             DOMElements.dashboardContainer.classList.remove("sidebar-open");
         });
     }
@@ -951,8 +935,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    if (DOMElements.prevProjectBtn) DOMElements.prevProjectBtn.addEventListener("click", () => alert("Proyek Sebelumnya (fungsi belum diimplementasikan)"));
-    if (DOMElements.nextProjectBtn) DOMElements.nextProjectBtn.addEventListener("click", () => alert("Proyek Berikutnya (fungsi belum diimplementasikan)"));
+    if (DOMElements.prevProjectBtn) DOMElements.prevProjectBtn.addEventListener("click", () => alert("Previous Project (function not implemented)")); // English
+    if (DOMElements.nextProjectBtn) DOMElements.nextProjectBtn.addEventListener("click", () => alert("Next Project (function not implemented)")); // English
 
     if (DOMElements.addTaskButton && DOMElements.addTaskModalOverlay) {
         DOMElements.addTaskButton.addEventListener("click", () => {
@@ -994,7 +978,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const attachmentFile = DOMElements.attachmentInput && DOMElements.attachmentInput.files[0] ? DOMElements.attachmentInput.files[0].name : null;
 
             if (!taskTitle || !chosenTeam || !startDate || !startTime || !endDate || !endTime || !assignTo) {
-                alert("Harap lengkapi semua bidang yang wajib diisi!");
+                alert("Please fill in all required fields!"); // English
                 return;
             }
 
@@ -1007,9 +991,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     Object.assign(task, { title: taskTitle, description, team: chosenTeam, startDate, startTime, endDate, endTime, assignTo, priority });
                     if (attachmentFile) task.attachmentFile = attachmentFile;
                     setStorage("tasks", tasks);
-                    alert("Tugas berhasil diperbarui!");
+                    alert("Task updated successfully!"); // English
                 } else {
-                    alert("Error: Tugas yang akan diedit tidak ditemukan.");
+                    alert("Error: Task to edit not found."); // English
                 }
             } else {
                 const newTask = {
@@ -1028,13 +1012,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     priority: priority,
                     subtasks: [],
                     avatars: ["men/32", "women/44"],
-                    subject: "Umum",
+                    subject: "General", // English
                     teacher: "N/A",
                     type: "Task",
                 };
                 tasks.unshift(newTask);
                 setStorage("tasks", tasks);
-                alert("Tugas berhasil ditambahkan!");
+                alert("Task added successfully!"); // English
                 if (DOMElements.priorityFilterSelect) {
                     DOMElements.priorityFilterSelect.value = "all";
                     DOMElements.priorityFilterSelect.style.backgroundColor = "";
@@ -1064,7 +1048,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("priorityFilter", DOMElements.priorityFilterSelect.value);
             if (DOMElements.priorityFilterSelect.value !== "all") {
                 DOMElements.priorityFilterSelect.style.backgroundColor = "#d0e6ff";
-                DOMElements.priorityFilterSelect.title = `Difilter berdasarkan: ${DOMElements.priorityFilterSelect.options[DOMElements.priorityFilterSelect.selectedIndex].text}`;
+                DOMElements.priorityFilterSelect.title = `Filtered by: ${DOMElements.priorityFilterSelect.options[DOMElements.priorityFilterSelect.selectedIndex].text}`; // English
             } else {
                 DOMElements.priorityFilterSelect.style.backgroundColor = "";
                 DOMElements.priorityFilterSelect.title = "";
@@ -1075,7 +1059,7 @@ document.addEventListener("DOMContentLoaded", () => {
             DOMElements.priorityFilterSelect.value = savedPriorityFilter;
             if (savedPriorityFilter !== "all") {
                 DOMElements.priorityFilterSelect.style.backgroundColor = "#d0e6ff";
-                DOMElements.priorityFilterSelect.title = `Difilter berdasarkan: ${DOMElements.priorityFilterSelect.options[DOMElements.priorityFilterSelect.selectedIndex].text}`;
+                DOMElements.priorityFilterSelect.title = `Filtered by: ${DOMElements.priorityFilterSelect.options[DOMElements.priorityFilterSelect.selectedIndex].text}`; // English
             }
         }
     }
@@ -1088,11 +1072,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 clickedButton.classList.add("active");
 
                 const buttonText = clickedButton.textContent.trim();
-                if (buttonText.includes("Kategori")) {
+                if (buttonText.includes("Category")) { // English
                     if (DOMElements.tasksListContainer) DOMElements.tasksListContainer.style.display = "flex";
                     renderTasks();
-                } else if (buttonText.includes("Anggota")) {
-                    alert("Tab Anggota diklik - implementasikan tampilan daftar anggota.");
+                } else if (buttonText.includes("Members")) { // English
+                    alert("Members tab clicked - implement members list view."); // English
                     if (DOMElements.tasksListContainer) DOMElements.tasksListContainer.style.display = "none";
                 }
             }
@@ -1117,7 +1101,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Toggle area deskripsi di modal tugas (Add/Edit Task)
     if (DOMElements.addDescriptionToggle) {
         DOMElements.addDescriptionToggle.addEventListener("click", function() {
-            console.log("DEBUG: addDescriptionToggle clicked!");
+            console.log("DEBUG: Add Description toggle clicked!");
             if (DOMElements.descriptionInputArea) {
                 const currentDisplay = DOMElements.descriptionInputArea.style.display;
                 console.log("DEBUG: Current descriptionInputArea display:", currentDisplay);
@@ -1166,10 +1150,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (DOMElements.teamDisplayDropdown) DOMElements.teamDisplayDropdown.style.display = "flex";
                     DOMElements.newTeamInput.value = "";
                 } else {
-                    alert("Tim sudah ada!");
+                    alert("Team already exists!"); // English
                 }
             } else {
-                alert("Harap masukkan nama tim.");
+                alert("Please enter a team name."); // English
             }
         });
     }
@@ -1185,33 +1169,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =====================================================================
-    // --- 9. Fungsionalitas Menu Dropdown Jadwal Hari Ini ---
+    // --- 9. Today's Schedule Dropdown Menu Functionality ---
     // =====================================================================
 
     const updateDeleteSelectedTodayScheduleButtonVisibility = () => {
         if (!DOMElements.deleteSelectedTodayScheduleBtn) {
-            console.warn("WARNING: DOMElements.deleteSelectedTodayScheduleBtn tidak ditemukan.");
+            console.warn("WARNING: DOMElements.deleteSelectedTodayScheduleBtn not found.");
             return;
         }
         const checkboxes = DOMElements.todayScheduleList.querySelectorAll('.schedule-select-checkbox');
         const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
         DOMElements.deleteSelectedTodayScheduleBtn.style.display = anyChecked ? 'flex' : 'none';
-        console.log("DEBUG: Visibilitas tombol 'Hapus jadwal terpilih' diperbarui:", DOMElements.deleteSelectedTodayScheduleBtn.style.display);
+        console.log("DEBUG: 'Delete selected schedule' button visibility updated:", DOMElements.deleteSelectedTodayScheduleBtn.style.display);
     };
 
     function updateEditTodayScheduleButtonVisibility() {
         if (!DOMElements.editTodayScheduleBtn) {
-            console.warn("WARNING: DOMElements.editTodayScheduleBtn tidak ditemukan.");
+            console.warn("WARNING: DOMElements.editTodayScheduleBtn not found.");
             return;
         }
         const todayDateString = getLocalDateString(currentCalendarDate);
         const hasTodaySchedule = schedules.some((s) => s.date && getLocalDateString(new Date(s.date)) === todayDateString);
         DOMElements.editTodayScheduleBtn.style.display = hasTodaySchedule ? "flex" : "none";
-        console.log("DEBUG: Visibilitas tombol 'Edit jadwal hari ini' diperbarui:", DOMElements.editTodayScheduleBtn.style.display);
+        console.log("DEBUG: 'Edit today's schedule' button visibility updated:", DOMElements.editTodayScheduleBtn.style.display);
     }
 
     if (DOMElements.todayScheduleMenuButton && DOMElements.todayScheduleDropdown) {
-        console.log("DEBUG: Memasang event listener untuk todayScheduleMenuButton.");
+        console.log("DEBUG: Attaching event listener for todayScheduleMenuButton.");
         DOMElements.todayScheduleMenuButton.addEventListener('click', (e) => {
             e.stopPropagation();
             const dropdown = DOMElements.todayScheduleDropdown;
@@ -1231,7 +1215,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     } else {
-        console.warn("WARNING: DOMElements.todayScheduleMenuButton atau DOMElements.todayScheduleDropdown tidak ditemukan, event listener tidak terpasang.");
+        console.warn("WARNING: DOMElements.todayScheduleMenuButton or DOMElements.todayScheduleDropdown not found, event listener not attached.");
     }
 
     if (DOMElements.addNewScheduleBtn) {
@@ -1241,9 +1225,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 const scheduleForm = document.getElementById('scheduleForm');
                 if (scheduleForm) scheduleForm.reset();
                 const formTitle = document.getElementById('formTitle');
-                if (formTitle) formTitle.textContent = "Tambah Jadwal Baru";
+                if (formTitle) formTitle.textContent = "Add New Schedule"; // English
                 const saveScheduleButton = document.getElementById('saveScheduleButton');
-                if (saveScheduleButton) saveScheduleButton.textContent = "Tambah Jadwal";
+                if (saveScheduleButton) saveScheduleButton.textContent = "Add Schedule"; // English
                 const scheduleIdInput = document.getElementById('scheduleId');
                 if (scheduleIdInput) scheduleIdInput.value = '';
 
@@ -1274,7 +1258,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const todaySchedules = schedules.filter(s => s.date && getLocalDateString(new Date(s.date)) === todayDateString);
 
             if (todaySchedules.length === 0) {
-                alert('Tidak ada jadwal hari ini untuk diedit.');
+                alert('No schedules for today to edit.'); // English
                 return;
             }
 
@@ -1291,8 +1275,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 const endTimeInput = document.getElementById('endTimeInput');
                 const statusColorSelect = document.getElementById('statusColor');
 
-                if (formTitle) formTitle.textContent = "Edit Jadwal";
-                if (saveScheduleButton) saveScheduleButton.textContent = "Simpan Perubahan";
+                if (formTitle) formTitle.textContent = "Edit Schedule"; // English
+                if (saveScheduleButton) saveScheduleButton.textContent = "Save Changes"; // English
                 if (scheduleIdInput) scheduleIdInput.value = scheduleToEdit.id;
 
                 if (titleInput) titleInput.value = scheduleToEdit.title || '';
@@ -1320,17 +1304,17 @@ document.addEventListener("DOMContentLoaded", () => {
             const idsToDelete = Array.from(checkboxes).map(cb => parseInt(cb.dataset.id));
 
             if (idsToDelete.length === 0) {
-                alert('Silakan centang jadwal yang ingin dihapus terlebih dahulu.');
+                alert('Please select schedules to delete first.'); // English
                 return;
             }
-            if (confirm(`Yakin ingin menghapus ${idsToDelete.length} jadwal?`)) {
+            if (confirm(`Are you sure you want to delete ${idsToDelete.length} schedule(s)?`)) { // English
                 schedules = schedules.filter(s => !idsToDelete.includes(s.id));
                 setStorage('schedules', schedules);
                 renderProjectSummary();
                 renderTasks();
                 renderCalendar(currentCalendarDate);
                 renderTodaySchedule(currentCalendarDate);
-                alert('Jadwal berhasil dihapus.');
+                alert('Schedule(s) deleted successfully.'); // English
             }
         });
     }
@@ -1340,7 +1324,7 @@ document.addEventListener("DOMContentLoaded", () => {
             DOMElements.todayScheduleDropdown.style.display = 'none';
             schedules = getStorage('schedules');
             renderTodaySchedule(currentCalendarDate);
-            alert('Jadwal hari ini telah diperbarui.');
+            alert('Today\'s schedule has been refreshed.'); // English
         });
     }
 
@@ -1370,15 +1354,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =====================================================================
-    // --- 10. Inisialisasi Akhir Aplikasi ---
+    // --- 10. Initial Application Setup ---
     // =====================================================================
 
+    // Initial render calls
     renderProjectSummary();
     renderTasks();
     renderCalendar(currentCalendarDate);
     renderTodaySchedule(currentCalendarDate);
     populateChooseTeamSelect();
 
+    // Initialize date/time display inputs for the task modal form
     if (DOMElements.startDateDisplay && DOMElements.startDateInput) {
         updateDateDisplay(DOMElements.startDateDisplay, DOMElements.startDateInput);
     }
@@ -1392,7 +1378,46 @@ document.addEventListener("DOMContentLoaded", () => {
         updateDateDisplay(DOMElements.endTimeDisplay, DOMElements.endTimeInput);
     }
 
-    if (DOMElements.dashboardContainer && window.innerWidth <= 768) {
-        DOMElements.dashboardContainer.classList.remove('sidebar-open');
+    // Ensure initial state of sidebar: open on large screens, closed on smaller screens
+    if (DOMElements.dashboardContainer) {
+        if (window.innerWidth > 992) {
+            DOMElements.dashboardContainer.classList.add('sidebar-open');
+        } else {
+            DOMElements.dashboardContainer.classList.remove('sidebar-open');
+        }
+    }
+
+    // Add toggle functionality for In Progress tasks column
+    if (DOMElements.inProgressToggle && DOMElements.inProgressTasksDiv) {
+        DOMElements.inProgressToggle.addEventListener('click', () => {
+            const tasksDiv = DOMElements.inProgressTasksDiv;
+            const icon = DOMElements.inProgressToggle;
+            if (tasksDiv.classList.contains('collapsed')) {
+                tasksDiv.classList.remove('collapsed');
+                icon.classList.remove('bx-chevron-up');
+                icon.classList.add('bx-chevron-down');
+            } else {
+                tasksDiv.classList.add('collapsed');
+                icon.classList.remove('bx-chevron-down');
+                icon.classList.add('bx-chevron-up');
+            }
+        });
+    }
+
+    // Add toggle functionality for Completed tasks column
+    if (DOMElements.completedToggle && DOMElements.completedTasksDiv) {
+        DOMElements.completedToggle.addEventListener('click', () => {
+            const tasksDiv = DOMElements.completedTasksDiv;
+            const icon = DOMElements.completedToggle;
+            if (tasksDiv.classList.contains('collapsed')) {
+                tasksDiv.classList.remove('collapsed');
+                icon.classList.remove('bx-chevron-up');
+                icon.classList.add('bx-chevron-down');
+            } else {
+                tasksDiv.classList.add('collapsed');
+                icon.classList.remove('bx-chevron-down');
+                icon.classList.add('bx-chevron-up');
+            }
+        });
     }
 });
