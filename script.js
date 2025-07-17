@@ -422,8 +422,18 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             if (!project.description && task.description) {
                 project.description = task.description;
-            }
+    }
+
+    // Add click event listener for bell icon button to show "feature under development" message
+    const headerBellButton = document.querySelector(".header-icons > button.icon-button");
+    if (headerBellButton) {
+        headerBellButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            console.log("Bell icon clicked");
+            alert("This feature is still under development.");
         });
+    }
+});
 
         projectsMap.forEach((project, key) => {
             if (project.tasks.length === 0) return;
@@ -649,18 +659,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             scheduleItem.innerHTML = `
                 <div class="schedule-item-indicator ${schedule.statusColor || 'blue'}"></div>
+                <input type="checkbox" class="schedule-select-checkbox" data-id="${schedule.id}" aria-label="Select schedule for deletion" style="float: right; margin-left: 10px;"/>
                 <div class="schedule-item-content">
-                    <h4>${schedule.title}</h4>
-                    <p>${schedule.description || schedule.desc || ''}</p>
+                    <h4 class="title">${schedule.title}</h4>
+                    <p class="subtitle">${schedule.description || schedule.desc || ''}</p>
                     <div class="schedule-item-time">
                         <i class='bx bx-time'></i>
                         ${schedule.startTime || (schedule.time ? schedule.time.split(' - ')[0] : 'undefined')} - ${schedule.endTime || (schedule.time ? schedule.time.split(' - ')[1] : 'undefined')}
                     </div>
-                </div>
-                <input type="checkbox" class="schedule-select-checkbox" data-id="${schedule.id}" aria-label="Select schedule for deletion" style="float: right; margin-left: 10px;"/>
-                <div class="avatar-group">
-                    ${(Array.isArray(schedule.avatars) ? schedule.avatars : [])
-                        .map((avatar) => `<img src="https://randomuser.me/api/portraits/${avatar}.jpg" alt="User Avatar">`).join("")}
                 </div>
             `;
             DOMElements.todayScheduleList.appendChild(scheduleItem);
