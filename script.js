@@ -529,25 +529,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const priorityLabel = task.priority ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1) : "Normal"; // English
             const commentCount = Array.isArray(task.comments) ? task.comments.length : 0;
-            const attachmentCount = Array.isArray(task.attachments) ? task.attachments.length : 0;
+            // Get file count from localStorage for the task
+            const storedFiles = getFilesForTask(task.id);
+            const attachmentCount = storedFiles.length;
             let progressBarColor = "#007bff";
             if (progress === 100) progressBarColor = "#28a745";
 
             taskCard.innerHTML = `
                 <div class="task-menu" data-task-id="${task.id}">&#8942;</div>
                 <div class="task-menu-dropdown" style="display: none;">
-                    <button class="edit-task-button" data-task-id="${task.id}">Edit Task</button> <button class="delete-task-button" data-task-id="${task.id}">Delete Task</button> </div>
+                    <button class="edit-task-button" data-task-id="${task.id}">Edit Task</button>
+                    <button class="delete-task-button" data-task-id="${task.id}">Delete Task</button>
+                </div>
                 <h4>${task.title}</h4>
                 <p class="task-date-range">${dateRange}</p>
                 <div class="task-card-subtasks">
                     <ul>
-                        ${(task.subtasks || [])
-                            .map((sub) => `
+                ${(task.subtasks || [])
+                            .map((sub) => {
+                                // Removed paperclip icon and file count span for subtasks as per user request
+                                return `
                             <li>
                                 <input type="checkbox" class="subtask-checkbox" data-task-id="${task.id}" data-subtask-id="${sub.id}" ${sub.completed ? "checked" : ""}>
                                 <label>${sub.text}</label>
                             </li>
-                        `).join("")}
+                        `}).join("")}
                     </ul>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <button class="add-subtask-button" data-task-id="${task.id}">
@@ -572,8 +578,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             .map((avatar) => `<img src="https://randomuser.me/api/portraits/${avatar}.jpg" alt="User">`).join("")}
                     </div>
                     <div class="task-meta-icons">
+                        <i class='bx bx-paperclip task-file-icon'></i><span class="task-file-count" style="color: #007bff; font-weight: 600; margin-left: 2px;">${attachmentCount}</span>
                         <i class='bx bx-message-rounded-dots'></i> ${commentCount}
-                        <i class='bx bx-paperclip'></i> ${attachmentCount}
                     </div>
                 </div>
             `;
@@ -723,6 +729,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (DOMElements.teamInputArea) DOMElements.teamInputArea.style.display = "none";
         if (DOMElements.teamDisplayDropdown) DOMElements.teamDisplayDropdown.style.display = "flex";
         if (DOMElements.attachmentFileNameDisplay) DOMElements.attachmentFileNameDisplay.textContent = "";
+        // Enable file input and hide warning message in add mode
+        if (DOMElements.attachmentInput) DOMElements.attachmentInput.disabled = false;
+        const warningMsg = document.getElementById("attachmentWarningMessage");
+        if (warningMsg) warningMsg.style.display = "none";
         populateChooseTeamSelect();
     };
 
@@ -753,6 +763,14 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("endTime").value = task.endTime || "";
         document.getElementById("assignTo").value = task.assignTo || "";
         if (DOMElements.prioritySelect) DOMElements.prioritySelect.value = task.priority || "normal";
+
+        // Disable file input and show warning message in edit mode
+        if (DOMElements.attachmentInput) DOMElements.attachmentInput.disabled = true;
+        const warningMsg = document.getElementById("attachmentWarningMessage");
+        if (warningMsg) {
+            warningMsg.textContent = "File upload can only be done via the link icon on the task card.";
+            warningMsg.style.display = "block";
+        }
 
         if (DOMElements.attachmentInput) DOMElements.attachmentInput.value = "";
         if (DOMElements.attachmentFileNameDisplay) DOMElements.attachmentFileNameDisplay.textContent = task.attachmentFile || "";
@@ -911,6 +929,232 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+     // ========================
+  // DROPDOWN MENU LOGIC
+  // ========================
+  const menuIcons = document.querySelectorAll(".menu-icon");
+
+  menuIcons.forEach(menu => {
+    menu.addEventListener("click", function (e) {
+      e.stopPropagation(); // cegah klik global
+      document.querySelectorAll(".dropdown-menu").forEach(menu => {
+        if (menu !== this.nextElementSibling) menu.classList.remove("show");
+      });
+      const dropdown = this.nextElementSibling;
+      dropdown.classList.toggle("show");
+    });
+  });
+
+  document.addEventListener("click", () => {
+    document.querySelectorAll(".dropdown-menu").forEach(menu => menu.classList.remove("show"));
+  });
+
+  // ========================
+  // FILE UPLOAD MODAL LOGIC
+  // ========================
+  const fileUploadModalOverlay = document.getElementById("fileUploadModalOverlay");
+  const fileUploadModalClose = document.getElementById("fileUploadModalClose");
+  const fileUploadInput = document.getElementById("fileUploadInput");
+  const fileListContainer = document.getElementById("fileListContainer");
+  let currentFileTaskId = null;
+
+  const getFilesForTask = (taskId) => {
+    const files = localStorage.getItem(`taskFiles_${taskId}`);
+    try {
+      return files ? JSON.parse(files) : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const saveFilesForTask = (taskId, files) => {
+    localStorage.setItem(`taskFiles_${taskId}`, JSON.stringify(files));
+  };
+
+  const renderFileList = () => {
+    if (!fileListContainer || !currentFileTaskId) return;
+    const files = getFilesForTask(currentFileTaskId);
+    fileListContainer.innerHTML = "";
+
+    if (files.length === 0) {
+      fileListContainer.innerHTML = "<p>No files uploaded.</p>";
+      return;
+    }
+
+    const viewableTypes = [
+      "application/pdf",
+      "image/png",
+      "image/jpeg"
+    ];
+
+    files.forEach((file, index) => {
+      const container = document.createElement("div");
+      container.className = "file-item";
+
+      const name = document.createElement("span");
+      name.textContent = file.name;
+
+      const actionsDiv = document.createElement("div");
+      actionsDiv.className = "file-actions";
+
+      // Determine file type from dataUrl prefix if possible
+      let fileType = "";
+      if (file.dataUrl && typeof file.dataUrl === "string") {
+        const match = file.dataUrl.match(/^data:([^;]+);base64,/);
+        if (match) {
+          fileType = match[1];
+        }
+      }
+
+      const viewBtn = document.createElement("button");
+      viewBtn.textContent = "View";
+
+      if (viewableTypes.includes(fileType)) {
+        viewBtn.addEventListener("click", () => {
+          const popup = window.open();
+          if (popup) {
+            popup.document.write(`<iframe src="${file.dataUrl}" style="width:100%;height:100vh;" frameborder="0"></iframe>`);
+          } else {
+            alert("Popup blocked.");
+          }
+        });
+      } else {
+        // Disable view button for unsupported types
+        viewBtn.disabled = true;
+        viewBtn.title = "Preview not available for this file type.";
+      }
+
+      const downloadBtn = document.createElement("button");
+      downloadBtn.textContent = "Download";
+      downloadBtn.addEventListener("click", () => {
+        if (!file.dataUrl) {
+          alert("File data not available for download.");
+          return;
+        }
+        const link = document.createElement("a");
+        link.href = file.dataUrl;
+        link.download = file.name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Delete";
+      deleteBtn.addEventListener("click", () => {
+        if (confirm(`Delete "${file.name}"?`)) {
+          const updated = getFilesForTask(currentFileTaskId).filter((_, i) => i !== index);
+          saveFilesForTask(currentFileTaskId, updated);
+          renderFileList();
+          renderTasks(); // Added to update task card file count
+        }
+      });
+
+      actionsDiv.appendChild(viewBtn);
+      actionsDiv.appendChild(downloadBtn);
+      actionsDiv.appendChild(deleteBtn);
+      container.appendChild(name);
+      container.appendChild(actionsDiv);
+      fileListContainer.appendChild(container);
+    });
+  };
+
+  const openFileUploadModal = (taskId) => {
+    currentFileTaskId = taskId;
+    renderFileList();
+    fileUploadModalOverlay.style.display = "flex";
+  };
+
+  const closeFileUploadModal = () => {
+    currentFileTaskId = null;
+    fileUploadModalOverlay.style.display = "none";
+    fileUploadInput.value = "";
+  };
+
+  fileUploadModalClose?.addEventListener("click", closeFileUploadModal);
+  fileUploadModalOverlay?.addEventListener("click", (e) => {
+    if (e.target === fileUploadModalOverlay) closeFileUploadModal();
+  });
+
+  // Remove direct event listener on paperclip icons and use event delegation instead
+  if (DOMElements.tasksListContainer) {
+    DOMElements.tasksListContainer.addEventListener("click", (e) => {
+      const target = e.target;
+      if (target.classList.contains("bx-paperclip") || target.closest(".bx-paperclip")) {
+        e.stopPropagation();
+        const paperclipIcon = target.classList.contains("bx-paperclip") ? target : target.closest(".bx-paperclip");
+        const taskCard = paperclipIcon.closest(".task-card");
+        const taskId = taskCard?.dataset.taskId;
+        if (taskId) openFileUploadModal(taskId);
+      }
+    });
+  }
+
+  // File input change event handler for file upload modal
+  fileUploadInput?.addEventListener("change", (e) => {
+    console.log("File upload input change event triggered");
+    if (!currentFileTaskId) {
+      console.warn("No currentFileTaskId set, aborting file save");
+      return;
+    }
+    console.log("Current file task ID:", currentFileTaskId);
+
+    const files = Array.from(e.target.files);
+    console.log("Files selected:", files);
+
+    const allowed = [
+      "application/pdf",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "image/png",
+      "image/jpeg"
+    ];
+
+    const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB in bytes
+
+    // Check for file size and type before reading
+    for (const file of files) {
+      if (!allowed.includes(file.type)) {
+        alert(`❌ Unsupported file type: ${file.name}`);
+        return;
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        alert(`❌ The file "${file.name}" is too large. Maximum: 1 MB.`);
+        return;
+      }
+    }
+
+    const readerPromises = files.map(file => {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve({ name: file.name, dataUrl: reader.result });
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+
+    Promise.all(readerPromises).then((uploadedFiles) => {
+      console.log("Files read and ready to save:", uploadedFiles);
+      const updated = getFilesForTask(currentFileTaskId).concat(uploadedFiles);
+      console.log("Updated files list to save:", updated);
+
+      try {
+        saveFilesForTask(currentFileTaskId, updated);
+        renderFileList();
+      } catch (error) {
+        if (error.name === "QuotaExceededError") {
+          alert("⚠️ localStorage is almost full. Please delete some files.");
+        } else {
+          console.error(error);
+        }
+      }
+
+      fileUploadInput.value = "";
+    });
+  });
+
+
+
     // =====================================================================
     // --- 7. Initialize All Application Event Listeners ---
     // =====================================================================
@@ -969,7 +1213,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (DOMElements.addTaskForm) {
-        DOMElements.addTaskForm.addEventListener("submit", (event) => {
+        DOMElements.addTaskForm.addEventListener("submit", async (event) => {
             event.preventDefault();
 
             const taskTitle = DOMElements.addTaskForm.querySelector("#taskTitle").value;
@@ -981,11 +1225,32 @@ document.addEventListener("DOMContentLoaded", () => {
             const endTime = DOMElements.addTaskForm.querySelector("#endTime").value;
             const assignTo = DOMElements.addTaskForm.querySelector("#assignTo").value;
             const priority = DOMElements.addTaskForm.querySelector("#prioritySelect").value;
-            const attachmentFile = DOMElements.attachmentInput && DOMElements.attachmentInput.files[0] ? DOMElements.attachmentInput.files[0].name : null;
+            const files = DOMElements.attachmentInput ? Array.from(DOMElements.attachmentInput.files) : [];
 
             if (!taskTitle || !chosenTeam || !startDate || !startTime || !endDate || !endTime || !assignTo) {
                 alert("Please fill in all required fields!"); // English
                 return;
+            }
+
+            // Helper function to read a file as base64 data URL
+            const readFileAsDataURL = (file) => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve({ name: file.name, dataUrl: reader.result });
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            };
+
+            // Read all files as base64 data URLs
+            let uploadedFiles = [];
+            if (files.length > 0) {
+                try {
+                    uploadedFiles = await Promise.all(files.map(readFileAsDataURL));
+                } catch (error) {
+                    alert("Error reading files. Please try again.");
+                    return;
+                }
             }
 
             const editingTaskId = DOMElements.addTaskForm.dataset.editingTaskId;
@@ -995,15 +1260,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (taskIndex !== -1) {
                     const task = tasks[taskIndex];
                     Object.assign(task, { title: taskTitle, description, team: chosenTeam, startDate, startTime, endDate, endTime, assignTo, priority });
-                    if (attachmentFile) task.attachmentFile = attachmentFile;
+                    if (uploadedFiles.length > 0) {
+                        task.attachmentFile = uploadedFiles[0].name;
+                        try {
+                            saveFilesForTask(task.id, uploadedFiles);
+                        } catch (error) {
+                            if (error.name === "QuotaExceededError") {
+                                alert("⚠️ localStorage is almost full. Please delete some files.");
+                                return;
+                            } else {
+                                throw error;
+                            }
+                        }
+                    }
                     setStorage("tasks", tasks);
                     alert("Task updated successfully!"); // English
                 } else {
                     alert("Error: Task to edit not found."); // English
                 }
             } else {
+                const newTaskId = getNextId(tasks);
                 const newTask = {
-                    id: getNextId(tasks),
+                    id: newTaskId,
                     title: taskTitle,
                     description: description,
                     team: chosenTeam,
@@ -1012,7 +1290,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     endDate: endDate,
                     endTime: endTime,
                     assignTo: assignTo,
-                    attachmentFile: attachmentFile,
+                    attachmentFile: uploadedFiles.length > 0 ? uploadedFiles[0].name : null,
                     status: "in-progress",
                     progress: 0,
                     priority: priority,
@@ -1023,7 +1301,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     type: "Task",
                 };
                 tasks.unshift(newTask);
-                setStorage("tasks", tasks);
+                try {
+                    setStorage("tasks", tasks);
+                    if (uploadedFiles.length > 0) {
+                        saveFilesForTask(newTaskId, uploadedFiles);
+                    }
+                } catch (error) {
+                    if (error.name === "QuotaExceededError") {
+                        alert("⚠️ localStorage is almost full. Please delete some files.");
+                        return;
+                    } else {
+                        throw error;
+                    }
+                }
                 alert("Task added successfully!"); // English
                 if (DOMElements.priorityFilterSelect) {
                     DOMElements.priorityFilterSelect.value = "all";
