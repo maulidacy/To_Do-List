@@ -39,7 +39,11 @@ body {
 }
 
 /* Global font family update to Nunito */
-body, input, select, textarea, button {
+body,
+input,
+select,
+textarea,
+button {
     font-family: "Nunito", sans-serif !important;
 }
 
@@ -53,6 +57,7 @@ body, input, select, textarea, button {
     position: relative;
     overflow-x: hidden;
 }
+
 /*=========================================
         END: MAIN DASHBOARD LAYOUT      
 ===========================================*/
@@ -170,6 +175,7 @@ body, input, select, textarea, button {
     font-size: 18px;
     color: currentColor;
 }
+
 /*=========================================
             END: SIDEBAR LEFT      
 ===========================================*/
@@ -253,6 +259,7 @@ body, input, select, textarea, button {
     align-items: center;
     gap: 1rem;
 }
+
 .header-icons .icon-button {
     background: none;
     border: none;
@@ -286,8 +293,8 @@ body, input, select, textarea, button {
     border: 2px solid var(--primary-blue);
 }
 
- /* Project Summary*/
- .project-summary-section {
+/* Project Summary*/
+.project-summary-section {
     padding-bottom: 0.8rem;
 }
 
@@ -383,6 +390,7 @@ body, input, select, textarea, button {
     background: var(--gradient-blue);
     color: white;
 }
+
 .project-card.purple {
     background: var(--gradient-purple);
 }
@@ -509,7 +517,7 @@ body, input, select, textarea, button {
     border-radius: 4px;
     z-index: 1000;
     min-width: 120px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     flex-direction: column;
     padding: 0.5rem 0;
 }
@@ -670,9 +678,10 @@ body, input, select, textarea, button {
 }
 
 .tasks-filters select {
-    appearance: none; 
+    appearance: none;
     -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23777' %3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); /* Custom SVG for dropdown arrow */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23777' %3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    /* Custom SVG for dropdown arrow */
     background-repeat: no-repeat;
     background-position: right 0.6rem center;
     background-size: 14px;
@@ -686,13 +695,13 @@ body, input, select, textarea, button {
 
 
 /* Smooth toggle transition for task columns */
-.task-column > div {
+.task-column>div {
     transition: max-height 0.4s ease, opacity 0.4s ease;
     max-height: 1000px;
     opacity: 1;
 }
 
-.task-column > div.collapsed {
+.task-column>div.collapsed {
     max-height: 0;
     opacity: 0;
     pointer-events: none;
@@ -794,17 +803,20 @@ body, input, select, textarea, button {
 }
 
 .task-card-priority.high {
-    background-color: #ffcccc; /* Light red */
+    background-color: #ffcccc;
+    /* Light red */
     color: #cc0000;
 }
 
 .task-card-priority.normal {
-    background-color: #ccedff; /* Light blue */
+    background-color: #ccedff;
+    /* Light blue */
     color: #007bff;
 }
 
 .task-card-priority.low {
-    background-color: #d4edda; /* Light green */
+    background-color: #d4edda;
+    /* Light green */
     color: #28a745;
 }
 
@@ -1041,6 +1053,7 @@ body, input, select, textarea, button {
 .task-card {
     position: relative;
 }
+
 /*=========================================
            END: MAIN CONTENT AREA      
 ===========================================*/
@@ -1186,11 +1199,11 @@ body, input, select, textarea, button {
 
 .schedule-select-checkbox {
     position: absolute;
-    top: 8px;           
-    right: 8px;        
-    z-index: 10;        
-    width: 18px;        
-    height: 18px;      
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    width: 18px;
+    height: 18px;
     cursor: pointer;
 }
 
@@ -1214,14 +1227,14 @@ body, input, select, textarea, button {
 
 .schedule-item-indicator {
     position: absolute;
-    left: 0;          
-    top: 0;            
-    width: 6px;        
-    height: 100%;    
-    flex-shrink: 0;  
+    left: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    flex-shrink: 0;
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
-    border-top-right-radius: 0;    
+    border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
 
@@ -1368,6 +1381,7 @@ body, input, select, textarea, button {
 #todayScheduleDropdown .dropdown-item span {
     font-size: 1rem;
 }
+
 /*=========================================
             END: SIDEBAR RIGHT     
 ===========================================*/
@@ -1584,7 +1598,8 @@ body, input, select, textarea, button {
     align-items: center;
     gap: 5px;
     margin-top: 10px;
-    width: 100%; /* Pastikan 100% lebar saat aktif */
+    width: 100%;
+    /* Pastikan 100% lebar saat aktif */
 }
 
 .team-input-area input[type="text"] {
@@ -1815,11 +1830,13 @@ input[type="time"] {
 }
 
 .status-dot.in-progress {
-    background-color: #007bff; /* blue */
+    background-color: #007bff;
+    /* blue */
 }
 
 .status-dot.completed {
-    background-color: #28a745; /* green */
+    background-color: #28a745;
+    /* green */
 }
 
 /*Progress Bar */
@@ -1849,15 +1866,18 @@ input[type="time"] {
 }
 
 .priority-label.high {
-    background-color: #e74c3c; /* red */
+    background-color: #e74c3c;
+    /* red */
 }
 
 .priority-label.medium {
-    background-color: #f1c40f; /* yellow */
+    background-color: #f1c40f;
+    /* yellow */
 }
 
 .priority-label.low {
-    background-color: #2ecc71; /* green */
+    background-color: #2ecc71;
+    /* green */
 }
 
 /* Meta Icons */
@@ -1974,20 +1994,25 @@ input[type="time"] {
 
 /* Colors for known teams */
 .team-badge.design {
-    background-color: #6f42c1; /* purple */
+    background-color: #6f42c1;
+    /* purple */
 }
 
 .team-badge.development {
-    background-color: #28a745; /* green */
+    background-color: #28a745;
+    /* green */
 }
 
 .team-badge.marketing {
-    background-color: #fd7e14; /* orange */
+    background-color: #fd7e14;
+    /* orange */
 }
 
 .team-badge.general {
-    background-color: #6c757d; /* gray */
+    background-color: #6c757d;
+    /* gray */
 }
+
 /*=========================================
             END: TASK COLUMN     
 ===========================================*/
@@ -2011,144 +2036,142 @@ input[type="time"] {
 ===========================================*/
 /* File upload modal specific styles */
 .file-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
 }
 
 .file-modal {
-  background-color: var(--surface-white);
-  border-radius: 8px;
-  width: 90%;
-  max-width: 400px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  display: flex;
-  flex-direction: column;
+    background-color: var(--surface-white);
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
 }
 
 
 .close-button {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #333;
-  transition: color 0.2s ease;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.2s ease;
 }
 
 .close-button:hover {
-  color: var(--primary-blue);
+    color: var(--primary-blue);
 }
 
 .form-body {
-  flex-grow: 1;
-  overflow-y: auto;
+    flex-grow: 1;
+    overflow-y: auto;
 }
 
 .file-upload-container {
-  padding: 1rem 1.5rem;
+    padding: 1rem 1.5rem;
 }
 
 .file-list-container {
-  max-height: 200px;
-  overflow-y: auto;
-  margin-bottom: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.5rem;
 }
 
 .file-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.25rem 0.5rem;
-  border-bottom: 1px solid #eee;
-  font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
 }
 
 .file-item:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .file-name {
-  flex-grow: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-right: 0.5rem;
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 0.5rem;
 }
 
 .file-actions button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-left: 0.25rem;
-  font-size: 1rem;
-  color: var(--primary-blue);
-  transition: color 0.2s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 0.25rem;
+    font-size: 1rem;
+    color: var(--primary-blue);
+    transition: color 0.2s ease;
 }
 
 .file-actions button:hover {
-  color: #0056b3;
+    color: #0056b3;
 }
 
 .file-upload-input-group {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .file-upload-label {
-  cursor: pointer;
-  background-color: var(--primary-blue);
-  color: var(--surface-white);
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: background-color 0.2s ease;
+    cursor: pointer;
+    background-color: var(--primary-blue);
+    color: var(--surface-white);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s ease;
 }
 
 .file-upload-label:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
 .file-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
 }
 
 .file-actions button {
-  margin-left: 0;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.85rem;
-  color: var(--primary-blue);
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.2s ease;
-  width: 100%;
-  text-align: left;
+    margin-left: 0;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    color: var(--primary-blue);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    width: 100%;
+    text-align: left;
 }
 
 .file-actions button:hover {
-  color: #0056b3;
+    color: #0056b3;
 }
 /*=========================================
         END: FILE UPLOAD MODAL     
 ===========================================*/
-
-
