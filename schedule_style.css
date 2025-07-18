@@ -1,22 +1,3 @@
-/* Variabel CSS dari style.css utama untuk konsistensi */
-
-/* New style for today dot indicator in calendar */
-.today-dot-indicator {
-    display: block;
-    width: 8px;
-    height: 8px;
-    background-color: var(--primary-blue);
-    border-radius: 50%;
-    position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-/* Ensure calendar day is positioned relative for dot positioning */
-.calendar-day {
-    position: relative;
-}
 :root {
     --primary-blue: #007bff;
     --secondary-blue: #00c6ff;
@@ -38,34 +19,55 @@
     --primary-blue-light: #6A67F0;
     --primary-blue-dark: #5A57E0;
     --input-bg: #FFFFFF;
-    --primary-color: #6A67F0;
-    --text-dark: #333;
     --text-medium: #666;
-    --text-light: #999;
-    --border-color: #E0E0E0;
-    --bg-light: #F8F8F8;
-    --bg-white: #FFFFFF;
+    --text-muted: #999;
+    --primary-blue-hover: #0056b3;
 }
 
-/* Global font family update to Nunito */
-body, input, select, textarea, button {
+/* New style for today dot indicator in calendar */
+.today-dot-indicator {
+    display: block;
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary-blue);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Ensure calendar day is positioned relative for dot positioning */
+.calendar-day {
+    position: relative;
+}
+
+/*=========================================
+          Global Base Styles
+===========================================*/
+body,
+input,
+select,
+textarea,
+button {
     font-family: "Nunito", sans-serif !important;
 }
 
-/* Base styles for the schedule page, similar to dashboard */
 body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--background-light);
     color: var(--text-dark);
     line-height: 1.6;
-    font-size: 0.85rem; /* Base font size, small/medium */
+    font-size: 0.85rem;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-/* Dashboard container from index.html, needed here for sidebar functionality */
+/*=========================================
+          Layout Containers
+===========================================*/
 .dashboard-container {
     display: flex;
     width: 100%;
@@ -84,7 +86,15 @@ body {
     min-width: 0;
 }
 
-/* Header (similar to dashboard header) */
+.sidebar-right {
+    flex-shrink: 0;
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+}
+
+/*=========================================
+          Header Styles
+===========================================*/
 .header-top {
     background-color: var(--surface-white);
     padding: 1rem 1.5rem;
@@ -96,27 +106,28 @@ body {
     position: sticky;
     top: 0;
     flex-shrink: 0;
-    border-radius: 12px; /* Add border-radius */
+    border-radius: 12px;
 }
 
 .header-greeting h1 {
     font-size: 1.6rem;
     font-weight: 700;
     color: var(--text-dark);
-    margin: 0; /* Override default h1 margin */
+    margin: 0;
 }
 
-/* Adjustments for sidebar and calendar from main dashboard styles */
-.sidebar-right {
-    flex-shrink: 0;
-    padding: 1.5rem 1rem;
-    border-radius: 12px; /* Rounded corners for sidebars */
+/*=========================================
+          Mobile Menu & Back Link
+===========================================*/
+#todayScheduleMenuButton {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background-color: white;
 }
 
-
-/* Mobile menu toggle */
 .mobile-menu-toggle {
-    display: none; /* Hidden by default on desktop */
+    display: none;
     background: none;
     border: none;
     font-size: 24px;
@@ -127,12 +138,11 @@ body {
     transition: background-color 0.2s ease;
     margin-right: 1rem;
 }
+
 .mobile-menu-toggle:hover {
     background-color: var(--background-light);
 }
 
-
-/* Back to Dashboard Link */
 .back-link {
     display: inline-flex;
     align-items: center;
@@ -144,16 +154,19 @@ body {
     font-size: 0.9rem;
     transition: color 0.2s ease;
 }
+
 .back-link:hover {
     color: var(--primary-blue-light);
     text-decoration: underline;
 }
+
 .back-link .bx {
     font-size: 1.2rem;
 }
 
-
-/* Schedule List Section */
+/*=========================================
+          Schedule List Section
+===========================================*/
 .schedule-list-section {
     background: var(--surface-white);
     border-radius: 12px;
@@ -189,10 +202,12 @@ body {
     gap: 0.5rem;
     color: var(--surface-white);
 }
+
 .schedule-list-header button:hover {
     background-color: var(--primary-color);
     border-color: var(--primary-blue-light);
 }
+
 .schedule-list-header button .bx {
     font-size: 1.1rem;
     color: var(--surface-white);
@@ -202,47 +217,124 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+    position: static;
 }
 
+.schedule-list::before {
+    display: none;
+}
+
+/*=========================================
+          Schedule Item Styling
+===========================================*/
 .schedule-item {
     background: var(--background-light);
     border-radius: 8px;
     padding: 0.8rem 1rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    position: relative;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-light);
     transition: background-color 0.2s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 1rem;
+    min-height: 70px;
+    position: relative;
 }
+
+.schedule-select-checkbox {
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    width: 18px;
+    height: 18px;
+    margin: 0 !important;
+    cursor: pointer;
+    float: none !important;
+}
+
+#todayScheduleList .schedule-item {
+    position: relative;
+    padding-top: 30px;
+}
+
+#todayScheduleList .avatar-group {
+    margin-top: 0.5rem;
+    width: 100%;
+    display: flex;
+    gap: 0.3rem;
+    justify-content: flex-start;
+}
+
+#todayScheduleList .schedule-item-content {
+    order: 1;
+}
+
 .schedule-item:hover {
-    background-color: #eaf1f7;
+    background-color: var(--background-light);
 }
 
 .schedule-item-indicator {
     width: 6px;
-    min-height: 40px;
     height: 100%;
-    border-radius: 3px;
     flex-shrink: 0;
+    align-self: stretch;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color: var(--primary-blue-light);
 }
-.schedule-item-indicator.green { background-color: #28a745; }
-.schedule-item-indicator.blue { background-color: var(--primary-blue-light); } /* Use primary-blue-light for consistency */
-.schedule-item-indicator.red { background-color: var(--primary-red); }
-.schedule-item-indicator.purple { background-color: var(--primary-purple); }
+
+/* Kelas warna untuk indikator */
+.schedule-item-indicator.green {
+    background-color: #28a745;
+}
+
+.schedule-item-indicator.blue {
+    background-color: var(--primary-blue-light);
+}
+
+.schedule-item-indicator.red {
+    background-color: var(--primary-red);
+}
+
+.schedule-item-indicator.purple {
+    background-color: var(--primary-purple);
+}
+
+.schedule-item-indicator.orange {
+    background-color: var(--primary-red);
+}
 
 
 .schedule-item-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
+
 .schedule-item-content .title {
     font-weight: 600;
     font-size: 0.95rem;
     color: var(--text-dark);
     margin-bottom: 0.2rem;
+    word-wrap: break-word;
+    white-space: normal;
+    line-height: 1.2;
 }
+
+.schedule-item-content .subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    word-wrap: break-word;
+    white-space: normal;
+    line-height: 1.2;
+}
+
 .schedule-item-content .time {
     font-size: 0.8rem;
     color: var(--text-light);
@@ -250,6 +342,7 @@ body {
     align-items: center;
     gap: 0.3rem;
 }
+
 .schedule-item-content .time .bx {
     font-size: 1rem;
     color: var(--text-light);
@@ -257,9 +350,10 @@ body {
 
 .schedule-item-actions {
     display: flex;
-    gap: 0.5rem;
-    flex-shrink: 0;
+    flex-direction: column;
+    justify-content: space-between;
 }
+
 .schedule-item-actions button {
     background: none;
     border: none;
@@ -270,15 +364,17 @@ body {
     color: var(--text-light);
     transition: background-color 0.2s ease, color 0.2s ease;
 }
+
 .schedule-item-actions button:hover {
     background-color: var(--background-light);
     color: var(--text-dark);
 }
 
-
-/* Modal Styles (Consistent with Add Task Modal) */
+/*=========================================
+          Modal Styles (Add/Edit Task)
+===========================================*/
 .modal-overlay {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -289,39 +385,48 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    padding: 15px;
+    padding: 10px;
     box-sizing: border-box;
 }
 
-.form-container { /* This is the modal content wrapper */
+.form-container {
     background-color: var(--surface-white);
     margin: auto;
-    padding: 1.2rem;
+    padding: 1rem;
     border-radius: 10px;
     box-shadow: 0 6px 15px var(--shadow-medium);
-    max-width: 380px;
+    max-width: 350px;
     width: 100%;
     position: relative;
     animation: fadeIn 0.3s ease-out;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.form-header { /* Modal header */
+.form-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
-    padding-bottom: 0.8rem;
+    padding-bottom: 0.6rem;
     border-bottom: 1px solid var(--border-light);
-    margin-bottom: 1.2rem;
+    margin-bottom: 1rem;
 }
 
 .form-header h2 {
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--text-dark);
     margin: 0;
@@ -329,50 +434,109 @@ body {
     text-align: center;
 }
 
-.close-button { /* Modal close button */
+.close-button {
     background: none;
     border: none;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: var(--text-light);
     cursor: pointer;
     padding: 0;
     line-height: 1;
     transition: color 0.2s ease;
     position: absolute;
-    top: 0px; /* Adjusted to be slightly lower than top edge */
+    top: 0px;
     right: 0px;
 }
+
 .close-button:hover {
     color: var(--text-dark);
 }
 
-.form-body { /* The actual form */
+.form-body {
+    padding: 20px 25px;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem; /* Compact spacing between form groups */
+    gap: 0.8rem;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
+    position: relative;
+    margin-bottom: 0 !important;
 }
 
 .form-group label {
     display: block;
     font-weight: 500;
-    font-size: 0.85rem; /* Smaller label font */
+    font-size: 0.85rem;
     color: var(--text-dark);
     margin-bottom: 0.2rem;
 }
 
+/* --- ADD DESCRIPTION GROUP --- */
+/* Styles for description input area */
+.description-group .icon-text-left {
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.description-group .icon-text-left:hover {
+    color: var(--primary-blue-dark);
+}
+
+.description-group .icon-text-left:hover .fas {
+    color: var(--primary-blue-dark);
+}
+
+.description-input-area {
+    margin-top: 10px;
+    pointer-events: auto;
+    cursor: text;
+}
+
+/* Styles for description input area */
+.description-input-area textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    outline: none;
+    resize: vertical;
+    background-color: var(--surface-white);
+    transition: border-color 0.2s ease;
+}
+
+.description-input-area textarea:focus {
+    border-color: var(--primary-blue-light);
+}
+
+/* Common styles for sections with icon on left and text/dropdown/input on right */
+.icon-text-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: var(--text-medium);
+    white-space: nowrap;
+}
+
+.icon-text-left .fas {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
 .form-group input[type="text"],
-.form-group input[type="date"], /* Hidden date input will use this style if not overridden */
-.form-group input[type="time"] { /* Hidden time input will use this style if not overridden */
+.form-group input[type="date"],
+.form-group input[type="time"] {
     width: 100%;
     padding: 0.6rem 0.8rem;
     border: 1px solid var(--border-light);
     border-radius: 8px;
-    font-size: 0.9rem; /* Input text font size */
+    font-size: 0.85rem;
     color: var(--text-dark);
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -380,37 +544,37 @@ body {
     box-sizing: border-box;
 }
 
-/* Input group with icon (for date and time pickers) */
 .input-with-icon {
     position: relative;
 }
 
 .input-with-icon input[type="text"][readonly] {
-    padding-right: 2.5rem; /* Space for the icon */
-    cursor: pointer; /* Indicate it's clickable */
+    padding-right: 2.5rem;
+    cursor: pointer;
 }
 
-.input-with-icon .bx, .input-with-icon .fas { /* Icons within input group */
+.input-with-icon .bx,
+.input-with-icon .fas {
     position: absolute;
     right: 0.8rem;
     top: 50%;
     transform: translateY(-50%);
     font-size: 1.2rem;
     color: var(--text-light);
-    pointer-events: none; /* Clicks go through to input */
+    pointer-events: none;
 }
 
 /* Hidden native date/time inputs */
 .hidden-date-input,
 .hidden-time-input {
-    position: absolute; /* Place it behind the text input */
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0; /* Make it completely transparent */
-    cursor: pointer; /* Keep cursor pointer */
-    z-index: 1; /* Ensure it's clickable */
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
 }
 
 /* Style for custom select dropdown (Category Color) */
@@ -422,18 +586,18 @@ body {
     border: 1px solid var(--border-light);
     border-radius: 8px;
     background-color: var(--input-bg);
-    padding: 0; /* Remove internal padding, select handles it */
+    padding: 0;
 }
 
 .custom-select-wrapper select.styled-select {
     width: 100%;
-    padding: 0.6rem 2.5rem 0.6rem 0.8rem; /* Padding for text and custom arrow */
+    padding: 0.6rem 2.5rem 0.6rem 0.8rem;
     border: none;
     background: transparent;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    font-size: 0.9rem; /* Font size for select options */
+    font-size: 0.85rem;
     color: var(--text-dark);
     cursor: pointer;
     outline: none;
@@ -451,90 +615,277 @@ body {
 }
 
 /* Style for the select options themselves (colors) */
-#statusColor option[value="blue"] { background-color: #007bff; color: white; }
-#statusColor option[value="green"] { background-color: #28a745; color: white; }
-#statusColor option[value="red"] { background-color: #dc3545; color: white; }
-#statusColor option[value="purple"] { background-color: #6f42c1; color: white; }
-/* Add specific styles for selected option if desired for live preview */
-/* For example, in JS you could change background of .custom-select-wrapper based on selected value */
-
-
-/* Form buttons */
-.form-buttons {
-    display: flex;
-    gap: 0.8rem;
-    justify-content: flex-end; /* Push buttons to the right */
-    margin-top: 1rem;
+#statusColor option[value="blue"] {
+    background-color: #007bff;
+    color: white;
 }
 
-.vibrant-button, .cancel-button {
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
+#statusColor option[value="green"] {
+    background-color: #28a745;
+    color: white;
+}
+
+#statusColor option[value="red"] {
+    background-color: #dc3545;
+    color: white;
+}
+
+#statusColor option[value="purple"] {
+    background-color: #6f42c1;
+    color: white;
+}
+
+/* Other form specific styles */
+.form-group.team-selection {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.choose-team-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background-color: transparent;
+    border: 1.5px solid var(--primary-blue);
+    border-radius: 20px;
+    padding: 6px 12px;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    color: var(--primary-blue);
     cursor: pointer;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.choose-team-btn:hover {
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+.team-select-wrapper {
+    flex-grow: 1;
+    max-width: 150px;
+}
+
+.custom-select-wrapper.team-select-wrapper {
+    border: 1.5px solid var(--border-light);
+    border-radius: 20px;
+    padding: 0;
+}
+
+.custom-select-wrapper.team-select-wrapper select.styled-select {
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.custom-select-wrapper.team-select-wrapper .select-arrow {
+    font-size: 1rem;
+    color: var(--text-light);
+}
+
+/* #toggleDescriptionBtn dan #descriptionContainer styles */
+#toggleDescriptionBtn {
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0;
+    margin-bottom: 0.5rem;
+    transition: color 0.2s ease;
+}
+
+#toggleDescriptionBtn:hover {
+    color: var(--primary-blue);
+}
+
+#descriptionContainer textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    resize: vertical;
+    background-color: var(--surface-white);
+    transition: border-color 0.2s ease;
+}
+
+#descriptionContainer textarea:focus {
+    border-color: var(--primary-blue);
+    outline: none;
+}
+
+/* Date/Time Group styles */
+.date-time-group {
+    margin-bottom: 1rem;
+}
+
+.date-time-group label {
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+.date-time-inputs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.input-with-icon.date-input,
+.input-with-icon.time-input {
+    flex-grow: 1;
+    position: relative;
+}
+
+.input-with-icon.date-input input[type="text"],
+.input-with-icon.time-input input[type="text"] {
+    width: 100%;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+.input-with-icon.date-input .calendar-icon,
+.input-with-icon.time-input .time-icon {
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: var(--text-light);
+    pointer-events: none;
+}
+
+.assign-to-group {
+    margin-bottom: 1rem;
+}
+
+.assign-to-group label {
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+.input-with-icon.assign-to-group {
+    position: relative;
+}
+
+.input-with-icon.assign-to-group input[type="text"] {
+    width: 100%;
+    padding-right: 2.5rem;
+}
+
+.input-with-icon.assign-to-group .bx-user {
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.85rem;
+    color: var(--text-light);
+    pointer-events: none;
+}
+
+.custom-select-wrapper {
+    max-width: 100%;
+}
+
+.attachment-group {
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.attachment-group i {
+    font-size: 0.85rem;
+}
+
+/* Tombol Cancel (cancel-button) */
+.cancel-button {
+    background-color: var(--background-light, #e0e0e0);
+    color: var(--text-dark, #333);
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-light, #ccc);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.cancel-button:hover {
+    background-color: var(--border-medium, #d0d0d0);
+    border-color: var(--border-dark, #b0b0b0);
+}
+
+.cancel-button:active {
+    background-color: var(--background-light, #e0e0e0);
+    border-color: var(--border-light, #ccc);
+    transform: translateY(0);
 }
 
 .vibrant-button {
-    background-color: #6C63FF; /* Your requested vibrant color */
-    color: white;
+    background-color: var(--primary-blue, #007bff);
+    color: var(--surface-white, #ffffff);
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
 }
+
+
 .vibrant-button:hover {
-    background-color: #564cda; /* Darker on hover */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    background-color: var(--primary-blue-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.cancel-button {
-    background-color: var(--background-light);
-    color: var(--text-dark);
-    border: 1px solid var(--border-light);
-}
-.cancel-button:hover {
-    background-color: #e0e0e0;
-    border-color: #c0c0c0;
+.vibrant-button:active {
+    background-color: var(--primary-blue, #007bff);
+    transform: translateY(0);
+    box-shadow: none;
 }
 
-
-/* Responsive Adjustments for Modal */
-@media (max-width: 768px) {
-    .modal-overlay {
-        padding: 10px;
-    }
-    .form-container {
-        padding: 1rem;
-        border-radius: 8px;
-        max-width: 95%; /* Make it wider on smaller screens */
-    }
-    .form-header h2 {
-        font-size: 1.2rem;
-    }
-    .close-button {
-        font-size: 1.6rem;
-    }
-    .form-group label {
-        font-size: 0.8rem;
-    }
-    .form-group input[type="text"],
-    .custom-select-wrapper select.styled-select {
-        font-size: 0.85rem;
-        padding: 0.5rem 0.8rem;
-    }
-    .input-with-icon input[type="text"][readonly] {
-        padding-right: 2rem;
-    }
-    .input-with-icon .bx, .input-with-icon .fas {
-        font-size: 1.1rem;
-        right: 0.6rem;
-    }
-    .vibrant-button, .cancel-button {
-        padding: 0.6rem 1.2rem;
-        font-size: 0.9rem;
-    }
+/* --- Styling untuk Kontainer Tombol --- */
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
+/*=========================================
+          Today Schedule Dropdown
+=========================================*/
 /* Dropdown menu styles for Today Schedule */
 #todayScheduleDropdown {
     background-color: var(--surface-white);
@@ -546,9 +897,8 @@ body {
     top: 100%;
     right: 0;
     z-index: 1000;
-    /* Kunci Perbaikan 1: Pastikan ini adalah default dan JavaScript yang mengubahnya */
-    display: none; /* Ini harus menjadi nilai awal */
-    flex-direction: column; /* Ini akan berlaku saat display bukan 'none' */
+    display: none;
+    flex-direction: column;
     padding: 0.25rem 0;
 }
 
@@ -571,93 +921,288 @@ body {
     background-color: var(--background-light) !important;
 }
 
-/* Kunci Perbaikan 2: Gabungkan aturan active/focus untuk kejelasan dan hindari penimpaan */
 #todayScheduleDropdown .dropdown-item:active,
 #todayScheduleDropdown .dropdown-item:focus,
-#todayScheduleDropdown .dropdown-item.active { /* Pertahankan kelas .active jika Anda menggunakannya secara JS */
+#todayScheduleDropdown .dropdown-item.active {
     background-color: var(--primary-blue-light);
-    color: var(--text-dark); /* Ganti var(--primary-color) jika Anda ingin teks tetap gelap */
+    color: var(--text-dark);
     outline: none;
 }
-
 
 #todayScheduleDropdown .dropdown-item span {
     font-size: 1rem;
 }
 
-/* Pastikan elemen induk untuk dropdown memiliki positioning */
-/* Misalnya, section-header atau container terdekat */
 .section-header {
-    position: relative; /* Ini PENTING agar dropdown dengan position: absolute; bekerja dengan benar */
+    position: relative;
+}
+
+/* Additional CSS adjustments for schedule form UI */
+.add-schedule-btn {
+    background-color: var(--primary-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background-color 0.2s ease;
+}
+
+.add-schedule-btn:hover {
+    background-color: var(--primary-blue-light);
+    color: var(--primary-purple);
 }
 
 
+.add-schedule-btn:hover .bx {
+    color: var(--primary-purple);
+}
 
-/* Responsive Adjustments for Modal */
-@media (max-width: 480px) {
+.add-schedule-btn .bx {
+    transition: color 0.3s ease;
+}
+
+/*==========================================
+          Responsive Adjustments
+==========================================*/
+@media (max-width: 768px) {
     .modal-overlay {
-        padding: 5px;
+        padding: 10px;
     }
+
     .form-container {
-        padding: 0.8rem;
+        padding: 1rem;
+        border-radius: 8px;
+        max-width: 95%;
     }
+
     .form-header h2 {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
+
     .close-button {
-        font-size: 1.4rem;
-        top: 2px;
-        right: 2px;
+        font-size: 1.6rem;
     }
-    .form-body {
-        gap: 0.6rem;
-    }
+
     .form-group label {
+        font-size: 0.8rem;
+    }
+
+    .form-group input[type="text"],
+    .custom-select-wrapper select.styled-select {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem;
+    }
+
+    .input-with-icon input[type="text"][readonly] {
+        padding-right: 2rem;
+    }
+
+    .input-with-icon .bx,
+    .input-with-icon .fas {
+        font-size: 1.1rem;
+        right: 0.6rem;
+    }
+
+    .vibrant-button,
+    .cancel-button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+
+    /* Added styles for mobile layout of schedule item actions */
+    .schedule-item {
+        flex-direction: row;
+        align-items: stretch;
+        padding: 0.6rem 0.8rem;
+        gap: 0.8rem;
+        width: 100%;
+        box-sizing: border-box;
+
+    }
+
+    .schedule-item-content .title {
+        font-size: 0.9rem;
+    }
+
+    .schedule-item-content .subtitle {
+        font-size: 0.8rem;
+    }
+
+    .schedule-item-content .time {
         font-size: 0.75rem;
     }
-    .form-group input[type="text"],
-    .custom-select-wrapper select.styled-select {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.6rem;
+
+
+    .schedule-item-actions {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        padding-left: 0;
+        flex-shrink: 0;
     }
-    .input-with-icon input[type="text"][readonly] {
-        padding-right: 1.8rem;
-    }
-    .input-with-icon .bx, .input-with-icon .fas {
+
+    .schedule-item-actions button {
         font-size: 1rem;
-        right: 0.5rem;
+        padding: 0.3rem;
     }
-    .vibrant-button, .cancel-button {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
+}
+
+@media (max-width: 1200px) {
+    .add-schedule-btn {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
     }
-    .form-buttons {
+
+    .header-greeting {
+        flex-direction: row;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        align-items: center;
+    }
+
+    .header-greeting h1 {
+        font-size: 1.2rem;
+        margin: 0;
+    }
+
+    .header-greeting a {
+        font-size: 1.2rem;
+    }
+
+    .schedule-list-header {
         flex-direction: column;
-        gap: 0.6rem;
+        align-items: flex-start;
+        gap: 0.5rem;
     }
-    .form-buttons button {
+
+    .schedule-list-header h2 {
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    .schedule-list-header button {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+    }
+
+    .schedule-item {
+        flex-direction: row;
+        align-items: center;
+        padding: 0.6rem 0.8rem;
+        gap: 0.8rem;
         width: 100%;
+        box-sizing: border-box;
+        position: relative;
     }
 
-    /* Additional improvements for Add Task form on mobile */
-    .form-container {
-        max-width: 100% !important;
-        border-radius: 12px !important;
-        padding: 1rem 1.2rem !important;
+    .schedule-item-indicator {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 6px;
+        height: 100%;
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
     }
 
-    .form-group {
-        margin-bottom: 1rem !important;
+    .schedule-item-content {
+        flex-grow: 1;
+        padding-left: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 0.2rem;
     }
 
-    .form-group input[type="text"],
-    .custom-select-wrapper select.styled-select {
-        font-size: 1rem !important;
-        padding: 0.6rem 0.8rem !important;
+    .schedule-item-content .title {
+        font-size: 0.9rem;
+        margin-bottom: 0;
     }
 
-    .vibrant-button, .cancel-button {
-        padding: 0.75rem 1.5rem !important;
-        font-size: 1rem !important;
+    .schedule-item-content .description {
+        font-size: 0.75rem;
+        margin-bottom: 0;
+        color: var(--text-light);
+    }
+
+    .schedule-item-content .time {
+        font-size: 0.7rem;
+        color: var(--text-light);
+    }
+
+}
+
+
+@media (max-width: 480px) {
+    .schedule-list-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .schedule-list-header h2 {
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    .schedule-list-header button {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+    }
+
+    .schedule-item {
+        flex-direction: row;
+        align-items: center;
+        padding: 0.6rem 0.8rem;
+        gap: 0.8rem;
+        width: 100%;
+        box-sizing: border-box;
+        position: relative;
+    }
+
+    .schedule-item-indicator {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 6px;
+        height: 100%;
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .schedule-item-content {
+        flex-grow: 1;
+        padding-left: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 0.2rem;
+    }
+
+    .schedule-item-content .title {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+    }
+
+    .schedule-item-content .description {
+        font-size: 0.75rem;
+        margin-bottom: 0;
+        color: var(--text-light);
+    }
+
+    .schedule-item-content .time {
+        font-size: 0.7rem;
+        color: var(--text-light);
     }
 }
