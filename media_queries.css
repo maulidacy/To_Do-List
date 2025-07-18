@@ -3,17 +3,20 @@
 ===========================================*/
 @media (max-width: 1200px) {
     .sidebar-right {
-        width: 320px; /* Adjust for slightly smaller screens */
+        width: 320px;
         padding: 1.2rem 0.8rem;
     }
+
     .project-card {
         flex: 0 0 260px;
         min-width: 260px;
     }
+
     .main-content {
         padding: 1.2rem;
     }
 }
+
 /*=========================================
             END: MAX WIDTH 1200px   
 ===========================================*/
@@ -25,42 +28,64 @@
     .sidebar-close-button {
         display: block !important;
     }
+
     .header-top {
         padding: 0.8rem 1.2rem;
     }
+
     .header-greeting h1 {
         font-size: 1.2rem;
     }
+
     .search-bar {
         margin: 0 0.8rem;
-        max-width: 220px; /* Adjust search bar width */
+        max-width: 220px;
     }
+
     .project-card {
         flex: 0 0 240px;
         min-width: 240px;
     }
+
     .tasks-list-container {
-        flex-direction: column; /* Stack task columns */
+        flex-direction: column;
     }
+
     .task-column {
-        flex: none; /* Remove flex growing */
-        width: 100%; /* Full width */
+        flex: none;
+        width: 100%;
     }
+
     .tasks-filters {
-        justify-content: flex-start; /* Align filters to left */
-        gap: 0.5rem; /* Smaller gap */
+        justify-content: flex-start;
+        gap: 0.5rem;
     }
+
     .tasks-filters button,
     .tasks-filters select {
         padding: 0.4rem 0.7rem;
         font-size: 0.8rem;
     }
+
     .form-group-grid {
-        flex-direction: column; /* Stack form grid items */
+        flex-direction: column;
     }
 }
+
 /*=========================================
             END: MAX WIDTH 992px   
+===========================================*/
+/*=========================================
+            START: MAX WIDTH 900px   
+===========================================*/
+@media (max-width: 900px) {
+    .sidebar-close-button {
+        display: block !important;
+    }
+}
+
+/*=========================================
+            END: MAX WIDTH 900px   
 ===========================================*/
 
 /*=========================================
@@ -69,74 +94,81 @@
 @media (max-width: 768px) {
 
     .dashboard-container {
-        flex-direction: column; /* Stack sidebars and main content */
+        flex-direction: column;
     }
 
     .sidebar-left {
-        position: fixed; /* Fix sidebar position for mobile */
+        position: fixed;
         left: 0;
         top: 0;
         width: 220px;
-        height: 100%; /* Full height */
-        transform: translateX(-100%); /* Hide by default */
+        height: 100%;
+        transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
-        z-index: 100; /* Ensure it's above other content */
+        z-index: 100;
         box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
     }
 
-    /* Show sidebar when dashboard-container has sidebar-open class */
     .dashboard-container.sidebar-open .sidebar-left {
         transform: translateX(0);
     }
-    /* Show overlay when sidebar is open */
+
     .dashboard-container.sidebar-open .sidebar-overlay {
         display: block;
         opacity: 1;
     }
 
     .mobile-menu-toggle {
-        display: flex; /* Show hamburger menu on mobile */
-        margin-right: 1rem; /* Space between toggle and greeting */
+        display: flex;
+        margin-right: 1rem;
         font-size: 22px;
         padding: 0.3rem;
     }
 
     .header-top {
-        flex-wrap: wrap; /* Allow items to wrap */
+        flex-wrap: wrap;
         gap: 0.4rem;
         padding: 0.6rem 0.8rem;
-        justify-content: flex-start; /* Align items to start */
+        justify-content: flex-start;
     }
+
     .header-greeting {
-        width: auto; /* Let it take natural width */
+        width: auto;
         text-align: left;
         flex-grow: 1;
     }
+
     .header-greeting h1 {
         font-size: 1.1rem;
     }
+
     .header-greeting p {
         font-size: 0.75rem;
     }
+
     .search-bar {
-        order: 4; /* Move search bar to bottom row */
+        order: 4;
         width: 100%;
         max-width: 100%;
         margin: 0.5rem 0 0 0;
     }
+
     .search-bar input {
         padding: 0.6rem 1rem 0.6rem 2rem;
         font-size: 0.8rem;
     }
+
     .search-bar .bx {
         font-size: 14px;
         left: 0.7rem;
     }
+
     .header-icons {
-        order: 2; /* Keep icons next to user profile */
+        order: 2;
         margin-left: auto;
         gap: 0.8rem;
     }
+
     .user-profile {
         order: 3;
     }
@@ -146,60 +178,67 @@
     }
 
     .project-cards-container {
-        flex-direction: column; /* Stack project cards */
+        flex-direction: column;
         align-items: center;
-        padding-bottom: 0; /* No need for horizontal scroll on stacked cards */
+        padding-bottom: 0;
     }
+
     .project-card {
         flex: none;
-        width: 100%; /* Full width for mobile */
-        max-width: 450px; /* Limit max width on larger mobile devices */
-        height: auto; /* Allow height to adjust */
+        width: 100%;
+        max-width: 450px;
+        height: auto;
     }
+
     .project-card p {
-        margin-bottom: 0.5rem; /* Reduce margin */
+        margin-bottom: 0.5rem;
     }
 
     .tasks-controls {
-        flex-direction: column; /* Stack tabs and filters */
+        flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
     }
+
     .tasks-filters {
-        width: 100%; /* Make filters take full width */
+        width: 100%;
         justify-content: flex-start;
     }
+
     .tasks-tabs {
         width: 100%;
-        justify-content: space-around; /* Distribute tabs */
+        justify-content: space-around;
         gap: 0.5rem;
     }
+
     .tasks-tabs button {
-        flex: 1; /* Make buttons take equal width */
+        flex: 1;
         text-align: center;
     }
 
     .sidebar-right {
         width: 100%;
         padding: 1rem;
-        box-shadow: 0 -2px 10px var(--shadow-light); /* Shadow on top when stacked */
-        order: 4; /* Place it after main content */
+        box-shadow: 0 -2px 10px var(--shadow-light);
+        order: 4;
     }
 
     .calendar-grid {
-        gap: 0.2rem; /* Reduce gap for smaller screens */
+        gap: 0.2rem;
     }
+
     .calendar-day {
         padding: 0.3rem 0.15rem;
         font-size: 0.8rem;
     }
 
     .schedule-item {
-        flex-wrap: wrap; /* Allow schedule items to wrap */
+        flex-wrap: wrap;
         padding: 0.8rem;
     }
+
     .schedule-item-actions {
-        flex-direction: row; /* Make actions horizontal on mobile */
+        flex-direction: row;
         margin-top: 0.5rem;
         width: 100%;
         justify-content: flex-end;
@@ -207,10 +246,12 @@
         gap: 1rem;
         font-size: 11px;
     }
+
     .schedule-item-actions .avatar-group {
         margin-top: 0;
     }
 }
+
 /*=========================================
             END: MAX WIDTH 768px   
 ===========================================*/
@@ -222,44 +263,55 @@
     .add-task-modal-content {
         padding: 1rem;
         border-radius: 12px;
-        width: 95%; /* Even narrower on small screens */
+        width: 95%;
     }
+
     .add-task-modal-header {
         margin-bottom: 1rem;
     }
+
     .add-task-modal-header h3 {
         font-size: 1.4rem;
     }
+
     .add-task-modal-close {
         font-size: 1.8rem;
     }
+
     .form-group-header label {
         font-size: 1rem;
     }
+
     .choose-team-button,
     .design-dropdown select {
         font-size: 0.9rem;
         padding: 0.6rem 0.8rem;
     }
+
     .add-description-placeholder {
         font-size: 0.95rem;
     }
+
     .datetime-group {
-        flex-wrap: wrap; /* Allow wrapping of icon and inputs */
+        flex-wrap: wrap;
         gap: 0.5rem;
     }
+
     .datetime-inputs {
-        flex-wrap: wrap; /* Allow date/time inputs to stack if needed */
+        flex-wrap: wrap;
     }
+
     .datetime-inputs input {
         padding: 0.6rem 0.8rem;
         font-size: 0.95rem;
     }
+
     .create-task-button {
         font-size: 1rem;
         padding: 0.8rem;
     }
 }
+
 /*=========================================
             END: MAX WIDTH 600px   
 ===========================================*/
@@ -267,34 +319,38 @@
 /*=========================================
             START: MAX WIDTH 500px   
 ===========================================*/
-/* Modal specific responsive adjustments */
 @media (max-width: 500px) {
-
     .modal-content {
         padding: 1.5rem;
         width: 95%;
     }
+
     .close-button {
         font-size: 1.8rem;
         top: 5px;
         right: 15px;
     }
+
     .form-group-grid {
         flex-direction: column;
         gap: 0.8rem;
     }
+
     .form-buttons {
         flex-direction: column;
         gap: 0.8rem;
     }
+
     .form-buttons button {
         width: 100%;
     }
+
     .description-input-area textarea {
-        min-height: 60px; /* Lebih kecil di mobile */
+        min-height: 60px;
         padding: 8px 10px;
     }
 }
+
 /*=========================================
             END: MAX WIDTH 500px   
 ===========================================*/
@@ -302,87 +358,101 @@
 /*=========================================
             START: MAX WIDTH 480px   
 ===========================================*/
-@media (max-width: 480px) { /* Untuk layar smartphone portrait */
+@media (max-width: 480px) {
     body {
-        font-size: 0.8rem; /* Sedikit lebih kecil untuk font dasar */
+        font-size: 0.8rem;
     }
+
     .form-container {
-        border-radius: 8px; /* Sudut sedikit lebih kecil */
+        border-radius: 8px;
     }
+
     .form-header {
         padding: 12px 15px;
     }
+
     .form-header h2 {
         font-size: 0.9rem;
     }
+
     .close-button {
         font-size: 1.6rem;
     }
+
     .form-body {
-        padding: 15px 18px; /* Kurangi padding */
-        gap: 15px; /* Kurangi jarak antar grup */
+        padding: 15px 18px;
+        gap: 15px;
     }
 
     .icon-text-left,
     .custom-dropdown-wrapper select,
     .styled-input-wrapper input {
-        font-size: 0.75rem; /* Font untuk teks ikon dan input */
+        font-size: 0.75rem;
     }
 
     .icon-text-left .fas {
-        font-size: 0.8rem; /* Ukuran ikon */
+        font-size: 0.8rem;
     }
 
     .title-task-group .input-label {
         font-size: 0.75rem;
     }
+
     .input-underline-wrapper input {
         font-size: 0.85rem;
     }
+
     .icon-edit-text {
         font-size: 0.7rem;
     }
 
     .choose-team-group .icon-text-left {
-        padding: 6px 12px; /* Padding tombol "Choose Team" */
-        font-size: 0.7rem; /* Font tombol */
-        flex-basis: auto; /* Biarkan lebar menyesuaikan konten */
+        padding: 6px 12px;
+        font-size: 0.7rem;
+        flex-basis: auto;
     }
 
-    /* Change time-entry-row to row for side-by-side layout on mobile */
     .time-entry-row {
-        flex-direction: row !important; /* Override previous column */
-        align-items: center; /* Vertically center items */
-        gap: 10px; /* Space between items */
-        flex-wrap: nowrap; /* Prevent wrapping */
+        flex-direction: row !important;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: nowrap;
     }
+
     .time-inputs {
-        justify-content: flex-start; /* Sejajarkan input waktu ke kiri */
-        width: auto; /* Adjust width to content */
-        flex-wrap: nowrap; /* Prevent wrapping */
+        justify-content: flex-start;
+        flex-wrap: nowrap;
         gap: 10px;
     }
+
     .time-inputs .date-display,
     .time-inputs input[type="time"] {
-        width: 95px; /* Fixed width for inputs */
+        width: 95px;
         padding: 6px 10px;
         font-size: 0.75rem;
     }
+
     .styled-input-wrapper {
-        width: 100%; /* Assign to input mengambil lebar penuh */
-        max-width: none; /* Hapus batasan max-width */
+        width: 100%;
+        max-width: none;
     }
+
     .attachment-file-display {
         margin-left: 5px;
         font-size: 0.7rem;
-        max-width: calc(100% - 120px); /* Sesuaikan max-width untuk nama file */
+        max-width: calc(100% - 120px);
     }
 
     .create-button {
         padding: 10px 15px;
         font-size: 0.9rem;
     }
+
+    .modal {
+        max-width: 95%;
+    }
 }
+
 /*=========================================
             END: MAX WIDTH 480px   
 ===========================================*/
@@ -390,17 +460,20 @@
 /*=========================================
             START: MAX WIDTH 360px   
 ===========================================*/
-@media (max-width: 360px) { /* Untuk layar yang lebih kecil lagi (misal iPhone SE lama) */
+@media (max-width: 360px) {
     body {
         font-size: 0.75rem;
     }
+
     .form-body {
         padding: 10px 12px;
         gap: 12px;
     }
+
     .form-header h2 {
         font-size: 0.85rem;
     }
+
     .close-button {
         font-size: 1.5rem;
     }
@@ -410,29 +483,22 @@
     .styled-input-wrapper input {
         font-size: 0.7rem;
     }
+
     .icon-edit-text {
         font-size: 0.65rem;
     }
 
     .time-inputs .date-display,
     .time-inputs input[type="time"] {
-        width: 90px; /* Lebih kecil lagi */
+        width: 90px;
         padding: 5px 8px;
         font-size: 0.7rem;
     }
 
     .attachment-file-display {
-        max-width: calc(100% - 100px); /* Lebih kecil lagi */
+        max-width: calc(100% - 100px);
     }
 }
 /*=========================================
             END: MAX WIDTH 360px   
 ===========================================*/
-
-
-       
-
-        
-    
-
-
