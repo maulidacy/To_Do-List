@@ -2,184 +2,189 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Schedule</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
-    rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Schedule</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="media_queries.css" />
-  <link rel="stylesheet" href="schedule_style.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="media_queries.css" />
+    <link rel="stylesheet" href="schedule_style.css" />
 </head>
 
 <body>
-  <div class="dashboard-container" id="dashboardContainer">
-    <main class="main-content">
-      <header class="header-top">
-        <button class="mobile-menu-toggle" id="mobileMenuToggle">
-          <i class="bx bx-menu"></i>
-        </button>
-        <div class="header-greeting" style="display: flex; align-items: center; gap: 10px;">
-          <a href="index.html" title="Back to Home" style="font-size: 1.5rem; color: inherit;">
-            <i class="bx bx-arrow-back"></i>
-          </a>
-          <h1>My Schedule</h1>
-        </div>
-      </header>
-
-      <section class="schedule-list-section">
-        <div class="schedule-list-header">
-          <h2>Upcoming Schedules</h2>
-          <button type="button" id="openAddScheduleModalButton" title="Add Schedule" class="add-schedule-btn">
-            <i class="bx bx-plus"></i> Add Schedule
-          </button>
-        </div>
-        <div class="schedule-list" id="scheduleList"></div>
-      </section>
-
-      <!--===========================================================================================================-->
-      <!--                                             START : MODAL ADD/EDIT NEW SCHEDULE                                       -->
-      <!--===========================================================================================================-->
-      <div class="modal-overlay" id="addScheduleModal" style="display: none">
-        <div class="form-container">
-          <div class="form-header">
-            <h2 id="formTitle">Add New Schedule</h2>
-            <button type="button" class="close-button" id="closeAddScheduleModalButton" aria-label="Close Modal">
-              &times;
-            </button>
-          </div>
-          <form class="form-body" id="scheduleForm">
-            <input type="hidden" id="scheduleId" />
-            <div class="form-group">
-              <label for="title" id="titleLabel">Title of schedule</label>
-              <input type="text" id="title" name="title" required autocomplete="off" placeholder="Title of schedule" />
-            </div>
-
-            <div class="form-group description-group">
-              <div class="icon-text-left" id="toggleDescriptionBtn">
-                <i class="fas fa-bars"></i>
-                <span>Add Description</span>
-              </div>
-              <div id="descriptionContainer" class="description-input-area" style="display:none;">
-                <textarea id="description" name="description" rows="3"
-                  placeholder="Enter schedule description"></textarea>
-              </div>
-            </div>
-
-            <div class="form-group date-time-group">
-              <div class="form-group">
-                <label for="dateInput">Date</label>
-                <div class="input-with-icon date-input">
-                  <input type="text" id="dateDisplay" name="dateDisplay" required placeholder="Select date" readonly />
-                  <i class="bx bx-calendar calendar-icon"></i>
-                  <input type="date" id="dateInput" name="dateInput" class="hidden-date-input" />
+    <div class="dashboard-container" id="dashboardContainer">
+        <main class="main-content">
+            <header class="header-top">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="bx bx-menu"></i>
+                </button>
+                <div class="header-greeting" style="display: flex; align-items: center; gap: 10px;">
+                    <a href="index.html" title="Back to Home" style="font-size: 1.5rem; color: inherit;">
+                        <i class="bx bx-arrow-back"></i>
+                    </a>
+                    <h1>My Schedule</h1>
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="startTimeInput">Start Time</label>
-                <div class="input-with-icon time-input">
-                  <div class="time-picker-wrapper">
-                    <input type="text" id="startTimeDisplay" name="startTimeDisplay" required
-                      placeholder="Select start time" readonly />
-                    <i class="bx bx-time-five time-icon"></i>
-                    <input type="time" id="startTimeInput" name="startTimeInput" class="hidden-time-input" />
-                  </div>
+            </header>
+
+            <section class="schedule-list-section">
+                <div class="schedule-list-header">
+                    <h2>Upcoming Schedules</h2>
+                    <button type="button" id="openAddScheduleModalButton" title="Add Schedule" class="add-schedule-btn">
+                        <i class="bx bx-plus"></i> Add Schedule
+                    </button>
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="endTimeInput">End Time</label>
-                <div class="input-with-icon time-input">
-                  <div class="time-picker-wrapper">
-                    <input type="text" id="endTimeDisplay" name="endTimeDisplay" required placeholder="Select end time"
-                      readonly />
-                    <i class="bx bx-time-five time-icon"></i>
-                    <input type="time" id="endTimeInput" name="endTimeInput" class="hidden-time-input" />
-                  </div>
+                <div class="schedule-list" id="scheduleList"></div>
+            </section>
+
+            <!--===========================================================================================================-->
+            <!--                                             START : MODAL ADD/EDIT NEW SCHEDULE                                       -->
+            <!--===========================================================================================================-->
+            <div class="modal-overlay" id="addScheduleModal" style="display: none">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2 id="formTitle">Add New Schedule</h2>
+                        <button type="button" class="close-button" id="closeAddScheduleModalButton"
+                            aria-label="Close Modal">
+                            &times;
+                        </button>
+                    </div>
+                    <form class="form-body" id="scheduleForm">
+                        <input type="hidden" id="scheduleId" />
+                        <div class="form-group">
+                            <label for="title" id="titleLabel">Title of schedule</label>
+                            <input type="text" id="title" name="title" required autocomplete="off"
+                                placeholder="Title of schedule" />
+                        </div>
+
+                        <div class="form-group description-group">
+                            <div class="icon-text-left" id="toggleDescriptionBtn">
+                                <i class="fas fa-bars"></i>
+                                <span>Add Description</span>
+                            </div>
+                            <div id="descriptionContainer" class="description-input-area" style="display:none;">
+                                <textarea id="description" name="description" rows="3"
+                                    placeholder="Enter schedule description"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group date-time-group">
+                            <div class="form-group">
+                                <label for="dateInput">Date</label>
+                                <div class="input-with-icon date-input">
+                                    <input type="text" id="dateDisplay" name="dateDisplay" required
+                                        placeholder="Select date" readonly />
+                                    <i class="bx bx-calendar calendar-icon"></i>
+                                    <input type="date" id="dateInput" name="dateInput" class="hidden-date-input" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="startTimeInput">Start Time</label>
+                                <div class="input-with-icon time-input">
+                                    <div class="time-picker-wrapper">
+                                        <input type="text" id="startTimeDisplay" name="startTimeDisplay" required
+                                            placeholder="Select start time" readonly />
+                                        <i class="bx bx-time-five time-icon"></i>
+                                        <input type="time" id="startTimeInput" name="startTimeInput"
+                                            class="hidden-time-input" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="endTimeInput">End Time</label>
+                                <div class="input-with-icon time-input">
+                                    <div class="time-picker-wrapper">
+                                        <input type="text" id="endTimeDisplay" name="endTimeDisplay" required
+                                            placeholder="Select end time" readonly />
+                                        <i class="bx bx-time-five time-icon"></i>
+                                        <input type="time" id="endTimeInput" name="endTimeInput"
+                                            class="hidden-time-input" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group assign-to-group">
+                            <label for="assignTo">Assign to (optional)</label>
+                            <div class="input-with-icon">
+                                <input type="text" id="assignTo" name="assignTo" placeholder="Enter name (optional)" />
+                                <i class="bx bx-user"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="statusColor">Category Color</label>
+                            <div class="custom-select-wrapper">
+                                <select id="statusColor" name="statusColor" required class="styled-select">
+                                    <option value="blue" selected>Blue (General)</option>
+                                    <option value="green">Green</option>
+                                    <option value="purple">Purple</option>
+                                    <option value="red">Red</option>
+                                    <option value="orange">Orange</option>
+                                    <option value="yellow">Yellow</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-arrow"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-buttons" style="display: flex; justify-content: space-between">
+                            <button type="button" id="cancelEditButton" class="cancel-button" style="display: none">
+                                Cancel Edit
+                            </button>
+                            <button type="submit" id="saveScheduleButton" class="vibrant-button">
+                                Buat Tugas
+                            </button>
+                        </div>
+                    </form>
                 </div>
-              </div>
             </div>
+            <!--===========================================================================================================-->
+            <!--                                             END : MODAL ADD/EDIT NEW SCHEDULE                                       -->
+            <!--===========================================================================================================-->
+        </main>
 
-            <div class="form-group assign-to-group">
-              <label for="assignTo">Assign to (optional)</label>
-              <div class="input-with-icon">
-                <input type="text" id="assignTo" name="assignTo" placeholder="Enter name (optional)" />
-                <i class="bx bx-user"></i>
-              </div>
-            </div>
+        <!--===========================================================================================================-->
+        <!--                                             START: SIDEBAR RIGHT                                            -->
+        <!--===========================================================================================================-->
+        <aside class="sidebar-right">
+            <section class="calendar-section">
+                <div class="calendar-header">
+                    <button class="nav-arrows" id="prevMonthBtn">
+                        <i class="bx bx-chevron-left"></i>
+                    </button>
+                    <h3 id="currentMonthYear">October 2023</h3>
+                    <button class="nav-arrows" id="nextMonthBtn">
+                        <i class="bx bx-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <div class="calendar-weekday">Mon</div>
+                    <div class="calendar-weekday">Tue</div>
+                    <div class="calendar-weekday">Wed</div>
+                    <div class="calendar-weekday">Thu</div>
+                    <div class="calendar-weekday">Fri</div>
+                    <div class="calendar-weekday">Sat</div>
+                    <div class="calendar-weekday">Sun</div>
+                </div>
+            </section>
 
-            <div class="form-group">
-              <label for="statusColor">Category Color</label>
-              <div class="custom-select-wrapper">
-                <select id="statusColor" name="statusColor" required class="styled-select">
-                  <option value="blue" selected>Blue (General)</option>
-                  <option value="green">Green</option>
-                  <option value="purple">Purple</option>
-                  <option value="red">Red</option>
-                  <option value="orange">Orange</option>
-                  <option value="yellow">Yellow</option>
-                </select>
-                <i class="fas fa-chevron-down select-arrow"></i>
-              </div>
-            </div>
-
-            <div class="form-buttons" style="display: flex; justify-content: space-between">
-              <button type="button" id="cancelEditButton" class="cancel-button" style="display: none">
-                Cancel Edit
-              </button>
-              <button type="submit" id="saveScheduleButton" class="vibrant-button">
-                Buat Tugas
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <!--===========================================================================================================-->
-      <!--                                             END : MODAL ADD/EDIT NEW SCHEDULE                                       -->
-      <!--===========================================================================================================-->
-    </main>
-
-    <!--===========================================================================================================-->
-    <!--                                             START: SIDEBAR RIGHT                                            -->
-    <!--===========================================================================================================-->
-    <aside class="sidebar-right">
-      <section class="calendar-section">
-        <div class="calendar-header">
-          <button class="nav-arrows" id="prevMonthBtn">
-            <i class="bx bx-chevron-left"></i>
-          </button>
-          <h3 id="currentMonthYear">October 2023</h3>
-          <button class="nav-arrows" id="nextMonthBtn">
-            <i class="bx bx-chevron-right"></i>
-          </button>
-        </div>
-        <div class="calendar-grid" id="calendarGrid">
-          <div class="calendar-weekday">Mon</div>
-          <div class="calendar-weekday">Tue</div>
-          <div class="calendar-weekday">Wed</div>
-          <div class="calendar-weekday">Thu</div>
-          <div class="calendar-weekday">Fri</div>
-          <div class="calendar-weekday">Sat</div>
-          <div class="calendar-weekday">Sun</div>
-        </div>
-      </section>
-
-      <section class="today-schedule-section">
-        <div class="section-header" style="position: relative">
-          <h2>Today Schedule</h2>
-          <button class="icon-button" id="todayScheduleMenuButton" aria-label="Open schedule menu">
-            <i class="bx bx-dots-vertical-rounded"></i>
-          </button>
-          <div id="todayScheduleDropdown" class="dropdown-menu" style="
+            <section class="today-schedule-section">
+                <div class="section-header" style="position: relative">
+                    <h2>Today Schedule</h2>
+                    <button class="icon-button" id="todayScheduleMenuButton" aria-label="Open schedule menu">
+                        <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div id="todayScheduleDropdown" class="dropdown-menu" style="
                 display: none;
                 position: absolute;
                 top: 100%;
@@ -191,31 +196,31 @@
                 width: 220px;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.15);
               ">
-            <button class="dropdown-item" id="addNewScheduleBtn" type="button">
-              <span>➕</span> Add new schedule
-            </button>
-            <button class="dropdown-item" id="editTodayScheduleBtn" type="button">
-              <span>✏️</span> Edit today's schedule
-            </button>
-            <button class="dropdown-item" id="deleteSelectedTodayScheduleBtn" type="button">
-              <span>🗑️</span> Delete selected schedule
-            </button>
-            <button class="dropdown-item" id="refreshScheduleBtn" type="button">
-              <span>🔁</span> Refresh schedule
-            </button>
-          </div>
-        </div>
-        <div class="today-schedule-list" id="todayScheduleList" style="cursor: pointer"></div>
-      </section>
-    </aside>
-    <!--===========================================================================================================-->
-    <!--                                             END: SIDEBAR RIGHT                                            -->
-    <!--===========================================================================================================-->
-  </div>
+                        <button class="dropdown-item" id="addNewScheduleBtn" type="button">
+                            <span>➕</span> Add new schedule
+                        </button>
+                        <button class="dropdown-item" id="editTodayScheduleBtn" type="button">
+                            <span>✏️</span> Edit today's schedule
+                        </button>
+                        <button class="dropdown-item" id="deleteSelectedTodayScheduleBtn" type="button">
+                            <span>🗑️</span> Delete selected schedule
+                        </button>
+                        <button class="dropdown-item" id="refreshScheduleBtn" type="button">
+                            <span>🔁</span> Refresh schedule
+                        </button>
+                    </div>
+                </div>
+                <div class="today-schedule-list" id="todayScheduleList" style="cursor: pointer"></div>
+            </section>
+        </aside>
+        <!--===========================================================================================================-->
+        <!--                                             END: SIDEBAR RIGHT                                            -->
+        <!--===========================================================================================================-->
+    </div>
 
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <script src="script_schedule.js"></script>
+    <script src="script_schedule.js"></script>
 </body>
 
 </html>
