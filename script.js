@@ -422,9 +422,6 @@ document.addEventListener("DOMContentLoaded", () => {
     DOMElements.projectSummaryContainer.innerHTML = "";
 
     const allTasks = getStorage("tasks") || [];
-    const allTeams = getStorage("teams") || [
-      { id: "general", name: "General" },
-    ]; // English
 
     // Filter tasks based on filterStatus
     let filteredTasks;
@@ -434,81 +431,21 @@ document.addEventListener("DOMContentLoaded", () => {
       filteredTasks = allTasks.filter((task) => task.status === filterStatus);
     }
 
-    const projectsMap = new Map();
-
-    allTeams.forEach((team) => {
-      projectsMap.set(team.id, {
-        title: team.name,
-        description: "",
-        tasks: [],
-        avatars: new Set(),
-        progressSum: 0,
-        daysLeftMin: null,
-      });
-    });
+    const teamColorMap = {
+      design: "purple",
+      development: "green",
+      marketing: "orange",
+      general: "gray",
+    };
 
     filteredTasks.forEach((task) => {
-      const projectKey = task.team || "general";
-      const project = projectsMap.get(projectKey) || {
-        title: projectKey.charAt(0).toUpperCase() + projectKey.slice(1),
-        description: "",
-        tasks: [],
-        avatars: new Set(),
-        progressSum: 0,
-        daysLeftMin: null,
-      };
-      projectsMap.set(projectKey, project);
-
-      project.tasks.push(task);
-      project.progressSum += task.progress || 0;
-
-      if (task.endDate) {
-        const endDate = new Date(task.endDate);
-        if (!project.daysLeftMin || endDate < project.daysLeftMin) {
-          project.daysLeftMin = endDate;
-        }
-      }
-      if (Array.isArray(task.avatars)) {
-        task.avatars.forEach((av) => project.avatars.add(av));
-      } else if (task.assignTo) {
-        const gender = Math.random() < 0.5 ? "men" : "women";
-        const number = Math.floor(Math.random() * 100);
-        project.avatars.add(`${gender}/${number}`);
-      }
-      if (!project.description && task.description) {
-        project.description = task.description;
-      }
-    });
-
-    projectsMap.forEach((project, key) => {
-      if (project.tasks.length === 0) return;
-
-      const avgProgress =
-        project.tasks.length > 0
-          ? Math.round(project.progressSum / project.tasks.length)
-          : 0;
-      const daysLeft = project.daysLeftMin
-        ? Math.max(
-            0,
-            Math.ceil(
-              (project.daysLeftMin - new Date()) / (1000 * 60 * 60 * 24)
-            )
-          )
-        : "N/A";
-
       const projectCard = document.createElement("div");
       projectCard.classList.add("project-card");
 
-      const teamColorMap = {
-        design: "purple",
-        development: "green",
-        marketing: "orange",
-        general: "gray",
-      };
-      const colorClass = teamColorMap[key] || "blue";
+      const colorClass = teamColorMap[task.team] || "blue";
       projectCard.classList.add(colorClass);
 
-      const avatarsHtml = Array.from(project.avatars)
+      const avatarsHtml = (task.avatars || [])
         .map((av) => {
           if (
             typeof av === "string" &&
@@ -527,25 +464,35 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .join("");
 
-      const teamName = project.title || "General"; // English
+      const teamName = task.team
+        ? task.team.charAt(0).toUpperCase() + task.team.slice(1)
+        : "General";
       const teamClass = teamName.toLowerCase().replace(/\s+/g, "-");
+
+      const daysLeft = task.endDate
+        ? Math.max(
+            0,
+            Math.ceil(
+              (new Date(task.endDate) - new Date()) / (1000 * 60 * 60 * 24)
+            )
+          )
+        : "N/A";
 
       projectCard.innerHTML = `
                 <div class="project-card-header">
                     <span class="team-badge ${teamClass}">${teamName}</span>
                     <i class='bx bx-dots-horizontal-rounded'></i>
                 </div>
-                <h3>${project.tasks[0]?.title || "No Title"}</h3> <p>${
-        project.description || "No description available."
-      }</p> <div class="project-card-footer">
+                <h3>${task.title || "No Title"}</h3>
+                <p>${task.description || "No description available."}</p>
+                <div class="project-card-footer">
                     <div class="progress-info">
-                        <span>Progress</span> <span>${avgProgress}%</span>
+                        <span>Progress</span> <span>${task.progress || 0}%</span>
                     </div>
-                    <progress value="${avgProgress}" max="100"></progress>
+                    <progress value="${task.progress || 0}" max="100"></progress>
                     <div class="progress-info">
-                        <span>${daysLeft} Days Left</span> <div class="avatar-group">
-                            ${avatarsHtml}
-                        </div>
+                        <span>${daysLeft} Days Left</span>
+                        <div class="avatar-group">${avatarsHtml}</div>
                     </div>
                 </div>
             `;
