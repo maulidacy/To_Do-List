@@ -63,10 +63,10 @@ button {
 ===========================================*/
 
 /*=========================================
-            START: SIDEBAR LEFT      
+        START: SIDEBAR LEFT      
 ===========================================*/
 .sidebar-left {
-    width: 230px;
+    width: 250px;
     background-color: var(--surface-white);
     padding: 1.5rem 1rem;
     box-shadow: 2px 0 10px var(--shadow-light);
@@ -75,9 +75,70 @@ button {
     justify-content: space-between;
     flex-shrink: 0;
     transition: transform 0.3s ease-in-out;
-    position: relative;
-    z-index: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1050;
     color: var(--text-dark);
+    transform: translateX(0);
+}
+
+/* Sidebar hidden state for small screens */
+.sidebar-left.closed {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Overlay to cover content when sidebar is open on small screens */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Show overlay when sidebar is open on small screens */
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/*=========================================
+        END: SIDEBAR LEFT      
+===========================================*/
+
+/*=========================================
+        START: MAIN CONTENT AREA      
+===========================================*/
+.main-content {
+    flex-grow: 1;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 0;
+    background-color: var(--background-light);
+    color: var(--text-dark);
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+}
+
+/* Adjust main content margin when sidebar is closed on small screens */
+.sidebar-left.closed~.main-content {
+    margin-left: 0;
+}
+
+
+/* Hide sidebar close button on desktop */
+#sidebarCloseButton {
+    display: none;
 }
 
 /* Overlay to cover content when sidebar is open */
@@ -343,12 +404,14 @@ button {
     color: var(--text-light);
 }
 
+/* Project Cards Container */
 .project-cards-container {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
     gap: 1rem;
     padding-bottom: 0.8rem;
+    transition: opacity 0.4s ease, max-height 0.4s ease;
 }
 
 /* Custom scrollbar for Webkit browsers */
@@ -367,8 +430,7 @@ button {
     border: 1.5px solid var(--background-light);
 }
 
-
-/* Project Summary Cards */
+/* Project Card */
 .project-card {
     flex: 0 0 300px;
     min-width: 280px;
@@ -379,7 +441,19 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Hidden state for project cards */
+.project-card.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    transition: opacity 0.4s ease, transform 0.4s ease, height 0.4s ease, margin 0.4s ease, padding 0.4s ease;
 }
 
 .project-card:hover {
@@ -2172,6 +2246,25 @@ input[type="time"] {
 .file-actions button:hover {
     color: #0056b3;
 }
+
 /*=========================================
-        END: FILE UPLOAD MODAL     
+            END: FILE UPLOAD MODAL     
 ===========================================*/
+
+/* Project Summary Controls */
+#toggleProjectSummaryVisibility {
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: var(--surface-white);
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#toggleProjectSummaryVisibility:hover,
+#toggleProjectSummaryVisibility:focus {
+    background-color: #f0f8ff;
+    border-color: var(--primary-blue);
+    outline: none;
+}
