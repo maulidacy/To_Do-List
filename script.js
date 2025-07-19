@@ -320,27 +320,28 @@ document.addEventListener("DOMContentLoaded", () => {
       ];
       setStorage("schedules", schedules);
     }
-    if (teams.length === 0) {
-      teams = [
-        {
-          id: "design",
-          name: "Design",
-        },
-        {
-          id: "development",
-          name: "Development",
-        },
-        {
-          id: "marketing",
-          name: "Marketing",
-        },
-        {
-          id: "general",
-          name: "General",
-        },
-      ];
-      setStorage("teams", teams);
-    }
+  // Force reset teams array to English names to overwrite any existing localStorage data
+  localStorage.removeItem("teams");
+  teams = [
+    {
+      id: "design",
+      name: "Design",
+    },
+    {
+      id: "development",
+      name: "Development",
+    },
+    {
+      id: "marketing",
+      name: "Marketing",
+    },
+    {
+      id: "general",
+      name: "General",
+    },
+  ];
+  setStorage("teams", teams);
+  console.log("Teams array set to English names:", teams);
   };
 
   initializeDummyData();
