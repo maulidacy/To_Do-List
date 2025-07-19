@@ -1,0 +1,72 @@
+:root {
+  --toast-bg-color: #007bff;
+  --toast-text-color: #fff;
+  --toast-border-radius: 25px;
+  --toast-padding-y: 12px;
+  --toast-padding-x: 24px;
+  --toast-font-size: 16px;
+  --toast-bottom-offset: 40px;
+  --toast-shadow-color: rgba(0, 123, 255, 0.4);
+  --toast-max-width-desktop: 300px;
+  --toast-max-width-mobile: 90%;
+}
+
+#customToast {
+  visibility: hidden;
+  min-width: 120px;
+  max-width: var(--toast-max-width-desktop);
+  background-color: var(--toast-bg-color);
+  color: var(--toast-text-color);
+  text-align: center;
+  border-radius: var(--toast-border-radius);
+  padding: var(--toast-padding-y) var(--toast-padding-x);
+  position: fixed;
+  z-index: 9999;
+  left: 50%;
+  bottom: var(--toast-bottom-offset);
+  font-size: var(--toast-font-size);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transform: translateX(-50%) scale(0.9);
+  box-shadow: 0 6px 20px var(--toast-shadow-color);
+  cursor: default;
+  user-select: none;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+#customToast.show {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* Responsif untuk perangkat seluler */
+@media (max-width: 768px) {
+  #customToast {
+    max-width: var(--toast-max-width-mobile);
+    width: var(--toast-max-width-mobile);
+    bottom: 20px;
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}
+
+/* Opsi untuk tema gelap atau tipe notifikasi lainnya */
+/*
+.toast-success {
+  --toast-bg-color: #28a745;
+  --toast-shadow-color: rgba(40, 167, 69, 0.4);
+}
+
+.toast-error {
+  --toast-bg-color: #dc3545;
+  --toast-shadow-color: rgba(220, 53, 69, 0.4);
+}
+
+.toast-warning {
+  --toast-bg-color: #ffc107;
+  --toast-text-color: #333;
+  --toast-shadow-color: rgba(255, 193, 7, 0.4);
+}
+*/
