@@ -794,7 +794,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }"></div>
     <input type="checkbox" class="schedule-select-checkbox" data-id="${
       schedule.id
-    }" aria-label="Select schedule for deletion"/>
+    }" aria-label="Select schedule for deletion" style=""/>
     <div class="schedule-item-content">
         <h4 class="title">${schedule.title}</h4>
         <p class="subtitle">${schedule.description || schedule.desc || ""}</p>
@@ -1354,6 +1354,93 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- 7. Initialize All Application Event Listeners ---
   // =====================================================================
 
+  // Toast notification function
+  const showToast = (message) => {
+    // Remove existing toast if any
+    const existingToast = document.querySelector("#customToast");
+    if (existingToast) {
+      existingToast.remove();
+    }
+
+    // Create toast element
+    const toast = document.createElement("div");
+    toast.id = "customToast";
+    toast.textContent = message;
+
+    // Append to body
+    document.body.appendChild(toast);
+
+    // Show toast with fade-in
+    setTimeout(() => {
+      toast.classList.add("show");
+    }, 100);
+
+    // Hide toast after 3 seconds with fade-out
+    setTimeout(() => {
+      toast.classList.remove("show");
+      // Remove from DOM after fade-out
+      setTimeout(() => {
+        toast.remove();
+      }, 500);
+    }, 3000);
+  };
+
+  // Add event listener for three-dot icon in Project Summary column
+  if (DOMElements.projectSummaryContainer) {
+    DOMElements.projectSummaryContainer.addEventListener("click", (e) => {
+      const target = e.target;
+      if (target.classList.contains("bx-dots-horizontal-rounded")) {
+        e.stopPropagation();
+        showToast("This feature is currently under development. Please stay tuned!");
+      }
+    });
+  }
+
+  // Add event listener for comment/message icon in each task card
+  if (DOMElements.tasksListContainer) {
+    DOMElements.tasksListContainer.addEventListener("click", (e) => {
+      const target = e.target;
+      if (target.classList.contains("bx-message-rounded-dots")) {
+        e.stopPropagation();
+        showToast("This feature is currently under development. Please stay tuned!");
+      }
+      // Add event delegation for avatar images in task cards
+      if (target.tagName === "IMG" && target.closest(".avatar-group")) {
+        e.stopPropagation();
+        showToast("This feature is currently under development. Please stay tuned!");
+      }
+    });
+  }
+
+  // Add event delegation for avatar images in project summary cards
+  if (DOMElements.projectSummaryContainer) {
+    DOMElements.projectSummaryContainer.addEventListener("click", (e) => {
+      const target = e.target;
+      if (target.tagName === "IMG" && target.closest(".avatar-group")) {
+        e.stopPropagation();
+        showToast("This feature is currently under development. Please stay tuned!");
+      }
+    });
+  }
+
+  // Add event listener for notification bell icon in header
+  const headerBellButton = document.querySelector(".header-icons > button.icon-button.bx-bell, .header-icons > button.icon-button i.bx-bx-bell, .header-icons > button.icon-button i.bx.bx-bell");
+  if (headerBellButton) {
+    headerBellButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      showToast("This feature is currently under development. Please stay tuned!");
+    });
+  }
+
+  // Add event listener for user avatar image in header
+  const userProfileImage = document.querySelector(".header-icons .user-profile img");
+  if (userProfileImage) {
+    userProfileImage.addEventListener("click", (event) => {
+      event.stopPropagation();
+      showToast("This feature is currently under development. Please stay tuned!");
+    });
+  }
+
   if (DOMElements.mobileMenuToggle && DOMElements.dashboardContainer) {
     DOMElements.mobileMenuToggle.addEventListener("click", () => {
       console.log("DEBUG: mobileMenuToggle clicked");
@@ -1369,8 +1456,30 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (DOMElements.sidebarCloseButton && DOMElements.dashboardContainer) {
+    const updateSidebarCloseButtonVisibility = () => {
+      if (DOMElements.dashboardContainer.classList.contains("sidebar-open")) {
+        DOMElements.sidebarCloseButton.style.display = "block";
+      } else {
+        DOMElements.sidebarCloseButton.style.display = "none";
+      }
+    };
+
+    // Initial check on page load
+    updateSidebarCloseButtonVisibility();
+
+    // Toggle sidebar close button visibility on sidebar open/close
+    const mobileMenuToggle = DOMElements.mobileMenuToggle;
+    if (mobileMenuToggle) {
+      mobileMenuToggle.addEventListener("click", () => {
+        setTimeout(() => {
+          updateSidebarCloseButtonVisibility();
+        }, 100); // Delay to allow class toggle
+      });
+    }
+
     DOMElements.sidebarCloseButton.addEventListener("click", () => {
       DOMElements.dashboardContainer.classList.remove("sidebar-open");
+      updateSidebarCloseButtonVisibility();
     });
   }
 
