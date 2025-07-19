@@ -417,7 +417,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- 4. Render Functions ---
   // =====================================================================
 
-  const renderProjectSummary = () => {
+  const renderProjectSummary = (filterStatus = "all") => {
     if (!DOMElements.projectSummaryContainer) return;
     DOMElements.projectSummaryContainer.innerHTML = "";
 
@@ -425,9 +425,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const allTeams = getStorage("teams") || [
       { id: "general", name: "General" },
     ]; // English
-    const inProgressTasks = allTasks.filter(
-      (task) => task.status === "in-progress"
-    );
+
+    // Filter tasks based on filterStatus
+    let filteredTasks;
+    if (filterStatus === "all") {
+      filteredTasks = allTasks;
+    } else {
+      filteredTasks = allTasks.filter((task) => task.status === filterStatus);
+    }
+
     const projectsMap = new Map();
 
     allTeams.forEach((team) => {
@@ -441,7 +447,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    inProgressTasks.forEach((task) => {
+    filteredTasks.forEach((task) => {
       const projectKey = task.team || "general";
       const project = projectsMap.get(projectKey) || {
         title: projectKey.charAt(0).toUpperCase() + projectKey.slice(1),
@@ -471,18 +477,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       if (!project.description && task.description) {
         project.description = task.description;
-      }
-
-      // Add click event listener for bell icon button to show "feature under development" message
-      const headerBellButton = document.querySelector(
-        ".header-icons > button.icon-button"
-      );
-      if (headerBellButton) {
-        headerBellButton.addEventListener("click", (event) => {
-          event.stopPropagation();
-          console.log("Bell icon clicked");
-          alert("This feature is still under development.");
-        });
       }
     });
 
@@ -560,8 +554,11 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const renderTasks = (searchKeyword = "") => {
-    if (!DOMElements.inProgressTasksDiv || !DOMElements.completedTasksDiv)
+    console.log("DEBUG: renderTasks called with searchKeyword:", searchKeyword);
+    if (!DOMElements.inProgressTasksDiv || !DOMElements.completedTasksDiv) {
+      console.warn("DEBUG: Task containers not found in DOM.");
       return;
+    }
     DOMElements.inProgressTasksDiv.innerHTML = "";
     DOMElements.completedTasksDiv.innerHTML = "";
     let inProgressCount = 0;
@@ -1482,6 +1479,14 @@ document.addEventListener("DOMContentLoaded", () => {
       DOMElements.dashboardContainer.classList.remove("sidebar-open");
       updateSidebarCloseButtonVisibility();
     });
+
+    // Update close button visibility on window resize
+    window.addEventListener("resize", () => {
+      updateSidebarCloseButtonVisibility();
+    });
+
+    // Initial call to set correct visibility on page load
+    updateSidebarCloseButtonVisibility();
   }
 
   if (DOMElements.taskSearchInput) {
@@ -1620,6 +1625,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           }
           setStorage("tasks", tasks);
+          tasks = getStorage("tasks");  // Reload tasks from localStorage
           alert("Task updated successfully!"); // English
         } else {
           alert("Error: Task to edit not found."); // English
@@ -1650,6 +1656,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tasks.unshift(newTask);
         try {
           setStorage("tasks", tasks);
+          tasks = getStorage("tasks");  // Reload tasks from localStorage
           if (uploadedFiles.length > 0) {
             saveFilesForTask(newTaskId, uploadedFiles);
           }
@@ -1662,12 +1669,13 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
         alert("Task added successfully!"); // English
-        if (DOMElements.priorityFilterSelect) {
-          DOMElements.priorityFilterSelect.value = "all";
-          DOMElements.priorityFilterSelect.style.backgroundColor = "";
-          DOMElements.priorityFilterSelect.title = "";
-          localStorage.setItem("priorityFilter", "all");
-        }
+        // Removed forced reset of priority filter to preserve user selection
+        // if (DOMElements.priorityFilterSelect) {
+        //   DOMElements.priorityFilterSelect.value = "all";
+        //   DOMElements.priorityFilterSelect.style.backgroundColor = "";
+        //   DOMElements.priorityFilterSelect.title = "";
+        //   localStorage.setItem("priorityFilter", "all");
+        // }
       }
       DOMElements.addTaskModalOverlay.style.display = "none";
       resetModalToAddMode();
@@ -2105,6 +2113,43 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCalendar(currentCalendarDate);
   renderTodaySchedule(currentCalendarDate);
   populateChooseTeamSelect();
+
+  // Add event listener for project summary filter dropdown
+  const projectSummaryFilter = document.getElementById("projectSummaryFilter");
+  if (projectSummaryFilter) {
+    projectSummaryFilter.addEventListener("change", (e) => {
+      const selectedStatus = e.target.value;
+      renderProjectSummary(selectedStatus);
+    });
+  }
+
+  // Add toggle visibility button event listener
+  const toggleVisibilityButton = document.getElementById(
+    "toggleProjectSummaryVisibility"
+  );
+  let projectCardsHidden = false;
+  if (toggleVisibilityButton) {
+    toggleVisibilityButton.addEventListener("click", () => {
+      const projectCards = document.querySelectorAll(".project-card");
+      if (!projectCardsHidden) {
+        // Hide all project cards with smooth transition
+        projectCards.forEach((card) => {
+          card.classList.add("hidden");
+        });
+        toggleVisibilityButton.textContent = "Show All";
+        toggleVisibilityButton.setAttribute("aria-pressed", "true");
+        projectCardsHidden = true;
+      } else {
+        // Show all project cards
+        projectCards.forEach((card) => {
+          card.classList.remove("hidden");
+        });
+        toggleVisibilityButton.textContent = "Hide All";
+        toggleVisibilityButton.setAttribute("aria-pressed", "false");
+        projectCardsHidden = false;
+      }
+    });
+  }
 
   // Initialize date/time display inputs for the task modal form
   if (DOMElements.startDateDisplay && DOMElements.startDateInput) {
