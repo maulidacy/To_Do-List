@@ -6,6 +6,8 @@
 
 The To-Do List Project is a web application designed to help users efficiently manage their daily tasks. This application provides a simple and responsive interface for noting, organizing, and tracking tasks, and supports automation features using AI technology to assist with the code development process.
 
+🔗 **Live Demo:** https://glowing-sfogliatella-9b0715.netlify.app/
+
 ---
 
 ## 🛠️ Technologies Used
