@@ -85,6 +85,3 @@ This application integrates with an AI model from IBM Granite via the Replicate 
 
 ---
 
-## 📄 License
-
-This project currently has no license.
