@@ -87,3 +87,34 @@ This application integrates with an AI model from IBM Granite via the Replicate 
 
 ---
 
+## 📁 Project Structure
+
+- `index.html`: The main HTML file for the to-do list application interface.
+- `script.js`: Contains the core JavaScript logic for task management, AI integration, and user interactions.
+- `style.css`: Defines the primary styles for the application, ensuring an attractive and responsive design.
+- `schedule.html`, `schedule_script.js`, `schedule_style.css`: Files dedicated to the scheduling feature, allowing users to add and manage task schedules.
+- `media_queries.css`: Handles responsive design adjustments for various screen sizes.
+- `indexx/`: A subfolder containing an alternative or extended version of the main files (index.html, script.js, style.css).
+- Other files include configuration files like `package.json`, `.gitignore`, and additional assets for testing and deployment.
+
+## 🤝 Contributing
+
+We welcome contributions from the community! If you'd like to contribute to the To-Do List Project, please read our [Contributing Guidelines](CONTRIBUTING.md) for details on how to get started, including coding standards, pull request processes, and issue reporting.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Copyright © 2025 maulidacy
+
+## 🙏 Acknowledgements
+
+- Special thanks to the [Replicate API](https://replicate.com/) for providing the platform to integrate AI models seamlessly.
+- Gratitude to the [IBM Granite Model](https://www.ibm.com/products/watsonx-ai/foundation-models) for enabling automated code generation features.
+- Appreciation for the open-source community and tools like Node.js, npm, and various web technologies that made this project possible.
+
+## 📧 Contact
+
+**Author:** maulidacy  
+**GitHub:** [https://github.com/maulidacy](https://github.com/maulidacy)  
+For questions, suggestions, or collaborations, feel free to reach out via GitHub issues or pull requests.
