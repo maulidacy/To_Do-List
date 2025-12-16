@@ -107,7 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "The software team is responsible for planning, scheduling, budgeting, executing, and delivering software and web projects. They ensure the successful completion of all software projects.", // English
           progress: 75,
           daysLeft: 3,
-          avatars: ["men/32", "women/44", "men/54"],
           type: "blue",
         },
         {
@@ -117,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "Developing a new user authentication module with secure login and registration features.", // English
           progress: 40,
           daysLeft: 7,
-          avatars: ["men/10", "women/20"],
           type: "purple",
         },
         {
@@ -127,7 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "Outlining the entire project scope, milestones, and resource allocation for the upcoming quarter.", // English
           progress: 10,
           daysLeft: 14,
-          avatars: ["women/5", "men/15"],
           type: "red",
         },
       ];
@@ -153,7 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
               completed: false,
             },
           ], // English
-          avatars: ["men/1", "women/2"],
           team: "design",
           startDate: "2025-07-10",
           startTime: "09:00",
@@ -172,7 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
           progress: 100,
           priority: "normal",
           subtasks: [],
-          avatars: ["men/3", "women/4"],
           team: "development",
           startDate: "2025-07-01",
           startTime: "10:00",
@@ -191,7 +186,6 @@ document.addEventListener("DOMContentLoaded", () => {
           progress: 30,
           priority: "medium",
           subtasks: [],
-          avatars: ["men/11", "women/12"],
           team: "general",
           startDate: "2025-07-20",
           startTime: "09:00",
@@ -222,7 +216,6 @@ document.addEventListener("DOMContentLoaded", () => {
               completed: false,
             },
           ], // English
-          avatars: ["men/5", "women/6"],
           team: "marketing",
           startDate: "2025-07-12",
           startTime: "13:00",
@@ -241,7 +234,6 @@ document.addEventListener("DOMContentLoaded", () => {
           progress: 100,
           priority: "normal",
           subtasks: [],
-          avatars: ["men/7", "women/8"],
           team: "design",
           startDate: "2025-07-08",
           startTime: "09:00",
@@ -267,7 +259,6 @@ document.addEventListener("DOMContentLoaded", () => {
               completed: false,
             },
           ], // English
-          avatars: ["men/9", "women/10"],
           team: "development",
           startDate: "2025-07-11",
           startTime: "14:00",
@@ -292,7 +283,6 @@ document.addEventListener("DOMContentLoaded", () => {
           endTime: "10:00",
           statusColor: "green",
           completed: false,
-          avatars: ["men/1", "women/2"],
           date: getLocalDateString(today),
         },
         {
@@ -303,7 +293,6 @@ document.addEventListener("DOMContentLoaded", () => {
           endTime: "14:30",
           statusColor: "blue",
           completed: false,
-          avatars: ["men/3", "women/4"],
           date: getLocalDateString(today),
         },
         {
@@ -314,7 +303,6 @@ document.addEventListener("DOMContentLoaded", () => {
           endTime: "11:00",
           statusColor: "red",
           completed: false,
-          avatars: ["men/5", "women/6"],
           date: getLocalDateString(tomorrow),
         },
       ];
@@ -445,25 +433,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const colorClass = teamColorMap[task.team] || "blue";
       projectCard.classList.add(colorClass);
 
-      const avatarsHtml = (task.avatars || [])
-        .map((av) => {
-          if (
-            typeof av === "string" &&
-            (av.startsWith("men/") || av.startsWith("women/"))
-          ) {
-            return `<img src="https://randomuser.me/api/portraits/${av}.jpg" alt="User Avatar">`;
-          } else if (typeof av === "string") {
-            const initials = av
-              .split(" ")
-              .map((n) => n[0])
-              .join("")
-              .toUpperCase();
-            return `<div class="avatar-initials">${initials}</div>`;
-          }
-          return "";
-        })
-        .join("");
-
       const teamName = task.team
         ? task.team.charAt(0).toUpperCase() + task.team.slice(1)
         : "General";
@@ -491,9 +460,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     <progress value="${task.progress || 0}" max="100"></progress>
                     <div class="progress-info">
-                        <span>${daysLeft} Days Left</span>
-                        <div class="avatar-group">${avatarsHtml}</div>
-                    </div>
+  <span>${daysLeft} Days Left</span>
+</div>
+
                 </div>
             `;
       DOMElements.projectSummaryContainer.appendChild(projectCard);
@@ -627,20 +596,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="progress-bar-fill" style="width: ${progress}%; background-color: ${progressBarColor};"></div>
                     </div>
                 </div>
-                <div class="task-card-footer-meta">
-                    <div class="avatar-group">
-                        ${(task.avatars || [])
-                          .map(
-                            (avatar) =>
-                              `<img src="https://randomuser.me/api/portraits/${avatar}.jpg" alt="User">`
-                          )
-                          .join("")}
-                    </div>
-                    <div class="task-meta-icons">
-                        <i class='bx bx-paperclip task-file-icon'></i><span class="task-file-count" style="color: #007bff; font-weight: 600; margin-left: 2px;">${attachmentCount}</span>
-                        <i class='bx bx-message-rounded-dots'></i> ${commentCount}
-                    </div>
-                </div>
+
             `;
 
       if (task.status === "completed") {
@@ -1341,30 +1297,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Add event listener for comment/message icon in each task card
-  if (DOMElements.tasksListContainer) {
-    DOMElements.tasksListContainer.addEventListener("click", (e) => {
-      const target = e.target;
-      if (target.classList.contains("bx-message-rounded-dots")) {
-        e.stopPropagation();
-        showToast("This feature is currently under development. Please stay tuned!");
-      }
-      // Add event delegation for avatar images in task cards
-      if (target.tagName === "IMG" && target.closest(".avatar-group")) {
-        e.stopPropagation();
-        showToast("This feature is currently under development. Please stay tuned!");
-      }
-    });
-  }
-
   // Add event delegation for avatar images in project summary cards
   if (DOMElements.projectSummaryContainer) {
     DOMElements.projectSummaryContainer.addEventListener("click", (e) => {
       const target = e.target;
-      if (target.tagName === "IMG" && target.closest(".avatar-group")) {
-        e.stopPropagation();
-        showToast("This feature is currently under development. Please stay tuned!");
-      }
     });
   }
 
@@ -1595,7 +1531,6 @@ document.addEventListener("DOMContentLoaded", () => {
           progress: 0,
           priority: priority,
           subtasks: [],
-          avatars: ["men/32", "women/44"],
           subject: "General", // English
           teacher: "N/A",
           type: "Task",
