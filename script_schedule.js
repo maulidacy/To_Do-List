@@ -88,22 +88,33 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================================
     // --- 2. Manajemen Data (Simulasi API dengan localStorage) ---
     // =====================================================================
+    // ===============================
+    // 2. Manajemen Data (localStorage)
+    // ===============================
+    const SCHEDULE_SEEDED_KEY = "SCHEDULE_SEEDED_V1";
 
-    // pastikan key schedules selalu ada (first run = kosong)
     const ensureEmptyArrayKey = (key) => {
         if (localStorage.getItem(key) === null) setStorage(key, []);
     };
 
     ensureEmptyArrayKey("schedules");
+    let schedules = getStorage("schedules");
 
-    // reload agar variabel sinkron
-    let schedules = getStorage("schedules"); // Data jadwal utama
-    // Data lain seperti projects dan tasks tidak ada di sini, diasumsikan hanya untuk dashboard utama.
-    // Jika perlu, Anda bisa mengimpornya atau memuatnya juga.
+    // hanya seed dummy sekali, dan hanya kalau memang kosong
+    const seedDummyIfEmpty = () => {
+        const seeded = localStorage.getItem(SCHEDULE_SEEDED_KEY) === "1";
+        if (seeded) return;
 
-    /**
-     * Menginisialisasi data dummy untuk jadwal jika localStorage kosong.
-     */
+        if (Array.isArray(schedules) && schedules.length === 0) {
+            // kalau kamu masih mau dummy, isi di sini
+            // schedules = [ ...dummy... ];
+            // setStorage("schedules", schedules);
+        }
+
+        localStorage.setItem(SCHEDULE_SEEDED_KEY, "1");
+    };
+
+    seedDummyIfEmpty();
 
     // =====================================================================
     // --- 3. Cache Elemen DOM ---
@@ -250,6 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
      * Merender daftar jadwal utama di `scheduleListEl`.
      */
     const renderSchedules = () => {
+        schedules = getStorage("schedules");
         DOMElements.scheduleListEl.innerHTML = "";
         if (schedules.length === 0) {
             DOMElements.scheduleListEl.innerHTML =
@@ -562,6 +574,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("Schedule added successfully!");
             }
 
+            schedules = getStorage("schedules");
             renderSchedules(); // Render ulang daftar jadwal utama
             DOMElements.addScheduleModal.style.display = "none"; // Sembunyikan modal
             resetForm(); // Reset form
