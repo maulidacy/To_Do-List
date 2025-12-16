@@ -98,238 +98,19 @@ document.addEventListener("DOMContentLoaded", () => {
    * Initialize dummy data if localStorage is empty.
    */
   const initializeDummyData = () => {
-    if (projects.length === 0) {
-      projects = [
-        {
-          id: 1,
-          title: "Software Project Discussion", // English
-          description:
-            "The software team is responsible for planning, scheduling, budgeting, executing, and delivering software and web projects. They ensure the successful completion of all software projects.", // English
-          progress: 75,
-          daysLeft: 3,
-          type: "blue",
-        },
-        {
-          id: 2,
-          title: "Authentication Module Development", // English
-          description:
-            "Developing a new user authentication module with secure login and registration features.", // English
-          progress: 40,
-          daysLeft: 7,
-          type: "purple",
-        },
-        {
-          id: 3,
-          title: "Q3 Project Planning", // English
-          description:
-            "Outlining the entire project scope, milestones, and resource allocation for the upcoming quarter.", // English
-          progress: 10,
-          daysLeft: 14,
-          type: "red",
-        },
-      ];
-      setStorage("projects", projects);
-    }
+    // Tidak buat dummy projects/tasks/schedules
+    // Biarkan kosong untuk first-time user
 
-    if (tasks.length === 0) {
-      tasks = [
-        {
-          id: 1,
-          title: "Mobile App Design", // English
-          description: "UI/UX Design Meeting", // English
-          subject: "Design", // English
-          teacher: "Ms Diana Smith",
-          type: "Task",
-          status: "in-progress",
-          progress: 5,
-          priority: "high",
-          subtasks: [
-            {
-              id: 1,
-              text: "Brainstorming Concepts",
-              completed: false,
-            },
-          ], // English
-          team: "design",
-          startDate: "2025-07-10",
-          startTime: "09:00",
-          endDate: "2025-07-15",
-          endTime: "17:00",
-          assignTo: "John Doe",
-        },
-        {
-          id: 2,
-          title: "Famous Motivator Story", // English
-          description: "Analyzing biographies of inspiring figures", // English
-          subject: "Biography", // English
-          teacher: "Mr Melvin Ruslan",
-          type: "Theory",
-          status: "completed",
-          progress: 100,
-          priority: "normal",
-          subtasks: [],
-          team: "development",
-          startDate: "2025-07-01",
-          startTime: "10:00",
-          endDate: "2025-07-05",
-          endTime: "12:00",
-          assignTo: "Jane Smith",
-        },
-        {
-          id: 6,
-          title: "Medium Priority Task", // English
-          description: "Example task with medium priority", // English
-          subject: "General", // English
-          teacher: "Ms Medium",
-          type: "Task",
-          status: "in-progress",
-          progress: 30,
-          priority: "medium",
-          subtasks: [],
-          team: "general",
-          startDate: "2025-07-20",
-          startTime: "09:00",
-          endDate: "2025-07-25",
-          endTime: "17:00",
-          assignTo: "Medium User",
-        },
-        {
-          id: 3,
-          title: "Algebraic Properties Task", // English
-          description:
-            "Solving algebraic properties problems from the textbook", // English
-          subject: "Mathematics", // English
-          teacher: "Mr John Lock",
-          type: "Task",
-          status: "in-progress",
-          progress: 60,
-          priority: "high",
-          subtasks: [
-            {
-              id: 1,
-              text: "Solve problems 1-5",
-              completed: false,
-            },
-            {
-              id: 2,
-              text: "Check answers",
-              completed: false,
-            },
-          ], // English
-          team: "marketing",
-          startDate: "2025-07-12",
-          startTime: "13:00",
-          endDate: "2025-07-18",
-          endTime: "16:00",
-          assignTo: "Michael Johnson",
-        },
-        {
-          id: 4,
-          title: "Algebraic Properties Theory", // English
-          description: "Understanding basic concepts of algebraic properties", // English
-          subject: "Mathematics", // English
-          teacher: "Mr John Lock",
-          type: "Theory",
-          status: "completed",
-          progress: 100,
-          priority: "normal",
-          subtasks: [],
-          team: "design",
-          startDate: "2025-07-08",
-          startTime: "09:00",
-          endDate: "2025-07-09",
-          endTime: "11:00",
-          assignTo: "Emily Brown",
-        },
-        {
-          id: 5,
-          title: "Determining One's IQ", // English
-          description:
-            "Understanding various methods and tests for measuring IQ", // English
-          subject: "Psychology", // English
-          teacher: "Mr Melvin Ruslan",
-          type: "Theory",
-          status: "in-progress",
-          progress: 80,
-          priority: "low",
-          subtasks: [
-            {
-              id: 1,
-              text: "Read Chapter 3",
-              completed: false,
-            },
-          ], // English
-          team: "development",
-          startDate: "2025-07-11",
-          startTime: "14:00",
-          endDate: "2025-07-13",
-          endTime: "17:00",
-          assignTo: "Chris Green",
-        },
+    // Seed teams hanya kalau belum ada
+    if (!Array.isArray(teams) || teams.length === 0) {
+      teams = [
+        { id: "design", name: "Design" },
+        { id: "development", name: "Development" },
+        { id: "marketing", name: "Marketing" },
+        { id: "general", name: "General" },
       ];
-      setStorage("tasks", tasks);
+      setStorage("teams", teams);
     }
-    if (schedules.length === 0) {
-      const today = new Date();
-      const tomorrow = new Date(today);
-      tomorrow.setDate(today.getDate() + 1);
-
-      schedules = [
-        {
-          id: 1,
-          title: "Mobile App Design Discussion", // English
-          description: "Team meeting to finalize wireframes.", // English
-          startTime: "09:00",
-          endTime: "10:00",
-          statusColor: "green",
-          completed: false,
-          date: getLocalDateString(today),
-        },
-        {
-          id: 2,
-          title: "Client Project Presentation", // English
-          description: "Progress presentation to the main client.", // English
-          startTime: "13:00",
-          endTime: "14:30",
-          statusColor: "blue",
-          completed: false,
-          date: getLocalDateString(today),
-        },
-        {
-          id: 3,
-          title: "Marketing Brainstorming Session", // English
-          description: "Ideation session for Q4 campaign.", // English
-          startTime: "10:00",
-          endTime: "11:00",
-          statusColor: "red",
-          completed: false,
-          date: getLocalDateString(tomorrow),
-        },
-      ];
-      setStorage("schedules", schedules);
-    }
-    // Force reset teams array to English names to overwrite any existing localStorage data
-    localStorage.removeItem("teams");
-    teams = [
-      {
-        id: "design",
-        name: "Design",
-      },
-      {
-        id: "development",
-        name: "Development",
-      },
-      {
-        id: "marketing",
-        name: "Marketing",
-      },
-      {
-        id: "general",
-        name: "General",
-      },
-    ];
-    setStorage("teams", teams);
-    console.log("Teams array set to English names:", teams);
   };
 
   initializeDummyData();
@@ -1572,8 +1353,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (DOMElements.priorityFilterSelect.value !== "all") {
         DOMElements.priorityFilterSelect.style.backgroundColor = "#d0e6ff";
         DOMElements.priorityFilterSelect.title = `Filtered by: ${DOMElements.priorityFilterSelect.options[
-            DOMElements.priorityFilterSelect.selectedIndex
-          ].text
+          DOMElements.priorityFilterSelect.selectedIndex
+        ].text
           }`; // English
       } else {
         DOMElements.priorityFilterSelect.style.backgroundColor = "";
@@ -1586,8 +1367,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (savedPriorityFilter !== "all") {
         DOMElements.priorityFilterSelect.style.backgroundColor = "#d0e6ff";
         DOMElements.priorityFilterSelect.title = `Filtered by: ${DOMElements.priorityFilterSelect.options[
-            DOMElements.priorityFilterSelect.selectedIndex
-          ].text
+          DOMElements.priorityFilterSelect.selectedIndex
+        ].text
           }`; // English
       }
     }
