@@ -94,26 +94,25 @@ document.addEventListener("DOMContentLoaded", () => {
   let teams = getStorage("teams");
   let currentCalendarDate = new Date();
 
-  /**
-   * Initialize dummy data if localStorage is empty.
-   */
-  const initializeDummyData = () => {
-    // Tidak buat dummy projects/tasks/schedules
-    // Biarkan kosong untuk first-time user
-
-    // Seed teams hanya kalau belum ada
-    if (!Array.isArray(teams) || teams.length === 0) {
-      teams = [
-        { id: "design", name: "Design" },
-        { id: "development", name: "Development" },
-        { id: "marketing", name: "Marketing" },
-        { id: "general", name: "General" },
-      ];
-      setStorage("teams", teams);
-    }
+  // pastikan key ada & default kosong (biar first run bersih)
+  const ensureEmptyArrayKey = (key) => {
+    if (localStorage.getItem(key) === null) setStorage(key, []);
   };
 
-  initializeDummyData();
+  ensureEmptyArrayKey("projects");
+  ensureEmptyArrayKey("tasks");
+  ensureEmptyArrayKey("schedules");
+
+  // reload biar variabel sinkron dengan localStorage
+  projects = getStorage("projects");
+  tasks = getStorage("tasks");
+  schedules = getStorage("schedules");
+
+  // Teams boleh di-seed (ini bukan "isi tugas", cuma list pilihan)
+  if (localStorage.getItem("teams") === null || teams.length === 0) {
+  } else {
+    teams = getStorage("teams");
+  }
 
   // =====================================================================
   // --- 3. DOM Elements Cache ---
