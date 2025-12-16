@@ -308,28 +308,28 @@ document.addEventListener("DOMContentLoaded", () => {
       ];
       setStorage("schedules", schedules);
     }
-  // Force reset teams array to English names to overwrite any existing localStorage data
-  localStorage.removeItem("teams");
-  teams = [
-    {
-      id: "design",
-      name: "Design",
-    },
-    {
-      id: "development",
-      name: "Development",
-    },
-    {
-      id: "marketing",
-      name: "Marketing",
-    },
-    {
-      id: "general",
-      name: "General",
-    },
-  ];
-  setStorage("teams", teams);
-  console.log("Teams array set to English names:", teams);
+    // Force reset teams array to English names to overwrite any existing localStorage data
+    localStorage.removeItem("teams");
+    teams = [
+      {
+        id: "design",
+        name: "Design",
+      },
+      {
+        id: "development",
+        name: "Development",
+      },
+      {
+        id: "marketing",
+        name: "Marketing",
+      },
+      {
+        id: "general",
+        name: "General",
+      },
+    ];
+    setStorage("teams", teams);
+    console.log("Teams array set to English names:", teams);
   };
 
   initializeDummyData();
@@ -440,11 +440,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const daysLeft = task.endDate
         ? Math.max(
-            0,
-            Math.ceil(
-              (new Date(task.endDate) - new Date()) / (1000 * 60 * 60 * 24)
-            )
+          0,
+          Math.ceil(
+            (new Date(task.endDate) - new Date()) / (1000 * 60 * 60 * 24)
           )
+        )
         : "N/A";
 
       projectCard.innerHTML = `
@@ -521,24 +521,21 @@ document.addEventListener("DOMContentLoaded", () => {
       const dateRange =
         task.startDate && task.endDate
           ? `${formatDateForDisplay(task.startDate)} - ${formatDateForDisplay(
-              task.endDate
-            )}`
+            task.endDate
+          )}`
           : "";
       const progress =
         Array.isArray(task.subtasks) && task.subtasks.length > 0
           ? Math.round(
-              (task.subtasks.filter((s) => s.completed).length /
-                task.subtasks.length) *
-                100
-            )
+            (task.subtasks.filter((s) => s.completed).length /
+              task.subtasks.length) *
+            100
+          )
           : task.progress || 0;
 
       const priorityLabel = task.priority
         ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1)
         : "Normal"; // English
-      const commentCount = Array.isArray(task.comments)
-        ? task.comments.length
-        : 0;
       // Get file count from localStorage for the task
       const storedFiles = getFilesForTask(task.id);
       const attachmentCount = storedFiles.length;
@@ -548,42 +545,36 @@ document.addEventListener("DOMContentLoaded", () => {
       taskCard.innerHTML = `
                 <div class="task-menu" data-task-id="${task.id}">&#8942;</div>
                 <div class="task-menu-dropdown" style="display: none;">
-                    <button class="edit-task-button" data-task-id="${
-                      task.id
-                    }">Edit Task</button>
-                    <button class="delete-task-button" data-task-id="${
-                      task.id
-                    }">Delete Task</button>
+                    <button class="edit-task-button" data-task-id="${task.id
+        }">Edit Task</button>
+                    <button class="delete-task-button" data-task-id="${task.id
+        }">Delete Task</button>
                 </div>
                 <h4>${task.title}</h4>
                 <p class="task-date-range">${dateRange}</p>
                 <div class="task-card-subtasks">
                     <ul>
                 ${(task.subtasks || [])
-                  .map((sub) => {
-                    // Removed paperclip icon and file count span for subtasks as per user request
-                    return `
+          .map((sub) => {
+            // Removed paperclip icon and file count span for subtasks as per user request
+            return `
                             <li>
-                                <input type="checkbox" class="subtask-checkbox" data-task-id="${
-                                  task.id
-                                }" data-subtask-id="${sub.id}" ${
-                      sub.completed ? "checked" : ""
-                    }>
+                                <input type="checkbox" class="subtask-checkbox" data-task-id="${task.id
+              }" data-subtask-id="${sub.id}" ${sub.completed ? "checked" : ""
+              }>
                                 <label>${sub.text}</label>
                             </li>
                         `;
-                  })
-                  .join("")}
+          })
+          .join("")}
                     </ul>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <button class="add-subtask-button" data-task-id="${
-                          task.id
-                        }">
+                        <button class="add-subtask-button" data-task-id="${task.id
+        }">
                             <i class='bx bx-plus-medical'></i>
                             Add Subtask </button>
-                        <span class="priority-label ${
-                          task.priority ? task.priority.toLowerCase() : "medium"
-                        }">
+                        <span class="priority-label ${task.priority ? task.priority.toLowerCase() : "medium"
+        }">
                             ${priorityLabel}
                         </span>
                     </div>
@@ -596,7 +587,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="progress-bar-fill" style="width: ${progress}%; background-color: ${progressBarColor};"></div>
                     </div>
                 </div>
-
+                <div class="task-card-footer-meta">
+                    <div class="task-meta-icons">
+                        <i class='bx bx-paperclip task-file-icon'></i>
+                        <span class="task-file-count" style="color:#007bff;font-weight:600;margin-left:2px;">
+                            ${attachmentCount}
+                        </span>
+                    </div>
+                </div>
             `;
 
       if (task.status === "completed") {
@@ -690,24 +688,20 @@ document.addEventListener("DOMContentLoaded", () => {
       scheduleItem.dataset.scheduleId = schedule.id;
 
       scheduleItem.innerHTML = `
-    <div class="schedule-item-indicator ${
-      schedule.statusColor || "blue"
-    }"></div>
-    <input type="checkbox" class="schedule-select-checkbox" data-id="${
-      schedule.id
-    }" aria-label="Select schedule for deletion" style=""/>
+    <div class="schedule-item-indicator ${schedule.statusColor || "blue"
+        }"></div>
+    <input type="checkbox" class="schedule-select-checkbox" data-id="${schedule.id
+        }" aria-label="Select schedule for deletion" style=""/>
     <div class="schedule-item-content">
         <h4 class="title">${schedule.title}</h4>
         <p class="subtitle">${schedule.description || schedule.desc || ""}</p>
         <div class="schedule-item-time">
             <i class='bx bx-time'></i>
-            ${
-              schedule.startTime ||
-              (schedule.time ? schedule.time.split(" - ")[0] : "undefined")
-            } - ${
-        schedule.endTime ||
+            ${schedule.startTime ||
+        (schedule.time ? schedule.time.split(" - ")[0] : "undefined")
+        } - ${schedule.endTime ||
         (schedule.time ? schedule.time.split(" - ")[1] : "undefined")
-      }
+        }
         </div>
     </div>
 `;
@@ -1293,16 +1287,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Add event listener for comment/message icon in each task card
-  if (DOMElements.tasksListContainer) {
-    DOMElements.tasksListContainer.addEventListener("click", (e) => {
-      const target = e.target;
-      if (target.classList.contains("bx-message-rounded-dots")) {
-        e.stopPropagation();
-        showToast("This feature is currently under development. Please stay tuned!");
-      }
-    });
-  }
+
 
   // Add event delegation for avatar images in project summary cards
   if (DOMElements.projectSummaryContainer) {
@@ -1315,15 +1300,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const headerBellButton = document.querySelector(".header-icons > button.icon-button.bx-bell, .header-icons > button.icon-button i.bx-bx-bell, .header-icons > button.icon-button i.bx.bx-bell");
   if (headerBellButton) {
     headerBellButton.addEventListener("click", (event) => {
-      event.stopPropagation();
-      showToast("This feature is currently under development. Please stay tuned!");
-    });
-  }
-
-  // Add event listener for user avatar image in header
-  const userProfileImage = document.querySelector(".header-icons .user-profile img");
-  if (userProfileImage) {
-    userProfileImage.addEventListener("click", (event) => {
       event.stopPropagation();
       showToast("This feature is currently under development. Please stay tuned!");
     });
@@ -1595,11 +1571,10 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       if (DOMElements.priorityFilterSelect.value !== "all") {
         DOMElements.priorityFilterSelect.style.backgroundColor = "#d0e6ff";
-        DOMElements.priorityFilterSelect.title = `Filtered by: ${
-          DOMElements.priorityFilterSelect.options[
+        DOMElements.priorityFilterSelect.title = `Filtered by: ${DOMElements.priorityFilterSelect.options[
             DOMElements.priorityFilterSelect.selectedIndex
           ].text
-        }`; // English
+          }`; // English
       } else {
         DOMElements.priorityFilterSelect.style.backgroundColor = "";
         DOMElements.priorityFilterSelect.title = "";
@@ -1610,11 +1585,10 @@ document.addEventListener("DOMContentLoaded", () => {
       DOMElements.priorityFilterSelect.value = savedPriorityFilter;
       if (savedPriorityFilter !== "all") {
         DOMElements.priorityFilterSelect.style.backgroundColor = "#d0e6ff";
-        DOMElements.priorityFilterSelect.title = `Filtered by: ${
-          DOMElements.priorityFilterSelect.options[
+        DOMElements.priorityFilterSelect.title = `Filtered by: ${DOMElements.priorityFilterSelect.options[
             DOMElements.priorityFilterSelect.selectedIndex
           ].text
-        }`; // English
+          }`; // English
       }
     }
   }
