@@ -824,15 +824,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (DOMElements.prioritySelect)
       DOMElements.prioritySelect.value = task.priority || "normal";
 
-    // Disable file input and show warning message in edit mode
+    // Enable file input and hide warning message in edit mode
     if (DOMElements.attachmentInput)
-      DOMElements.attachmentInput.disabled = true;
+      DOMElements.attachmentInput.disabled = false;
     const warningMsg = document.getElementById("attachmentWarningMessage");
-    if (warningMsg) {
-      warningMsg.textContent =
-        "File upload can only be done via the link icon on the task card.";
-      warningMsg.style.display = "block";
-    }
+    if (warningMsg) warningMsg.style.display = "none";
 
     if (DOMElements.attachmentInput) DOMElements.attachmentInput.value = "";
     if (DOMElements.attachmentFileNameDisplay)
@@ -1291,6 +1287,17 @@ document.addEventListener("DOMContentLoaded", () => {
     DOMElements.projectSummaryContainer.addEventListener("click", (e) => {
       const target = e.target;
       if (target.classList.contains("bx-dots-horizontal-rounded")) {
+        e.stopPropagation();
+        showToast("This feature is currently under development. Please stay tuned!");
+      }
+    });
+  }
+
+  // Add event listener for comment/message icon in each task card
+  if (DOMElements.tasksListContainer) {
+    DOMElements.tasksListContainer.addEventListener("click", (e) => {
+      const target = e.target;
+      if (target.classList.contains("bx-message-rounded-dots")) {
         e.stopPropagation();
         showToast("This feature is currently under development. Please stay tuned!");
       }
