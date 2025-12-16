@@ -8,6 +8,27 @@ document.addEventListener("DOMContentLoaded", () => {
    * @param {string} key Storage key.
    * @returns {Array} Parsed data or an empty array if not found/error.
    */
+  const APP_DATA_VERSION = "v2_clean_first_run"; // ganti kalau mau reset lagi
+
+  const ensureFreshDataIfVersionChanged = () => {
+    const savedVersion = localStorage.getItem("APP_DATA_VERSION");
+    if (savedVersion !== APP_DATA_VERSION) {
+      // reset semua data yang bikin tampilan ada isi
+      localStorage.removeItem("projects");
+      localStorage.removeItem("tasks");
+      localStorage.removeItem("schedules");
+
+      // kalau kamu pernah simpan file per task, hapus juga (opsional tapi disarankan)
+      Object.keys(localStorage).forEach((k) => {
+        if (k.startsWith("taskFiles_")) localStorage.removeItem(k);
+      });
+
+      localStorage.setItem("APP_DATA_VERSION", APP_DATA_VERSION);
+    }
+  };
+
+  ensureFreshDataIfVersionChanged();
+
   const getStorage = (key) => {
     try {
       const data = localStorage.getItem(key);
