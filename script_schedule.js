@@ -13,10 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = localStorage.getItem(key);
             return data ? JSON.parse(data) : [];
         } catch (e) {
-            console.error(
-                `rror reads from localStorage for the key: ${key}`,
-                e
-            );
+            console.error(`rror reads from localStorage for the key: ${key}`, e);
             return [];
         }
     };
@@ -33,10 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `The data for key '${key}' as successfully saved to localStorage.`
             );
         } catch (e) {
-            console.error(
-                `Error writing to localStorage for the key: ${key}`,
-                e
-            );
+            console.error(`Error writing to localStorage for the key: ${key}`, e);
         }
     };
 
@@ -63,10 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 year: "numeric",
             });
         } catch (e) {
-            console.error(
-                `Invalid date string for formatting: ${isoDateString}`,
-                e
-            );
+            console.error(`Invalid date string for formatting: ${isoDateString}`, e);
             return isoDateString;
         }
     };
@@ -98,6 +89,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- 2. Manajemen Data (Simulasi API dengan localStorage) ---
     // =====================================================================
 
+    // pastikan key schedules selalu ada (first run = kosong)
+    const ensureEmptyArrayKey = (key) => {
+        if (localStorage.getItem(key) === null) setStorage(key, []);
+    };
+
+    ensureEmptyArrayKey("schedules");
+
+    // reload agar variabel sinkron
     let schedules = getStorage("schedules"); // Data jadwal utama
     // Data lain seperti projects dan tasks tidak ada di sini, diasumsikan hanya untuk dashboard utama.
     // Jika perlu, Anda bisa mengimpornya atau memuatnya juga.
@@ -105,47 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
     /**
      * Menginisialisasi data dummy untuk jadwal jika localStorage kosong.
      */
-    const initializeDummyData = () => {
-        if (schedules.length === 0) {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = today.getMonth();
-            const day = today.getDate();
-
-            schedules = [
-                {
-                    id: 1,
-                    title: "Daily Standup",
-                    date: getLocalDateString(new Date(year, month, day)),
-                    startTime: "09:00",
-                    endTime: "09:15",
-                    statusColor: "blue",
-                    description: "Quick team sync-up.",
-                },
-                {
-                    id: 2,
-                    title: "Client Meeting",
-                    date: getLocalDateString(new Date(year, month, day)),
-                    startTime: "10:00",
-                    endTime: "11:00",
-                    statusColor: "green",
-                    description: "Discuss Q3 deliverables.",
-                },
-                {
-                    id: 3,
-                    title: "Project Review",
-                    date: getLocalDateString(new Date(year, month, day + 1)),
-                    startTime: "14:00",
-                    endTime: "15:00",
-                    statusColor: "purple",
-                    description: "Review progress for Alpha project.",
-                },
-            ];
-            setStorage("schedules", schedules);
-        }
-    };
-
-    initializeDummyData(); // Panggil inisialisasi data saat DOM dimuat
 
     // =====================================================================
     // --- 3. Cache Elemen DOM ---
@@ -190,12 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
         prevMonthBtn: document.getElementById("prevMonthBtn"),
         nextMonthBtn: document.getElementById("nextMonthBtn"),
         todayScheduleList: document.getElementById("todayScheduleList"),
-        todayScheduleMenuButton: document.getElementById(
-            "todayScheduleMenuButton"
-        ),
-        todayScheduleDropdown: document.getElementById(
-            "todayScheduleDropdown"
-        ),
+        todayScheduleMenuButton: document.getElementById("todayScheduleMenuButton"),
+        todayScheduleDropdown: document.getElementById("todayScheduleDropdown"),
         addNewScheduleBtn: document.getElementById("addNewScheduleBtn"),
         editTodayScheduleBtn: document.getElementById("editTodayScheduleBtn"),
         deleteSelectedTodayScheduleBtn: document.getElementById(
@@ -287,7 +241,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (DOMElements.dateDisplay) DOMElements.dateDisplay.value = ""; // Bersihkan field tampilan tanggal
         if (DOMElements.startTimeDisplay) DOMElements.startTimeDisplay.value = ""; // Bersihkan field tampilan waktu mulai
         if (DOMElements.endTimeDisplay) DOMElements.endTimeDisplay.value = ""; // Bersihkan field tampilan waktu selesai
-        if (DOMElements.statusColorSelect) DOMElements.statusColorSelect.value = "blue"; // Atur warna default
+        if (DOMElements.statusColorSelect)
+            DOMElements.statusColorSelect.value = "blue"; // Atur warna default
         updateFormMode(false); // Atur tombol kembali ke mode Tambah
     };
 
@@ -317,7 +272,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 }"></div>
                 <div class="schedule-item-content">
                     <div class="title">${schedule.title}</div>
-                    <div class="description" style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.2rem;">${schedule.description || ""}</div>
+                    <div class="description" style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.2rem;">${schedule.description || ""
+                }</div>
                     <div class="time">
                         <i class='bx bx-calendar'></i> ${formatDateDisplay(
                     schedule.date
@@ -347,10 +303,7 @@ document.addEventListener("DOMContentLoaded", () => {
      * @param {Date} date Tanggal untuk merender bulan.
      */
     const renderCalendar = (date) => {
-        if (
-            !DOMElements.currentMonthYearHeader ||
-            !DOMElements.calendarGridEl
-        )
+        if (!DOMElements.currentMonthYearHeader || !DOMElements.calendarGridEl)
             return;
 
         DOMElements.currentMonthYearHeader.textContent = date.toLocaleString(
@@ -420,9 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const targetDateString = getLocalDateString(date);
         schedules = getStorage("schedules"); // Muat ulang jadwal dari localStorage untuk data terbaru
         const relevantSchedules = schedules.filter(
-            (s) =>
-                s.date &&
-                getLocalDateString(new Date(s.date)) === targetDateString
+            (s) => s.date && getLocalDateString(new Date(s.date)) === targetDateString
         );
 
         if (relevantSchedules.length === 0) {
@@ -503,15 +454,12 @@ document.addEventListener("DOMContentLoaded", () => {
      */
     function updateEditTodayScheduleButtonVisibility() {
         if (!DOMElements.editTodayScheduleBtn) {
-            console.warn(
-                "WARNING: DOMElements.editTodayScheduleBtn was not found."
-            );
+            console.warn("WARNING: DOMElements.editTodayScheduleBtn was not found.");
             return;
         }
         const todayDateString = getLocalDateString(currentCalendarDate); // Gunakan currentCalendarDate
         const hasTodaySchedule = schedules.some(
-            (s) =>
-                s.date && getLocalDateString(new Date(s.date)) === todayDateString
+            (s) => s.date && getLocalDateString(new Date(s.date)) === todayDateString
         );
         DOMElements.editTodayScheduleBtn.style.display = hasTodaySchedule
             ? "flex"
@@ -547,31 +495,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Buka Modal Tambah Jadwal Utama
-    if (
-        DOMElements.openAddScheduleModalButton &&
-        DOMElements.addScheduleModal
-    ) {
-        DOMElements.openAddScheduleModalButton.addEventListener(
-            "click",
-            () => {
-                resetForm();
-                DOMElements.addScheduleModal.style.display = "flex";
-            }
-        );
+    if (DOMElements.openAddScheduleModalButton && DOMElements.addScheduleModal) {
+        DOMElements.openAddScheduleModalButton.addEventListener("click", () => {
+            resetForm();
+            DOMElements.addScheduleModal.style.display = "flex";
+        });
     }
 
     // Tutup Modal Tambah/Edit Jadwal
-    if (
-        DOMElements.closeAddScheduleModalButton &&
-        DOMElements.addScheduleModal
-    ) {
-        DOMElements.closeAddScheduleModalButton.addEventListener(
-            "click",
-            () => {
-                DOMElements.addScheduleModal.style.display = "none";
-                resetForm(); // Reset form saat modal ditutup
-            }
-        );
+    if (DOMElements.closeAddScheduleModalButton && DOMElements.addScheduleModal) {
+        DOMElements.closeAddScheduleModalButton.addEventListener("click", () => {
+            DOMElements.addScheduleModal.style.display = "none";
+            resetForm(); // Reset form saat modal ditutup
+        });
     }
 
     // Submit Form Tambah/Edit Jadwal
@@ -593,9 +529,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (id && id !== "") {
                 // MODE EDIT
-                const scheduleIndex = schedules.findIndex(
-                    (s) => s.id === parseInt(id)
-                );
+                const scheduleIndex = schedules.findIndex((s) => s.id === parseInt(id));
                 if (scheduleIndex > -1) {
                     schedules[scheduleIndex] = {
                         ...schedules[scheduleIndex], // Pertahankan properti lain
@@ -657,20 +591,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     DOMElements.titleInput.value = scheduleToEdit.title;
                     DOMElements.descriptionInput.value = scheduleToEdit.description || "";
                     DOMElements.dateInputHidden.value = scheduleToEdit.date;
-                    DOMElements.startTimeInputHidden.value =
-                        scheduleToEdit.startTime;
+                    DOMElements.startTimeInputHidden.value = scheduleToEdit.startTime;
                     DOMElements.endTimeInputHidden.value = scheduleToEdit.endTime;
                     DOMElements.statusColorSelect.value =
                         scheduleToEdit.statusColor || "blue";
 
                     // Trigger change events untuk memperbarui tampilan input
                     DOMElements.dateInputHidden.dispatchEvent(new Event("change"));
-                    DOMElements.startTimeInputHidden.dispatchEvent(
-                        new Event("change")
-                    );
-                    DOMElements.endTimeInputHidden.dispatchEvent(
-                        new Event("change")
-                    );
+                    DOMElements.startTimeInputHidden.dispatchEvent(new Event("change"));
+                    DOMElements.endTimeInputHidden.dispatchEvent(new Event("change"));
 
                     DOMElements.addScheduleModal.style.display = "flex";
                 }
@@ -714,10 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
         DOMElements.todayScheduleMenuButton.addEventListener("click", (e) => {
             e.stopPropagation(); // Prevent event bubbling to document click listener
             const dropdown = DOMElements.todayScheduleDropdown;
-            if (
-                dropdown.style.display === "none" ||
-                dropdown.style.display === ""
-            ) {
+            if (dropdown.style.display === "none" || dropdown.style.display === "") {
                 dropdown.style.display = "flex"; // Show dropdown menu
             } else {
                 dropdown.style.display = "none"; // Hide dropdown menu
@@ -754,8 +680,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const todayDateString = getLocalDateString(currentCalendarDate);
             const todaySchedules = schedules.filter(
                 (s) =>
-                    s.date &&
-                    getLocalDateString(new Date(s.date)) === todayDateString
+                    s.date && getLocalDateString(new Date(s.date)) === todayDateString
             );
 
             if (todaySchedules.length === 0) {
@@ -785,36 +710,27 @@ document.addEventListener("DOMContentLoaded", () => {
     // Tombol "Hapus jadwal terpilih" di dropdown
     if (DOMElements.deleteSelectedTodayScheduleBtn) {
         DOMElements.deleteSelectedTodayScheduleBtn.style.display = "none"; // Sembunyikan secara default
-        DOMElements.deleteSelectedTodayScheduleBtn.addEventListener(
-            "click",
-            () => {
-                DOMElements.todayScheduleDropdown.style.display = "none";
-                const checkboxes = DOMElements.todayScheduleList.querySelectorAll(
-                    ".schedule-select-checkbox:checked"
-                );
-                const idsToDelete = Array.from(checkboxes).map((cb) =>
-                    parseInt(cb.dataset.id)
-                );
+        DOMElements.deleteSelectedTodayScheduleBtn.addEventListener("click", () => {
+            DOMElements.todayScheduleDropdown.style.display = "none";
+            const checkboxes = DOMElements.todayScheduleList.querySelectorAll(
+                ".schedule-select-checkbox:checked"
+            );
+            const idsToDelete = Array.from(checkboxes).map((cb) =>
+                parseInt(cb.dataset.id)
+            );
 
-                if (idsToDelete.length === 0) {
-                    alert(
-                        "Please check the schedules you want to delete first."
-                    );
-                    return;
-                }
-                if (
-                    confirm(`Sure you want to delete ${idsToDelete.length} schedule?`)
-                ) {
-                    schedules = schedules.filter(
-                        (s) => !idsToDelete.includes(s.id)
-                    );
-                    setStorage("schedules", schedules);
-                    renderSchedules(); // Render ulang daftar jadwal utama
-                    renderTodaySchedule(currentCalendarDate); // Render ulang jadwal hari ini
-                    alert("Schedule successfully deleted.");
-                }
+            if (idsToDelete.length === 0) {
+                alert("Please check the schedules you want to delete first.");
+                return;
             }
-        );
+            if (confirm(`Sure you want to delete ${idsToDelete.length} schedule?`)) {
+                schedules = schedules.filter((s) => !idsToDelete.includes(s.id));
+                setStorage("schedules", schedules);
+                renderSchedules(); // Render ulang daftar jadwal utama
+                renderTodaySchedule(currentCalendarDate); // Render ulang jadwal hari ini
+                alert("Schedule successfully deleted.");
+            }
+        });
     }
 
     // Tombol "Refresh jadwal" di dropdown
@@ -869,10 +785,7 @@ document.addEventListener("DOMContentLoaded", () => {
         DOMElements.startTimeDisplay,
         DOMElements.startTimeInputHidden
     );
-    setupPickerInput(
-        DOMElements.endTimeDisplay,
-        DOMElements.endTimeInputHidden
-    );
+    setupPickerInput(DOMElements.endTimeDisplay, DOMElements.endTimeInputHidden);
 
     // Panggil fungsi render awal saat DOM siap
     renderSchedules(); // Ini akan memuat dan merender jadwal utama
